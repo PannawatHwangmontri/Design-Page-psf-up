@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* Tokens: see DESIGN.md. Warm neutral ramp, brand purple only as accent. */
+@theme {
+  --color-page: #f7f4ee;
+  --color-card: #fdfbf7;
+  --color-raised: #efe9df;
+  --color-ink: #1f1b16;
+  --color-ink-2: #5e554a;
+  --color-ink-3: #7b7266;
+  --color-tint: #ebddf7;
+  --color-accent: #8d38c9;
+  --color-accent-hover: #7a2fb0;
+  --color-accent-ink: #7a2fb0;
+  --font-sans: var(--font-sarabun);
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sarabun), sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a,
+button {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-ui);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 400ms var(--ease-ui) both;
+}
+
+/* Stagger: children of [data-stagger] drop in one by one (50ms apart) once the group scrolls into view.
+   Hidden state only applies when JS can run and motion is allowed. Fade+blur and the spring move are
+   separate animations because the spring overshoots, which would make blur() negative. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-stagger]:not([data-in]) > * {
+    opacity: 0;
+  }
+  [data-stagger][data-in] > * {
+    animation:
+      stagger-fade 600ms var(--ease-ui) backwards,
+      stagger-drop 1000ms linear(0, 0.45 10%, 0.95 22%, 1.1 34%, 1.05 46%, 0.98 60%, 1.01 78%, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+}
+@keyframes stagger-fade {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@keyframes stagger-drop {
+  from {
+    transform: perspective(800px) translateY(-60px) rotateX(90deg);
+  }
+  to {
+    transform: perspective(800px) translateY(0) rotateX(0);
+  }
+}
+
+/* Nav pill: background slides to the hovered/focused link with a light spring (bounce ~0.2, ~300ms) */
+.nav-pill {
+  transition:
+    left 300ms linear(0, 0.45 12%, 0.9 25%, 1.04 38%, 1.02 55%, 1),
+    width 300ms linear(0, 0.45 12%, 0.9 25%, 1.04 38%, 1.02 55%, 1),
+    opacity 150ms var(--ease-ui);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-pill {
+    transition: opacity 150ms var(--ease-ui);
+  }
+}
+
+/* Ripple: circle spawned by src/components/ripple.ts, colored by the host's text color */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  pointer-events: none;
+  animation: ripple 600ms ease-out forwards;
+}
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Bento: uneven grid, one tall hero tile. Hover = spring lift + light purple (tint), siblings dim via :has() */
+.bento {
+  display: grid;
+  gap: 12px;
+  --spring: linear(0, 0.3 7%, 0.75 15%, 1.06 25%, 1.09 32%, 1.03 45%, 0.99 60%, 1);
+}
+.bento-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  background-color: var(--color-card);
+  transition:
+    transform 500ms var(--spring),
+    opacity 200ms var(--ease-ui),
+    background-color 200ms var(--ease-ui);
+}
+.bento-1 {
+  min-height: 192px;
+}
+@media (min-width: 768px) {
+  .bento {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 128px;
+  }
+  .bento-1 { grid-column: 1; grid-row: 1 / 4; }
+  .bento-2 { grid-column: 2 / 4; grid-row: 1; }
+  .bento-3 { grid-column: 2; grid-row: 2; }
+  .bento-4 { grid-column: 3; grid-row: 2 / 4; }
+  .bento-5 { grid-column: 2; grid-row: 3; }
+}
+@media (hover: hover) {
+  .bento-tile:hover {
+    background-color: var(--color-tint);
+    position: relative;
+    z-index: 1;
+  }
+  .bento:has(.bento-tile:hover) .bento-tile:not(:hover) {
+    opacity: 0.55;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .bento-tile:hover {
+    transform: scale(1.04);
+  }
+  .bento:has(.bento-tile:hover) .bento-tile:not(:hover) {
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
