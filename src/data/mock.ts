@@ -36,3 +36,36 @@ export const announcements = Array.from({ length: 12 }, (_, i) => {
     title: { th: `หัวข้อประกาศตัวอย่าง ${n}`, en: `Sample announcement title ${n}` },
   };
 });
+
+// ประกาศผลแยกตามปี (พ.ศ. 2567-2570) ใหม่ไปเก่า สำหรับหน้าข่าวประชาสัมพันธ์ ข้อมูลสมมติทั้งหมด
+export type Passer = (typeof passers)[number];
+export const publicity = [2570, 2569, 2568, 2567].map((year, yi) => ({
+  year, // พ.ศ.
+  people: Array.from({ length: 6 }, (_, i): Passer => {
+    const n = yi * 6 + i + 1;
+    const levelNo = (i % 3) + 1;
+    const unit = String.fromCharCode(65 + (i % 3));
+    return {
+      id: n,
+      name: { th: `ชื่อ นามสกุล ตัวอย่าง ${n}`, en: `Sample Name ${n}` },
+      unit: { th: `คณะ/หน่วยงาน ตัวอย่าง ${unit}`, en: `Faculty/Unit Sample ${unit}` },
+      level: { th: `ระดับ ${levelNo}`, en: `Level ${levelNo}` },
+      year: { th: String(year), en: String(year - 543) },
+    };
+  }),
+}));
+
+// ปฏิทินการประเมินรายปี (พ.ศ.) หน้าเว็บแสดงปีล่าสุด 2 รอบ/ปี: รับสมัคร -> ประเมิน -> ประกาศผล
+export const assessmentCalendars = [
+  {
+    year: 2570,
+    events: [
+      { round: 1, type: "apply", start: "2027-01-15", end: "2027-02-28" },
+      { round: 1, type: "assess", start: "2027-03-15", end: "2027-04-30" },
+      { round: 1, type: "result", start: "2027-05-20" },
+      { round: 2, type: "apply", start: "2027-07-01", end: "2027-08-15" },
+      { round: 2, type: "assess", start: "2027-09-01", end: "2027-10-15" },
+      { round: 2, type: "result", start: "2027-11-20" },
+    ],
+  },
+] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string }[] }[];

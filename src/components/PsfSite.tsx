@@ -1,28 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { content, type Lang } from "@/data/content";
 import { announcements, news, passers } from "@/data/mock";
+import { PasserCard } from "./PasserCard";
+import { Placeholder } from "./Placeholder";
 import { ripple } from "./ripple";
 import { TextEffect } from "./TextEffect";
 
-const sections = ["home", "news", "passers", "about", "process"] as const;
-
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <div
-      role="img"
-      aria-label={label}
-      className={`flex items-center justify-center bg-raised text-xs text-ink-3 ${className}`}
-    >
-      {label}
-    </div>
-  );
-}
-
 const PAGE = 4; // announcements shown per page
-const PASSER_PAGE = 6; // recognised-staff cards per page (3 columns x 2 rows)
+const PASSER_PAGE = 6; // applicant cards per page (3 columns x 2 rows)
 const pageBtn = "flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card text-ink-2 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card";
 
 function Pager({ page, pages, onPage, prev, next }: { page: number; pages: number; onPage: (p: number) => void; prev: string; next: string }) {
@@ -53,23 +41,10 @@ function Chevron({ dir }: { dir: "left" | "right" }) {
 const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline ="border border-ink/10";
-const noopSubscribe = () => () => {};
 
-export default function PsfSite() {
-  // ?lang=en|th (when coming back from a detail page); the server and first paint use Thai, no runtime data on the server
-  const urlLang = useSyncExternalStore<Lang>(noopSubscribe, () => (new URLSearchParams(location.search).get("lang") === "en" ? "en" : "th"), () => "th");
-  const [picked, setLang] = useState<Lang | null>(null);
-  const lang: Lang = picked ?? urlLang;
+export default function PsfSite({ lang }: { lang: Lang }) {
   const t = content[lang];
   const track = useRef<HTMLDivElement>(null);
-  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
-  const movePill = (e: { currentTarget: HTMLElement }) =>
-    setPill({ left: e.currentTarget.offsetLeft, width: e.currentTarget.offsetWidth });
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
-
   // news carousel: one slide per view, endless. A clone of the first slide sits at the end;
   // once the scroll settles on it we jump (instantly, unnoticeably) back to the real first slide.
   const newsPaused = useRef(false);
@@ -148,53 +123,6 @@ export default function PsfSite() {
 
   return (
     <>
-      <header className="sticky top-0 z-10 border-b border-white/15 bg-accent">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 md:px-8">
-          <a href="#home" className="flex items-center gap-3">
-            <Placeholder label={t.logo} className="h-8 w-8 shrink-0 rounded-lg bg-white/15! text-white/90!" />
-            <span className="text-base font-medium text-white">{t.siteName}</span>
-          </a>
-          <nav
-            aria-label="main"
-            className="relative ml-auto hidden gap-1 text-sm md:flex"
-            onMouseLeave={() => setPill(null)}
-            onBlur={() => setPill(null)}
-          >
-            <span
-              aria-hidden="true"
-              className="nav-pill absolute inset-y-0 rounded-lg bg-white/15"
-              style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
-            />
-            {sections.map((s) => (
-              <a
-                key={s}
-                href={`#${s}`}
-                className="relative rounded-lg px-3 py-1 text-white/90 hover:text-white"
-                onMouseEnter={movePill}
-                onFocus={movePill}
-              >
-                {t.nav[s]}
-              </a>
-            ))}
-          </nav>
-          <button
-            type="button"
-            onClick={() => setLang(lang === "th" ? "en" : "th")}
-            aria-label={t.langLabel}
-            className="ml-auto h-8 rounded-lg px-3 text-sm font-medium text-white hover:bg-white/15 md:ml-0"
-          >
-            {t.langBtn}
-          </button>
-        </div>
-        <nav aria-label="main mobile" className="no-scrollbar flex gap-6 overflow-x-auto border-t border-white/15 px-4 text-sm md:hidden">
-          {sections.map((s) => (
-            <a key={s} href={`#${s}`} className="shrink-0 py-3 text-white/90 hover:text-white">
-              {t.nav[s]}
-            </a>
-          ))}
-        </nav>
-      </header>
-
       <main>
         <section id="home" className="bg-tint">
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:px-8 md:py-24">
@@ -291,11 +219,11 @@ export default function PsfSite() {
                           {new Date(a.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </time>
                         <p className="mt-1 font-medium">
-                          <a href={`${a.href}?lang=${lang}`} className="hover:text-accent-ink">
+                          <a href={`/${lang}${a.href}`} className="hover:text-accent-ink">
                             {a.title[lang]}
                           </a>
                         </p>
-                        <a href={`${a.href}?lang=${lang}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
+                        <a href={`/${lang}${a.href}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
                           {t.news.readMore}
                         </a>
                         </div>
@@ -325,17 +253,7 @@ export default function PsfSite() {
             <p className="mt-2 text-ink-2">{t.passers.desc}</p>
             <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {passers.slice(passerPage * PASSER_PAGE, (passerPage + 1) * PASSER_PAGE).map((p, i) => (
-                <li key={p.id} style={idx(i)} className={`flex gap-4 rounded-xl ${hairline} bg-card p-4`}>
-                  <Placeholder label={t.passers.photoAlt} className="h-16 w-16 shrink-0 rounded-lg p-1 text-center text-[11px] leading-tight" />
-                  <div className="min-w-0">
-                    <p className="font-medium">{p.name[lang]}</p>
-                    <p className="text-sm text-ink-2">{p.unit[lang]}</p>
-                    <p className="mt-2 flex items-center gap-2 text-sm tabular-nums text-ink-3">
-                      <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
-                      <span className="font-medium text-ink-2">{p.level[lang]}</span> · {t.passers.year} {p.year[lang]}
-                    </p>
-                  </div>
-                </li>
+                <PasserCard key={p.id} p={p} lang={lang} style={idx(i)} />
               ))}
             </ul>
             {/* shortcut: a short last page moves the arrows up; mock data divides evenly, pad rows if real data does not */}
@@ -369,7 +287,7 @@ export default function PsfSite() {
                   <span className="font-mono text-xs tracking-wide text-ink-3">{tile.label}</span>
                   <div>
                     <h3 className={i === 0 ? "text-2xl font-medium" : "text-lg font-medium"}>
-                      <a href={`/process?lang=${lang}`} className="after:absolute after:inset-0">
+                      <a href={`/${lang}/process`} className="after:absolute after:inset-0">
                         {tile.title}
                       </a>
                     </h3>
@@ -400,7 +318,7 @@ export default function PsfSite() {
               </time>
               <h3 className="mt-2 text-2xl font-medium">{news[open].title[lang]}</h3>
               <p className="mt-4 text-ink-2">{news[open].excerpt[lang]}</p>
-              <a href={`/news?lang=${lang}`} className="mt-6 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
+              <a href={`/${lang}/news`} className="mt-6 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
                 {t.news.readMore}
               </a>
             </div>
@@ -418,9 +336,6 @@ export default function PsfSite() {
         )}
       </dialog>
 
-      <footer className="bg-accent py-8 text-center text-sm text-white/90">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">{t.footer}</div>
-      </footer>
     </>
   );
 }

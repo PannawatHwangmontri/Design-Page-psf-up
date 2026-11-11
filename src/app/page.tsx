@@ -1,5 +1,6 @@
-import PsfSite from "@/components/PsfSite";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <PsfSite />;
+// the site lives under /th and /en
+export default function Root() {
+  redirect("/th");
 }
