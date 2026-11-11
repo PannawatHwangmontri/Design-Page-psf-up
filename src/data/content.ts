@@ -22,8 +22,7 @@ export const content = {
         { label: "01 / FRAMEWORK", title: "กรอบสมรรถนะ", desc: "กำหนดสิ่งที่บุคลากรต้องแสดงให้เห็นในแต่ละระดับ" },
         { label: "02 / SUBMIT", title: "ยื่นคำขอ", desc: "ส่งเอกสารและหลักฐานการปฏิบัติงาน" },
         { label: "03 / REVIEW", title: "พิจารณา", desc: "คณะกรรมการประเมินตามเกณฑ์" },
-        { label: "04 / RECOGNISE", title: "รับรอง", desc: "แจ้งผลและออกหนังสือรับรอง" },
-        { label: "05 / PUBLISH", title: "ประกาศ", desc: "เผยแพร่รายชื่อผู้ผ่านการรับรอง" },
+        { label: "04 / PUBLISH", title: "ประกาศ", desc: "เผยแพร่รายชื่อผู้ผ่านการรับรอง" },
       ],
     },
     about: {
@@ -95,8 +94,7 @@ export const content = {
         { label: "01 / FRAMEWORK", title: "Competence framework", desc: "Defines what staff must show at each level" },
         { label: "02 / SUBMIT", title: "Submit", desc: "Send documents and evidence of practice" },
         { label: "03 / REVIEW", title: "Review", desc: "A panel assesses against the criteria" },
-        { label: "04 / RECOGNISE", title: "Recognise", desc: "Results issued with a certificate" },
-        { label: "05 / PUBLISH", title: "Publish", desc: "Recognised staff are listed publicly" },
+        { label: "04 / PUBLISH", title: "Publish", desc: "Recognised staff are listed publicly" },
       ],
     },
     about: {
