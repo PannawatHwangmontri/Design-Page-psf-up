@@ -11,7 +11,7 @@ export const nav: NavItem[] = [
     href: "/publicity",
     children: [
       { key: "publicityNews", href: "/publicity" },
-      { key: "calendar", href: "/assessment" }, // ปฏิทินการประเมิน (อยู่ในหน้าการประเมิน)
+      { key: "calendar", href: "/calendar" },
       {
         key: "outstanding",
         href: "/outstanding",

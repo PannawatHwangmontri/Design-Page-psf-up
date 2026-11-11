@@ -76,3 +76,14 @@ export const forms = [1, 2, 3, 4].map((n) => ({
   title: { th: `แบบฟอร์มตัวอย่างที่ ${n}`, en: `Sample form ${n}` },
   file: "#", // TODO: ไฟล์ PDF จริง
 }));
+
+// เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน ข้อมูลตัวอย่างทั้งหมด
+export const calendarDocs = [2569, 2568, 2567].map((year, i) => ({
+  id: i + 1,
+  year,
+  title: {
+    th: `ประกาศมหาวิทยาลัยพะเยา เรื่อง ปฏิทินการประเมินระดับอาจารย์มืออาชีพ พ.ศ. ${year} (ตัวอย่าง)`,
+    en: `University of Phayao announcement: assessment calendar, B.E. ${year} (sample)`,
+  },
+  file: "#", // TODO: ไฟล์ PDF จริง
+}));

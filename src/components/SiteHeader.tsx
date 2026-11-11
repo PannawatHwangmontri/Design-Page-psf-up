@@ -38,6 +38,8 @@ export function SiteHeader({ lang }: { lang: Lang }) {
   const movePill = (e: { currentTarget: HTMLElement }) =>
     setPill({ left: e.currentTarget.offsetLeft, width: e.currentTarget.offsetWidth });
   const [menu, setMenu] = useState(false);
+  // one top-level dropdown open at a time; leaving the nav or pressing Esc closes it
+  const [open, setOpen] = useState<string | null>(null);
 
   // mobile: every level as one indented list
   const mobileList = (items: NavItem[], depth = 0): React.ReactNode =>
@@ -105,7 +107,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             </span>
           </Link>
 
-          <nav aria-label="main" className="relative ml-auto hidden md:block" onMouseLeave={() => setPill(null)} onBlur={() => setPill(null)}>
+          <nav aria-label="main" className="relative ml-auto hidden md:block" onMouseLeave={() => { setPill(null); setOpen(null); }} onBlur={() => setPill(null)} onKeyDown={(e) => e.key === "Escape" && setOpen(null)}>
             <span
               aria-hidden="true"
               className="nav-pill absolute inset-y-0 rounded-lg bg-accent/10"
@@ -113,17 +115,29 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             />
             <ul className="flex gap-1">
               {nav.map((item, i) => (
-                <li key={item.key} className="group relative" onMouseEnter={movePill} onFocus={movePill}>
-                  <Link
-                    href={href(item.href)}
-                    aria-current={active(item) ? "page" : undefined}
-                    className={`${link} relative flex items-center gap-1 ${active(item) ? "font-medium text-accent-ink" : ""}`}
-                  >
-                    {t.nav[item.key]}
-                    {item.children && caret("down")}
-                  </Link>
+                <li key={item.key} className="group relative" onMouseEnter={(e) => { movePill(e); setOpen(item.key); }} onFocus={(e) => { movePill(e); setOpen(item.key); }}>
+                  {item.children ? (
+                    // parent with a dropdown only opens it; it does not navigate
+                    <button
+                      type="button"
+                      aria-expanded={open === item.key}
+                      onClick={() => setOpen(item.key)}
+                      className={`${link} relative flex items-center gap-1 ${open === item.key ? "bg-accent/10 text-accent-ink" : ""}`}
+                    >
+                      {t.nav[item.key]}
+                      {caret("down")}
+                    </button>
+                  ) : (
+                    <Link
+                      href={href(item.href)}
+                      aria-current={active(item) ? "page" : undefined}
+                      className={`${link} relative flex items-center gap-1 ${active(item) ? "font-medium text-accent-ink" : ""}`}
+                    >
+                      {t.nav[item.key]}
+                    </Link>
+                  )}
                   {item.children && (
-                    <ul className={`${panel} top-full group-focus-within:block group-hover:block ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
+                    <ul className={`absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-card p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
                       {item.children.map((c) => (
                         <li key={`${c.key}-${c.href}`} className="group/sub relative">
                           <Link href={href(c.href)} className={panelItem}>
