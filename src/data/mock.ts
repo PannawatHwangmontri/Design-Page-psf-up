@@ -69,3 +69,10 @@ export const assessmentCalendars = [
     ],
   },
 ] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string }[] }[];
+
+// แบบฟอร์ม PDF สำหรับหน้า "แบบฟอร์มอื่น ๆ" ไฟล์จริงยังไม่มี ลิงก์เป็น # ชั่วคราว
+export const forms = [1, 2, 3, 4].map((n) => ({
+  id: n,
+  title: { th: `แบบฟอร์มตัวอย่างที่ ${n}`, en: `Sample form ${n}` },
+  file: "#", // TODO: ไฟล์ PDF จริง
+}));

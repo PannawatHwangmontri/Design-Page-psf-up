@@ -11,7 +11,9 @@ export const content = {
     contact: { address: "ที่อยู่หน่วยงาน (ตัวอย่าง)", email: "email@example.com", phone: "0 0000 0000" },
     nav: {
       home: "หน้าแรก",
-      assessment: "การประเมินระดับอาจารย์มืออาชีพ",
+      about: "เกี่ยวกับ",
+      history: "ความเป็นมา",
+      mission: "พันธกิจ",
       publicity: "ประชาสัมพันธ์",
       publicityNews: "ข่าวประชาสัมพันธ์",
       outstanding: "อาจารย์ดีเด่นด้านการสอน",
@@ -19,8 +21,12 @@ export const content = {
       outstandingAnnouncement: "ประกาศ",
       outstandingProcess: "ขั้นตอน",
       outstandingApply: "ใบสมัคร",
+      calendar: "ปฏิทิน",
+      submitReview: "ยื่นคำขอพิจารณา",
+      certify: "รับรอง",
       documents: "เอกสาร",
-      relatedAnnouncements: "ประกาศที่เกี่ยวข้อง",
+      relatedAnnouncements: "อื่น ๆ",
+      otherForms: "แบบฟอร์ม",
     },
     hero: {
       eyebrow: "UP PSF",
@@ -142,6 +148,20 @@ export const content = {
         title: "ประกาศที่เกี่ยวข้อง",
         intro: "รวมประกาศที่เกี่ยวข้องทั้งหมด เรียงจากใหม่ไปเก่า (ข้อมูลตัวอย่าง)",
       },
+      forms: {
+        title: "แบบฟอร์ม",
+        intro: "ดาวน์โหลดแบบฟอร์มในรูปแบบ PDF (ข้อมูลตัวอย่าง)",
+        download: "ดาวน์โหลด PDF",
+      },
+      // TODO: เนื้อหาความเป็นมาจริงของ UP PSF (ตอนนี้เป็นข้อความตัวอย่าง)
+      history: {
+        title: "ความเป็นมา",
+        back: "กลับไปหน้าแรก",
+        body: [
+          "ข้อความตัวอย่างความเป็นมาของมาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
+          "เนื้อหาจริงจะถูกเพิ่มภายหลัง",
+        ],
+      },
     },
     footer: "© มาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา — เว็บตัวอย่างเพื่อการสาธิต ข้อมูลทั้งหมดเป็นข้อมูลสมมติ",
   },
@@ -153,7 +173,9 @@ export const content = {
     contact: { address: "Office address (sample)", email: "email@example.com", phone: "0 0000 0000" },
     nav: {
       home: "Home",
-      assessment: "Professional Lecturer Assessment",
+      about: "About",
+      history: "History",
+      mission: "Mission",
       publicity: "Public Relations",
       publicityNews: "PR News",
       outstanding: "Outstanding Teaching Lecturers",
@@ -161,8 +183,12 @@ export const content = {
       outstandingAnnouncement: "Announcements",
       outstandingProcess: "Process",
       outstandingApply: "Application",
+      calendar: "Calendar",
+      submitReview: "Submit & Review",
+      certify: "Recognise",
       documents: "Documents",
-      relatedAnnouncements: "Related Announcements",
+      relatedAnnouncements: "Other",
+      otherForms: "Forms",
     },
     hero: {
       eyebrow: "UP PSF",
@@ -280,6 +306,20 @@ export const content = {
       documents: {
         title: "Related Announcements",
         intro: "All related announcements, newest first (sample data).",
+      },
+      forms: {
+        title: "Forms",
+        intro: "Download forms in PDF format (sample data).",
+        download: "Download PDF",
+      },
+      // TODO: real history content of UP PSF (sample text for now)
+      history: {
+        title: "History",
+        back: "Back to home",
+        body: [
+          "Sample text about the history of the Professional Lecturer Standards at the University of Phayao.",
+          "The real content will be added later.",
+        ],
       },
     },
     footer: "© Professional Lecturer Standards, University of Phayao — demo site. All data is fictional.",

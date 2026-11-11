@@ -131,7 +131,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                             {c.children && caret("right")}
                           </Link>
                           {c.children && (
-                            <ul className={`${panel} right-full top-0 group-focus-within/sub:block group-hover/sub:block`}>
+                            <ul className={`${panel} left-full top-0 group-focus-within/sub:block group-hover/sub:block`}>
                               {c.children.map((g) => (
                                 <li key={g.key}>
                                   <Link href={href(g.href)} className={panelItem}>

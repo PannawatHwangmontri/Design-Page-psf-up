@@ -6,25 +6,39 @@ export type NavItem = { key: NavKey; href: string; children?: NavItem[] };
 
 export const nav: NavItem[] = [
   { key: "home", href: "" },
-  { key: "assessment", href: "/assessment" },
   {
     key: "publicity",
     href: "/publicity",
     children: [
       { key: "publicityNews", href: "/publicity" },
+      { key: "calendar", href: "/assessment" }, // ปฏิทินการประเมิน (อยู่ในหน้าการประเมิน)
       {
         key: "outstanding",
         href: "/outstanding",
         children: [
-          { key: "outstandingProject", href: "/outstanding/project" },
+          { key: "submitReview", href: "/outstanding/apply" },
           { key: "outstandingAnnouncement", href: "/outstanding/announcement" },
-          { key: "outstandingProcess", href: "/outstanding/process" },
-          { key: "outstandingApply", href: "/outstanding/apply" },
+          { key: "certify", href: "/outstanding/process" },
         ],
       },
     ],
   },
-  { key: "documents", href: "/documents", children: [{ key: "relatedAnnouncements", href: "/documents" }] },
+  {
+    key: "about",
+    href: "#about", // หน้าแรก ส่วนพันธกิจ
+    children: [
+      { key: "history", href: "/history" },
+      { key: "mission", href: "/mission" },
+    ],
+  },
+  {
+    key: "documents",
+    href: "/documents",
+    children: [
+      { key: "otherForms", href: "/documents/forms" },
+      { key: "relatedAnnouncements", href: "/documents" },
+    ],
+  },
 ];
 
 export const outstandingSlugs = ["project", "announcement", "process", "apply"] as const;
