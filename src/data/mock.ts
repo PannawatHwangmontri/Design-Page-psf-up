@@ -1,5 +1,5 @@
 // Mock data ทั้งหมดเป็นข้อมูลสมมติ ไม่ใช่บุคคลหรือเหตุการณ์จริง
-export const passers = Array.from({ length: 9 }, (_, i) => {
+export const passers = Array.from({ length: 18 }, (_, i) => {
   const n = i + 1;
   const levelNo = (i % 3) + 1;
   const unit = String.fromCharCode(65 + (i % 3)); // A, B, C

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 import { content, type Lang } from "@/data/content";
 import { announcements, news, passers } from "@/data/mock";
 import { ripple } from "./ripple";
@@ -21,7 +22,24 @@ function Placeholder({ label, className = "" }: { label: string; className?: str
 }
 
 const PAGE = 4; // announcements shown per page
+const PASSER_PAGE = 6; // recognised-staff cards per page (3 columns x 2 rows)
 const pageBtn = "flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card text-ink-2 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card";
+
+function Pager({ page, pages, onPage, prev, next }: { page: number; pages: number; onPage: (p: number) => void; prev: string; next: string }) {
+  return (
+    <div className="mt-6 flex items-center justify-between gap-4">
+      <button type="button" disabled={page === 0} onClick={() => onPage(page - 1)} aria-label={prev} className={pageBtn}>
+        <Chevron dir="left" />
+      </button>
+      <span className="text-sm tabular-nums text-ink-3">
+        {page + 1} / {pages}
+      </span>
+      <button type="button" disabled={page === pages - 1} onClick={() => onPage(page + 1)} aria-label={next} className={pageBtn}>
+        <Chevron dir="right" />
+      </button>
+    </div>
+  );
+}
 
 function Chevron({ dir }: { dir: "left" | "right" }) {
   return (
@@ -54,9 +72,39 @@ export default function PsfSite() {
 
   // news carousel: one slide per view, endless. A clone of the first slide sits at the end;
   // once the scroll settles on it we jump (instantly, unnoticeably) back to the real first slide.
-  const slide = () => track.current?.scrollBy({ left: track.current.clientWidth, behavior: "smooth" });
   const newsPaused = useRef(false);
+  // News card <-> dialog morph (View Transitions API). The dialog carries the permanent transition name; the clicked
+  // card is named only while it is the old/new side. No API or reduced motion: the dialog just opens, no animation.
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const cardRef = useRef<HTMLElement | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
+  const morph = (update: () => void) => {
+    if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return update();
+    return document.startViewTransition(update);
+  };
+  const nameCard = (on: boolean) => cardRef.current?.style.setProperty("view-transition-name", on ? "news-morph" : "none");
+  const openNews = (card: HTMLElement, i: number) => {
+    cardRef.current = card;
+    newsPaused.current = true;
+    nameCard(true);
+    morph(() => {
+      nameCard(false);
+      flushSync(() => setOpen(i));
+      dialogRef.current?.showModal();
+    });
+  };
+  const closeNews = () => {
+    newsPaused.current = false;
+    const t = morph(() => {
+      nameCard(true);
+      dialogRef.current?.close();
+      flushSync(() => setOpen(null));
+    });
+    (t?.finished ?? Promise.resolve()).then(() => nameCard(false));
+  };
+  const slide = () => track.current?.scrollBy({ left: track.current.clientWidth, behavior: "smooth" });
   const [active, setActive] = useState(0);
+  const [passerPage, setPasserPage] = useState(0);
   const [page, setPage] = useState(0); // announcements: PAGE per page, newest first
   const pages = Math.ceil(announcements.length / PAGE);
   useEffect(() => {
@@ -197,10 +245,15 @@ export default function PsfSite() {
                           {new Date(n.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </time>
                         <h3 className="mt-2 text-base font-medium md:text-xl">
-                          {/* stretched link: the whole card is clickable; the hidden clone is skipped by keyboard */}
-                          <a href={`/news?lang=${lang}`} tabIndex={i === news.length ? -1 : undefined} className="after:absolute after:inset-0 hover:text-accent-ink">
+                          {/* stretched button: the whole card opens the dialog; the hidden clone is skipped by keyboard */}
+                          <button
+                            type="button"
+                            onClick={(e) => openNews(e.currentTarget.closest("article")!, i % news.length)}
+                            tabIndex={i === news.length ? -1 : undefined}
+                            className="text-left after:absolute after:inset-0 hover:text-accent-ink"
+                          >
                             {n.title[lang]}
-                          </a>
+                          </button>
                         </h3>
                         <p className="mt-2 text-sm text-ink-2 md:text-base">{n.excerpt[lang]}</p>
                       </div>
@@ -271,7 +324,7 @@ export default function PsfSite() {
             <h2 className="text-3xl font-medium">{t.passers.title}</h2>
             <p className="mt-2 text-ink-2">{t.passers.desc}</p>
             <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {passers.map((p, i) => (
+              {passers.slice(passerPage * PASSER_PAGE, (passerPage + 1) * PASSER_PAGE).map((p, i) => (
                 <li key={p.id} style={idx(i)} className={`flex gap-4 rounded-xl ${hairline} bg-card p-4`}>
                   <Placeholder label={t.passers.photoAlt} className="h-16 w-16 shrink-0 rounded-lg p-1 text-center text-[11px] leading-tight" />
                   <div className="min-w-0">
@@ -285,6 +338,8 @@ export default function PsfSite() {
                 </li>
               ))}
             </ul>
+            {/* shortcut: a short last page moves the arrows up; mock data divides evenly, pad rows if real data does not */}
+            <Pager page={passerPage} pages={Math.ceil(passers.length / PASSER_PAGE)} onPage={setPasserPage} prev={t.passers.prev} next={t.passers.next} />
           </div>
         </section>
 
@@ -326,6 +381,42 @@ export default function PsfSite() {
           </div>
         </section>
       </main>
+
+      <dialog
+        ref={dialogRef}
+        onCancel={(e) => {
+          e.preventDefault();
+          closeNews();
+        }}
+        onClick={(e) => e.target === e.currentTarget && closeNews()}
+        className="m-auto w-[min(32rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-ink/10 bg-card p-0 text-ink [view-transition-name:news-morph] backdrop:bg-ink/40"
+      >
+        {open !== null && (
+          <>
+            <Placeholder label={t.news.imageAlt} className="aspect-video" />
+            <div className="p-6">
+              <time dateTime={news[open].date} className="text-sm tabular-nums text-ink-3">
+                {new Date(news[open].date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
+              </time>
+              <h3 className="mt-2 text-2xl font-medium">{news[open].title[lang]}</h3>
+              <p className="mt-4 text-ink-2">{news[open].excerpt[lang]}</p>
+              <a href={`/news?lang=${lang}`} className="mt-6 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
+                {t.news.readMore}
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={closeNews}
+              aria-label={t.news.close}
+              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card/90 text-ink-2 hover:bg-raised"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </>
+        )}
+      </dialog>
 
       <footer className="bg-accent py-8 text-center text-sm text-white/90">
         <div className="mx-auto max-w-6xl px-4 md:px-8">{t.footer}</div>

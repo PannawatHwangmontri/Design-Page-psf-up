@@ -38,13 +38,15 @@ export const content = {
       ],
       note: "ข้อความตัวอย่างเพื่อการสาธิต",
     },
-    news: { title: "ข่าว / กิจกรรม", announcements: "ประกาศ", older: "ประกาศเก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
+    news: { title: "ข่าว / กิจกรรม", announcements: "ประกาศ", older: "ประกาศเก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", close: "ปิด", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
     passers: {
       title: "ประชาสัมพันธ์ผู้ยื่นผ่านเกณฑ์ PSF",
       desc: "รายชื่อตัวอย่างของผู้ที่ผ่านการรับรอง",
       level: "ระดับ PSF",
       year: "ปีที่ผ่าน",
       photoAlt: "รูปผู้ยื่น (ตัวอย่าง)",
+      prev: "หน้าก่อนหน้า",
+      next: "หน้าถัดไป",
     },
     // หน้าตัวอย่างปลายทางของลิงก์ (/announcement /news /process) ข้อความสมมติ ทุกรายการในกลุ่มเดียวกันลิงก์มาหน้าเดียว
     detail: {
@@ -109,13 +111,15 @@ export const content = {
       ],
       note: "Sample text for demonstration",
     },
-    news: { title: "News / Events", announcements: "Announcements", older: "Older", newer: "Newer", readMore: "Read more", imageAlt: "News image (sample)" },
+    news: { title: "News / Events", announcements: "Announcements", older: "Older", newer: "Newer", readMore: "Read more", close: "Close", imageAlt: "News image (sample)" },
     passers: {
       title: "Recognised PSF Staff",
       desc: "Sample list of staff who have been recognised.",
       level: "PSF level",
       year: "Year",
       photoAlt: "Applicant photo (sample)",
+      prev: "Previous page",
+      next: "Next page",
     },
     detail: {
       announcement: {

@@ -235,3 +235,13 @@ button {
   }
 }
 
+/* News card <-> dialog morph (see morph() in PsfSite.tsx) */
+::view-transition-group(news-morph) {
+  animation-duration: 300ms;
+  animation-timing-function: var(--ease-ui);
+}
+::view-transition-old(news-morph),
+::view-transition-new(news-morph) {
+  height: 100%;
+  mix-blend-mode: normal;
+}
