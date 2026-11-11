@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { content, type Lang } from "@/data/content";
-import { news, passers } from "@/data/mock";
+import { announcements, news, passers } from "@/data/mock";
 import { ripple } from "./ripple";
+import { TextEffect } from "./TextEffect";
 
 const sections = ["home", "news", "passers", "about", "process"] as const;
 
@@ -19,12 +20,28 @@ function Placeholder({ label, className = "" }: { label: string; className?: str
   );
 }
 
+const PAGE = 4; // announcements shown per page
+const pageBtn = "flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card text-ink-2 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card";
+
+function Chevron({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={dir === "left" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+    </svg>
+  );
+}
+
 // stagger index for [data-stagger] children (see .stagger in globals.css)
 const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline ="border border-ink/10";
+const noopSubscribe = () => () => {};
+
 export default function PsfSite() {
-  const [lang, setLang] = useState<Lang>("th");
+  // ?lang=en|th (when coming back from a detail page); the server and first paint use Thai, no runtime data on the server
+  const urlLang = useSyncExternalStore<Lang>(noopSubscribe, () => (new URLSearchParams(location.search).get("lang") === "en" ? "en" : "th"), () => "th");
+  const [picked, setLang] = useState<Lang | null>(null);
+  const lang: Lang = picked ?? urlLang;
   const t = content[lang];
   const track = useRef<HTMLDivElement>(null);
   const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
@@ -40,6 +57,8 @@ export default function PsfSite() {
   const slide = () => track.current?.scrollBy({ left: track.current.clientWidth, behavior: "smooth" });
   const newsPaused = useRef(false);
   const [active, setActive] = useState(0);
+  const [page, setPage] = useState(0); // announcements: PAGE per page, newest first
+  const pages = Math.ceil(announcements.length / PAGE);
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -63,7 +82,7 @@ export default function PsfSite() {
     };
   }, []);
 
-  // play each [data-stagger] group once, when it scrolls into view
+  // play each [data-stagger] / [data-lines] group once, when it scrolls into view
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) =>
@@ -74,7 +93,7 @@ export default function PsfSite() {
         }),
       { threshold: 0.1 },
     );
-    document.querySelectorAll("[data-stagger]").forEach((el) => io.observe(el));
+    document.querySelectorAll("[data-stagger],[data-lines]").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
@@ -133,8 +152,9 @@ export default function PsfSite() {
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:px-8 md:py-24">
             <div className="rise">
               <p className="text-sm text-ink-2">{t.hero.eyebrow}</p>
-              <h1 className="mt-4 text-4xl font-medium leading-[1.2] md:text-5xl md:leading-[1.2]">{t.hero.title}</h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-ink-2">{t.hero.desc}</p>
+              <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-4 block text-4xl font-medium leading-[1.2] md:text-5xl md:leading-[1.2]" />
+              {/* description starts when the title has finished */}
+              <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mt-6 block max-w-xl text-lg leading-8 text-ink-2" />
               <div className="mt-10 flex flex-wrap items-center gap-6">
                 <a href="#passers" onClick={ripple} className="relative inline-flex h-12 overflow-hidden items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
                   {t.hero.cta}
@@ -150,47 +170,98 @@ export default function PsfSite() {
 
         <section id="news" className="scroll-mt-16 border-t border-ink/10">
           <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-            <h2 className="text-3xl font-medium">{t.news.title}</h2>
-            <div
-              ref={track}
-              data-stagger
-              onMouseEnter={() => (newsPaused.current = true)}
-              onMouseLeave={() => (newsPaused.current = false)}
-              onFocus={() => (newsPaused.current = true)}
-              onBlur={() => (newsPaused.current = false)}
-              className="no-scrollbar mt-8 flex snap-x snap-mandatory overflow-x-auto">
-              {/* last item = clone of the first, for the endless loop (see slide()) */}
-              {[...news, news[0]].map((n, i) => (
-                <article
-                  key={i}
-                  aria-hidden={i === news.length || undefined}
-                  style={idx(i)}
-                  className={`w-full shrink-0 snap-start overflow-hidden rounded-xl ${hairline} bg-card md:flex`}
+            <div className="grid gap-12 md:grid-cols-2 md:gap-x-32">
+              {/* left: news carousel (one card per view, endless, dots) */}
+              <div className="min-w-0">
+                <h2 className="text-3xl font-medium">{t.news.title}</h2>
+                <div
+                  ref={track}
+                  data-stagger
+                  onMouseEnter={() => (newsPaused.current = true)}
+                  onMouseLeave={() => (newsPaused.current = false)}
+                  onFocus={() => (newsPaused.current = true)}
+                  onBlur={() => (newsPaused.current = false)}
+                  className="no-scrollbar mt-8 flex snap-x snap-mandatory overflow-x-auto"
                 >
-                  <Placeholder label={t.news.imageAlt} className="aspect-video md:w-1/2" />
-                  <div className="p-4 md:flex md:w-1/2 md:flex-col md:justify-center md:p-8">
-                    <time dateTime={n.date} className="text-xs tabular-nums text-ink-3">
-                      {new Date(n.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                    </time>
-                    <h3 className="mt-2 text-base font-medium md:text-2xl">{n.title[lang]}</h3>
-                    <p className="mt-2 text-sm text-ink-2 md:text-base">{n.excerpt[lang]}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-            <div className="mt-4 flex justify-center">
-              {news.map((n, i) => (
-                <button
-                  key={n.id}
-                  type="button"
-                  aria-label={`${t.news.title} ${i + 1}/${news.length}`}
-                  aria-current={i === active || undefined}
-                  onClick={() => track.current?.scrollTo({ left: i * track.current.clientWidth, behavior: "smooth" })}
-                  className="flex h-6 w-6 items-center justify-center"
-                >
-                  <span className={`h-2 w-2 rounded-full ${i === active ? "bg-accent" : "bg-ink/20"}`} />
-                </button>
-              ))}
+                  {/* last item = clone of the first, for the endless loop (see slide()) */}
+                  {[...news, news[0]].map((n, i) => (
+                    <article
+                      key={i}
+                      aria-hidden={i === news.length || undefined}
+                      style={idx(i)}
+                      className={`relative w-full shrink-0 snap-start overflow-hidden rounded-xl ${hairline} bg-card`}
+                    >
+                      <Placeholder label={t.news.imageAlt} className="aspect-video" />
+                      <div className="p-4 md:p-6">
+                        <time dateTime={n.date} className="text-xs tabular-nums text-ink-3">
+                          {new Date(n.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                        </time>
+                        <h3 className="mt-2 text-base font-medium md:text-xl">
+                          {/* stretched link: the whole card is clickable; the hidden clone is skipped by keyboard */}
+                          <a href={`/news?lang=${lang}`} tabIndex={i === news.length ? -1 : undefined} className="after:absolute after:inset-0 hover:text-accent-ink">
+                            {n.title[lang]}
+                          </a>
+                        </h3>
+                        <p className="mt-2 text-sm text-ink-2 md:text-base">{n.excerpt[lang]}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                <div className="mt-4 flex justify-center">
+                  {news.map((n, i) => (
+                    <button
+                      key={n.id}
+                      type="button"
+                      aria-label={`${t.news.title} ${i + 1}/${news.length}`}
+                      aria-current={i === active || undefined}
+                      onClick={() => track.current?.scrollTo({ left: i * track.current.clientWidth, behavior: "smooth" })}
+                      className="flex h-6 w-6 items-center justify-center"
+                    >
+                      <span className={`h-2 w-2 rounded-full ${i === active ? "bg-accent" : "bg-ink/20"}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* right: announcements list, independent of the carousel */}
+              <div>
+                <h2 className="text-3xl font-medium">{t.news.announcements}</h2>
+                <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
+                  {/* always 4 rows: a short last page is padded with invisible copies, so the arrows never move */}
+                  {Array.from({ length: PAGE }, (_, i) => {
+                    const shown = announcements[page * PAGE + i];
+                    const a = shown ?? announcements[page * PAGE];
+                    return (
+                      <li key={shown ? a.id : `pad-${i}`} style={idx(i)} aria-hidden={!shown || undefined} className={`overflow-hidden ${shown ? "" : "invisible"}`}>
+                        <div className="line py-4">
+                        <time dateTime={a.date} className="text-xs tabular-nums text-ink-3">
+                          {new Date(a.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                        </time>
+                        <p className="mt-1 font-medium">
+                          <a href={`${a.href}?lang=${lang}`} className="hover:text-accent-ink">
+                            {a.title[lang]}
+                          </a>
+                        </p>
+                        <a href={`${a.href}?lang=${lang}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
+                          {t.news.readMore}
+                        </a>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="mt-4 flex items-center justify-between gap-4">
+                  <button type="button" disabled={page === 0} onClick={() => setPage(page - 1)} aria-label={t.news.newer} className={pageBtn}>
+                    <Chevron dir="left" />
+                  </button>
+                  <span className="text-sm tabular-nums text-ink-3">
+                    {page + 1} / {pages}
+                  </span>
+                  <button type="button" disabled={page === pages - 1} onClick={() => setPage(page + 1)} aria-label={t.news.older} className={pageBtn}>
+                    <Chevron dir="right" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -239,10 +310,14 @@ export default function PsfSite() {
             <h2 className="text-3xl font-medium">{t.process.title}</h2>
             <ul className="bento mt-8">
               {t.process.tiles.map((tile, i) => (
-                <li key={tile.label} className={`bento-tile bento-${i + 1}`}>
+                <li key={tile.label} className={`bento-tile bento-${i + 1} relative`}>
                   <span className="font-mono text-xs tracking-wide text-ink-3">{tile.label}</span>
                   <div>
-                    <h3 className={i === 0 ? "text-2xl font-medium" : "text-lg font-medium"}>{tile.title}</h3>
+                    <h3 className={i === 0 ? "text-2xl font-medium" : "text-lg font-medium"}>
+                      <a href={`/process?lang=${lang}`} className="after:absolute after:inset-0">
+                        {tile.title}
+                      </a>
+                    </h3>
                     <p className="mt-1 text-sm text-ink-2">{tile.desc}</p>
                   </div>
                 </li>

@@ -95,6 +95,52 @@ button {
   }
 }
 
+/* Lines: each row of a [data-lines] list slides up out of an overflow-hidden mask, 200ms apart, once in view.
+   Same observer as [data-stagger]. The row moves 100% of its own height so it is fully masked at the start. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-lines]:not([data-in]) .line {
+    opacity: 0;
+  }
+  [data-lines][data-in] .line {
+    animation: line-up 400ms var(--ease-ui) backwards;
+    animation-delay: calc(var(--i, 0) * 200ms);
+  }
+}
+@keyframes line-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* TextEffect: per-character reveal, see src/components/TextEffect.tsx. Delay = --d + index * --s. */
+.text-char {
+  display: inline-block;
+}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .text-effect-pending {
+    opacity: 0;
+  }
+  .text-char {
+    animation: text-char 200ms var(--ease-ui) backwards;
+    animation-delay: calc(var(--d, 0ms) + var(--i, 0) * var(--s, 50ms));
+  }
+}
+@keyframes text-char {
+  from {
+    opacity: 0;
+    transform: perspective(400px) translateY(10px) rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(400px) translateY(0) rotateX(0);
+  }
+}
+
 /* Nav pill: background slides to the hovered/focused link with a light spring (bounce ~0.2, ~300ms) */
 .nav-pill {
   transition:
@@ -188,3 +234,4 @@ button {
     scroll-behavior: auto;
   }
 }
+

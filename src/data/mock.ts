@@ -18,10 +18,21 @@ export const news = Array.from({ length: 6 }, (_, i) => {
   return {
     id: n,
     date: `2026-0${n}-15`,
-    title: { th: `หัวข้อประกาศตัวอย่าง ${n}`, en: `Sample announcement title ${n}` },
+    title: { th: `หัวข้อข่าว/กิจกรรมตัวอย่าง ${n}`, en: `Sample news / event title ${n}` },
     excerpt: {
-      th: "ข้อความย่อตัวอย่างของประกาศ สำหรับแสดงในการ์ด",
-      en: "Sample excerpt of an announcement, shown on the card.",
+      th: "ข้อความย่อตัวอย่างของข่าวหรือกิจกรรม สำหรับแสดงในการ์ด",
+      en: "Sample excerpt of a news item or event, shown on the card.",
     },
+  };
+});
+
+// เรียงใหม่ไปเก่า (id 1 = ล่าสุด) หน้าเว็บแสดงทีละ 4 รายการ
+export const announcements = Array.from({ length: 12 }, (_, i) => {
+  const n = i + 1;
+  return {
+    id: n,
+    date: `2026-${String(12 - i).padStart(2, "0")}-20`,
+    href: "/announcement", // หน้าตัวอย่างหน้าเดียว TODO: แยกหน้าจริงของแต่ละประกาศ
+    title: { th: `หัวข้อประกาศตัวอย่าง ${n}`, en: `Sample announcement title ${n}` },
   };
 });
