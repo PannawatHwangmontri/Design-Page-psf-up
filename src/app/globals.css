@@ -12,6 +12,9 @@
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
+  --color-level-1: #8d38c9;
+  --color-level-2: #2f7d6d;
+  --color-level-3: #b7791f;
   --font-sans: var(--font-sarabun);
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
   --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);

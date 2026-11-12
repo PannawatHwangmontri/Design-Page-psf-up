@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { content, type Lang } from "@/data/content";
+import type { Lang } from "@/data/content";
+import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
 import { Placeholder } from "./Placeholder";
 
@@ -28,7 +29,7 @@ const panelItem = "flex items-center justify-between gap-4 rounded-lg px-3 py-2 
 
 // Top bar (purple: contact + language, scrolls away) and the white menu bar (sticky). Menu = src/data/nav.ts.
 export function SiteHeader({ lang }: { lang: Lang }) {
-  const t = content[lang];
+  const t = useSite().content[lang];
   const pathname = usePathname();
   const base = `/${lang}`;
   const href = (h: string) => `${base}${h}`;

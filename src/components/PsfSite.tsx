@@ -2,32 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import { content, type Lang } from "@/data/content";
-import { announcements, news, passers } from "@/data/mock";
-import { PasserCard } from "./PasserCard";
+import type { Lang } from "@/data/content";
+import { useSite } from "@/lib/site";
+import { PasserTile } from "./PasserCard";
 import { Placeholder } from "./Placeholder";
 
-const PAGE = 4; // announcements shown per page
-const pageBtn = "flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card text-ink-2 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card";
-
-function Chevron({ dir }: { dir: "left" | "right" }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d={dir === "left" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
-    </svg>
-  );
-}
-
+const PAGE = 4; // announcements shown on the home page (the rest are on /announcement)
 // stagger index for [data-stagger] children (see .stagger in globals.css)
 const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline ="border border-ink/10";
 
 export default function PsfSite({ lang }: { lang: Lang }) {
-  const t = content[lang];
+  const { content, announcements, news, passers } = useSite();
+const t = content[lang];
   const track = useRef<HTMLDivElement>(null);
-  // news carousel: one slide per view, endless. A clone of the first slide sits at the end;
-  // once the scroll settles on it we jump (instantly, unnoticeably) back to the real first slide.
+  // news carousel: one slide per view; after the last one the auto-advance scrolls back to the first
   const newsPaused = useRef(false);
   // News card <-> dialog morph (View Transitions API). The dialog carries the permanent transition name; the clicked
   // card is named only while it is the old/new side. No API or reduced motion: the dialog just opens, no animation.
@@ -58,24 +48,19 @@ export default function PsfSite({ lang }: { lang: Lang }) {
     });
     (t?.finished ?? Promise.resolve()).then(() => nameCard(false));
   };
-  const slide = () => track.current?.scrollBy({ left: track.current.clientWidth, behavior: "smooth" });
+  const slide = () => {
+    const el = track.current;
+    if (!el) return;
+    if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) el.scrollTo({ left: 0, behavior: "smooth" });
+    else el.scrollBy({ left: el.clientWidth, behavior: "smooth" });
+  };
   const [active, setActive] = useState(0);
-  const passerTrack = useRef<HTMLUListElement>(null);
-  const passersPaused = useRef(false);
-  const [page, setPage] = useState(0); // announcements: PAGE per page, newest first
-  const pages = Math.ceil(announcements.length / PAGE);
+  const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
   const latestYear = Math.max(...announcements.map((a) => a.year));
   useEffect(() => {
     const el = track.current;
     if (!el) return;
-    let settle: number;
-    const onScroll = () => {
-      setActive(Math.round(el.scrollLeft / el.clientWidth) % news.length);
-      clearTimeout(settle);
-      settle = window.setTimeout(() => {
-        if (el.scrollLeft >= news.length * el.clientWidth - 2) el.scrollTo({ left: 0, behavior: "instant" });
-      }, 120);
-    };
+    const onScroll = () => setActive(Math.round(el.scrollLeft / el.clientWidth));
     el.addEventListener("scroll", onScroll);
     // auto-advance every 3s; paused while hovered/focused, off for reduced motion
     const id = matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -83,33 +68,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       : setInterval(() => !newsPaused.current && slide(), 3000);
     return () => {
       el.removeEventListener("scroll", onScroll);
-      clearTimeout(settle);
       clearInterval(id);
     };
-  }, []);
-
-  // passers drift left at a steady speed (rAF). The list is rendered twice, so when the first copy has scrolled out we
-  // subtract its length and the loop is seamless. Paused on hover/focus, off for reduced motion.
-  useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const SPEED = 100; // px per second
-    let raf = 0;
-    let last = 0;
-    let pos = 0;
-    const tick = (now: number) => {
-      const el = passerTrack.current;
-      if (el) {
-        if (Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft; // user / arrow moved it: follow
-        if (!passersPaused.current && last) pos += ((now - last) / 1000) * SPEED;
-        const loop = (el.children[passers.length] as HTMLElement).offsetLeft;
-        if (loop > 0 && pos >= loop) pos -= loop;
-        el.scrollLeft = pos;
-      }
-      last = now;
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
   }, []);
 
   // play each [data-stagger] / [data-lines] group once, when it scrolls into view
@@ -160,16 +120,18 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   onBlur={() => (newsPaused.current = false)}
                   className="no-scrollbar mt-8 flex snap-x snap-mandatory overflow-x-auto md:min-h-0 md:flex-1"
                 >
-                  {/* last item = clone of the first, for the endless loop (see slide()) */}
-                  {[...news, news[0]].map((n, i) => (
+                  {news.map((n, i) => (
                     <article
                       key={i}
-                      aria-hidden={i === news.length || undefined}
                       style={idx(i)}
                       className={`relative flex w-full shrink-0 snap-start flex-col overflow-hidden rounded-xl ${hairline} bg-card transition-colors hover:border-accent/40`}
                     >
                       <div className="relative flex flex-1 flex-col">
-                        <Placeholder label={t.news.imageAlt} className="aspect-[16/11] bg-gradient-to-br from-tint to-raised md:aspect-auto md:min-h-72 md:flex-1" />
+                        {n.image ? (
+                          <img src={n.image} alt={t.news.imageAlt} className="aspect-[16/11] w-full object-cover md:aspect-auto md:min-h-72 md:flex-1" />
+                        ) : (
+                          <Placeholder label={t.news.imageAlt} className="aspect-[16/11] bg-gradient-to-br from-tint to-raised md:aspect-auto md:min-h-72 md:flex-1" />
+                        )}
                         <span className="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-medium text-white">{t.news.tag}</span>
                       </div>
                       <div className="p-5 md:p-8">
@@ -177,11 +139,10 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                           {new Date(n.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </time>
                         <h3 className="mt-2 text-lg font-medium md:text-2xl">
-                          {/* stretched button: the whole card opens the dialog; the hidden clone is skipped by keyboard */}
+                          {/* stretched button: the whole card opens the dialog */}
                           <button
                             type="button"
-                            onClick={(e) => openNews(e.currentTarget.closest("article")!, i % news.length)}
-                            tabIndex={i === news.length ? -1 : undefined}
+                            onClick={(e) => openNews(e.currentTarget.closest("article")!, i)}
                             className="text-left after:absolute after:inset-0 hover:text-accent-ink"
                           >
                             {n.title[lang]}
@@ -219,43 +180,27 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   </a>
                 </div>
                 <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
-                  {/* always 4 rows: a short last page is padded with invisible copies, so the arrows never move */}
-                  {Array.from({ length: PAGE }, (_, i) => {
-                    const shown = announcements[page * PAGE + i];
-                    const a = shown ?? announcements[page * PAGE];
-                    return (
-                      <li key={shown ? a.id : `pad-${i}`} style={idx(i)} aria-hidden={!shown || undefined} className={`page-swap overflow-hidden ${shown ? "" : "invisible"}`}>
-                        <div className={`line flex gap-6 px-4 py-5 ${a.year === latestYear ? "bg-accent/10" : ""}`}>
-                          <span className="w-28 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
-                            {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                            {a.year === latestYear && <span className="mt-2 block w-fit rounded-md bg-accent px-2.5 py-0.5 text-sm font-medium text-white">{t.news.isNew}</span>}
-                          </span>
-                          <div className="min-w-0">
-                            <p className="line-clamp-2 font-medium" title={a.title[lang]}>
-                              <a href={`/${lang}${a.href}`} className="hover:text-accent-ink">
-                                {a.title[lang]}
-                              </a>
-                            </p>
-                            <a href={`/${lang}${a.href}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 transition-colors hover:decoration-accent-ink">
-                              {t.news.readMore}
+                  {announcements.slice(0, PAGE).map((a, i) => (
+                    <li key={a.id} style={idx(i)} className="overflow-hidden">
+                      <div className="line flex gap-6 px-4 py-5">
+                        <span className="w-28 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
+                          {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
+                          {a.year === latestYear && <span className="mt-2 block w-fit rounded-md bg-accent px-2.5 py-0.5 text-sm font-medium text-white">{t.news.isNew}</span>}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="line-clamp-2 font-medium" title={a.title[lang]}>
+                            <a href={`/${lang}/announcement/${a.id}`} className="hover:text-accent-ink">
+                              {a.title[lang]}
                             </a>
-                          </div>
+                          </p>
+                          <a href={`/${lang}/announcement/${a.id}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 transition-colors hover:decoration-accent-ink">
+                            {t.news.readMore}
+                          </a>
                         </div>
-                      </li>
-                    );
-                  })}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
-                <div className="mt-4 flex items-center justify-between gap-4">
-                  <button type="button" disabled={page === 0} onClick={() => setPage(page - 1)} aria-label={t.news.newer} className={pageBtn}>
-                    <Chevron dir="left" />
-                  </button>
-                  <span className="text-sm tabular-nums text-ink-3">
-                    {page + 1} / {pages}
-                  </span>
-                  <button type="button" disabled={page === pages - 1} onClick={() => setPage(page + 1)} aria-label={t.news.older} className={pageBtn}>
-                    <Chevron dir="right" />
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -270,29 +215,35 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               </a>
             </div>
             <p className="mt-2 text-ink-2">{t.passers.desc}</p>
-            {/* one quiet line of counts, taken from the data */}
-            <p className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm tabular-nums text-ink-3">
-              <span>
-                {t.passers.total} <b className="font-medium text-ink">{passers.length}</b> {t.passers.people}
-              </span>
-              {[1, 2, 3].map((lv) => {
-                const of = passers.filter((p) => p.level.en === `Level ${lv}`);
-                return (
-                  <span key={lv}>
-                    {of[0]?.level[lang]} <b className="font-medium text-ink">{of.length}</b> {t.passers.people}
-                  </span>
-                );
-              })}
-            </p>
-            <ul
-              ref={passerTrack}
-              onMouseEnter={() => (passersPaused.current = true)}
-              onMouseLeave={() => (passersPaused.current = false)}
-              onFocus={() => (passersPaused.current = true)}
-              onBlur={() => (passersPaused.current = false)} data-stagger className="no-scrollbar mt-8 flex gap-4 overflow-x-auto">
-              {[...passers, ...passers].map((p, i) => (
-                <PasserCard key={i} p={p} lang={lang} style={idx(i % passers.length)} tall hidden={i >= passers.length} />
+
+            {/* level filter: underline tabs, each with its count taken from the data */}
+            <div role="tablist" aria-label={t.passers.title} className="no-scrollbar -mx-4 mt-8 flex gap-6 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
+              {[0, 1, 2, 3].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  role="tab"
+                  aria-selected={lvl === n}
+                  onClick={() => setLvl(n)}
+                  className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors ${
+                    lvl === n ? "border-accent font-medium text-accent-ink" : "border-transparent text-ink-2 hover:text-ink"
+                  }`}
+                >
+                  {n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}{" "}
+                  <span className="tabular-nums text-ink-3">{n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length}</span>
+                </button>
               ))}
+            </div>
+
+            {/* newest first, the first 4 of the selected level */}
+            <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {passers
+                .filter((p) => lvl === 0 || p.level.en === `Level ${lvl}`)
+                .sort((x, y) => Number(y.year.en) - Number(x.year.en) || x.id - y.id)
+                .slice(0, 4)
+                .map((p, i) => (
+                  <PasserTile key={p.id} p={p} lang={lang} style={idx(i)} />
+                ))}
             </ul>
           </div>
         </section>
@@ -302,9 +253,9 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             <h2 className="text-3xl font-medium">{t.process.title}</h2>
             <ol data-stagger className="mt-10 grid md:grid-cols-4">
               {t.process.tiles.map((tile, i) => (
-                <li key={tile.href} style={idx(i)} className="relative border-l border-ink/15 pb-10 pl-6 last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6">
-                  <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-accent bg-card md:-top-[5px] md:left-0" />
-                  <span aria-hidden="true" className="block text-6xl font-normal tabular-nums text-accent-ink/30">
+                <li key={tile.href} style={idx(i)} className="group relative border-l border-ink/15 pb-10 pl-6 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6 md:hover:-translate-y-2">
+                  <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-accent bg-card transition-colors duration-200 group-hover:bg-accent md:-top-[5px] md:left-0" />
+                  <span aria-hidden="true" className="block text-6xl font-normal tabular-nums text-accent-ink/30 transition-colors duration-200 group-hover:text-accent-ink">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-4 text-xl font-medium">{tile.title}</h3>
@@ -330,14 +281,14 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       >
         {open !== null && (
           <>
-            <Placeholder label={t.news.imageAlt} className="aspect-video" />
+            {news[open].image ? <img src={news[open].image} alt={t.news.imageAlt} className="aspect-video w-full object-cover" /> : <Placeholder label={t.news.imageAlt} className="aspect-video" />}
             <div className="p-6">
               <time dateTime={news[open].date} className="text-sm tabular-nums text-ink-3">
                 {new Date(news[open].date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
               </time>
               <h3 className="mt-2 text-2xl font-medium">{news[open].title[lang]}</h3>
               <p className="mt-4 text-ink-2">{news[open].excerpt[lang]}</p>
-              <a href={`/${lang}/news`} className="mt-6 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
+              <a href={`/${lang}/news/${news[open].id}`} className="mt-6 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
                 {t.news.readMore}
               </a>
             </div>

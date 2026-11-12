@@ -16,9 +16,9 @@ export const nav: NavItem[] = [
         key: "outstanding",
         href: "/outstanding",
         children: [
-          { key: "submitReview", href: "/outstanding/apply" },
-          { key: "outstandingAnnouncement", href: "/outstanding/announcement" },
-          { key: "certify", href: "/outstanding/process" },
+          { key: "submitReview", href: "/outstanding#apply" },
+          { key: "outstandingAnnouncement", href: "/outstanding#announcement" },
+          { key: "certify", href: "/outstanding#process" },
         ],
       },
     ],
@@ -36,10 +36,13 @@ export const nav: NavItem[] = [
     href: "/documents",
     children: [
       { key: "otherForms", href: "/documents/forms" },
-      { key: "relatedAnnouncements", href: "/documents" },
     ],
+  },
+  {
+    // หัวข้อแยกของ "อื่น ๆ" (ลิงก์หัวข้อไปประกาศที่เกี่ยวข้อง)
+    key: "other",
+    href: "/documents",
+    children: [{ key: "login", href: "/login" }],
   },
 ];
 
-export const outstandingSlugs = ["project", "announcement", "process", "apply"] as const;
-export type OutstandingSlug = (typeof outstandingSlugs)[number];

@@ -13,7 +13,8 @@ export const passers = Array.from({ length: 18 }, (_, i) => {
   };
 });
 
-export const news = Array.from({ length: 6 }, (_, i) => {
+export type NewsItem = { id: number; date: string; title: { th: string; en: string }; excerpt: { th: string; en: string }; image?: string; file?: string };
+export const news = Array.from({ length: 6 }, (_, i): NewsItem => {
   const n = i + 1;
   return {
     id: n,
@@ -27,7 +28,8 @@ export const news = Array.from({ length: 6 }, (_, i) => {
 });
 
 // ประกาศจริงจากเว็บปัจจุบัน (ผู้ใช้ให้มา) เรียงใหม่ไปเก่า หน้าเว็บแสดงทีละ 4 รายการ ไม่มีวันที่ระบุ มีแต่ปี พ.ศ. คำแปลอังกฤษเป็นคำแปลชั่วคราว TODO ตรวจกับต้นฉบับ
-export const announcements = [
+export type Announcement = { id: number; year: number; href: string; title: { th: string; en: string }; file?: string };
+export const announcements: Announcement[] = [
   { id: 1, year: 2568, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน ประจำปี พ.ศ. 2568", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, B.E. 2568" } },
   { id: 2, year: 2567, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน ประจำปี พ.ศ. 2567", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, B.E. 2567" } },
   { id: 3, year: 2566, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการคัดเลือกอาจารย์ดีเด่น ด้านการสอน พ.ศ. 2566", en: "University of Phayao Announcement: Criteria and Procedure for the Outstanding Teaching Lecturer Selection, B.E. 2566" } },
@@ -38,9 +40,9 @@ export const announcements = [
   { id: 8, year: 2562, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน มหาวิทยาลัยพะเยา ประจำปี พ.ศ. 2562", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, University of Phayao, B.E. 2562" } },
 ];
 
-// ประกาศผลแยกตามปี (พ.ศ. 2567-2570) ใหม่ไปเก่า สำหรับหน้าข่าวประชาสัมพันธ์ ข้อมูลสมมติทั้งหมด
-export type Passer = (typeof passers)[number];
-export const publicity = [2570, 2569, 2568, 2567].map((year, yi) => ({
+// ประกาศผลแยกตามปี (พ.ศ. 2566-2569) ใหม่ไปเก่า สำหรับหน้าข่าวประชาสัมพันธ์ ข้อมูลสมมติทั้งหมด
+export type Passer = (typeof passers)[number] & { photo?: string }; // photo: data URL uploaded in /admin
+export const publicity = [2569, 2568, 2567, 2566].map((year, yi) => ({
   year, // พ.ศ.
   people: Array.from({ length: 6 }, (_, i): Passer => {
     const n = yi * 6 + i + 1;
@@ -59,14 +61,14 @@ export const publicity = [2570, 2569, 2568, 2567].map((year, yi) => ({
 // ปฏิทินการประเมินรายปี (พ.ศ.) หน้าเว็บแสดงปีล่าสุด 2 รอบ/ปี: รับสมัคร -> ประเมิน -> ประกาศผล
 export const assessmentCalendars = [
   {
-    year: 2570,
+    year: 2569,
     events: [
-      { round: 1, type: "apply", start: "2027-01-15", end: "2027-02-28" },
-      { round: 1, type: "assess", start: "2027-03-15", end: "2027-04-30" },
-      { round: 1, type: "result", start: "2027-05-20" },
-      { round: 2, type: "apply", start: "2027-07-01", end: "2027-08-15" },
-      { round: 2, type: "assess", start: "2027-09-01", end: "2027-10-15" },
-      { round: 2, type: "result", start: "2027-11-20" },
+      { round: 1, type: "apply", start: "2026-02-02", end: "2026-02-27" },
+      { round: 1, type: "assess", start: "2026-03-09", end: "2026-04-24" },
+      { round: 1, type: "result", start: "2026-05-20" },
+      { round: 2, type: "apply", start: "2026-11-02", end: "2026-11-30" },
+      { round: 2, type: "assess", start: "2026-12-07", end: "2027-01-15" },
+      { round: 2, type: "result", start: "2027-02-10" },
     ],
   },
 ] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string }[] }[];
@@ -76,6 +78,7 @@ export const forms = [1, 2, 3, 4].map((n) => ({
   id: n,
   title: { th: `แบบฟอร์มตัวอย่างที่ ${n}`, en: `Sample form ${n}` },
   file: "#", // TODO: ไฟล์ PDF จริง
+  updated: `2026-0${n}-10`, // วันที่อัปเดต (ตัวอย่าง)
 }));
 
 // เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน ข้อมูลตัวอย่างทั้งหมด

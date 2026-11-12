@@ -1,12 +1,12 @@
+"use client";
+
 import { WithLang } from "@/components/WithLang";
-import { content } from "@/data/content";
-import { announcements } from "@/data/mock";
 
 // อื่น ๆ (เมนู เอกสาร > อื่น ๆ): รายการเอกสารแบบเดียวกับหน้าปฏิทิน ไม่มีแท็บ
 export default function Page({ params }: { params: Promise<{ lang: string }> }) {
   return (
     <WithLang params={params}>
-      {(lang) => {
+      {(lang, { content, announcements }) => {
         const t = content[lang];
         return (
           <main>

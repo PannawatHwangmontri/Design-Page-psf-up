@@ -1,3 +1,5 @@
+"use client";
+
 import PsfSite from "@/components/PsfSite";
 import { WithLang } from "@/components/WithLang";
 
