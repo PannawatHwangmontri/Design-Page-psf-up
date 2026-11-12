@@ -34,16 +34,16 @@ export const content = {
       desc: "กรอบประเมินสมรรถนะของอาจารย์ มหาวิทยาลัยพะเยา พร้อมประกาศผลรายชื่อผู้ที่ผ่านเกณฑ์การประเมิน",
       cta: "ดูผู้ยื่นผ่านเกณฑ์",
       cta2: "ประกาศ",
-      imageAlt: "ภาพแบนเนอร์ (ตัวอย่าง)",
+      imageAlt: "มาตรฐานระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
     },
-    // label เป็น mono อังกฤษเหมือนกันทั้งสองภาษา ข้อความขั้นตอนเป็นข้อความสมมติ
+    // ข้อความขั้นตอนเป็นข้อความสมมติ ลิงก์ชี้ไปหน้าที่มีอยู่ (TODO หน้ารายละเอียดจริงของแต่ละขั้น)
     process: {
       title: "ขั้นตอน PSF",
       tiles: [
-        { label: "01 / FRAMEWORK", title: "กรอบสมรรถนะ", desc: "กำหนดสิ่งที่อาจารย์ต้องแสดงให้เห็นในแต่ละระดับ" },
-        { label: "02 / SUBMIT", title: "ยื่นคำขอ", desc: "ส่งเอกสารและหลักฐานการปฏิบัติงาน" },
-        { label: "03 / REVIEW", title: "พิจารณา", desc: "คณะกรรมการประเมินตามเกณฑ์" },
-        { label: "04 / RESULT", title: "ประกาศผล", desc: "เผยแพร่ผลและรายชื่อผู้ผ่านเกณฑ์" },
+        { title: "กรอบสมรรถนะ", desc: "กำหนดสิ่งที่อาจารย์ต้องแสดงให้เห็นในแต่ละระดับ", href: "/process", link: "ดูกรอบสมรรถนะ" },
+        { title: "ยื่นคำขอ", desc: "ส่งเอกสารและหลักฐานการปฏิบัติงาน", href: "/documents/forms", link: "ดาวน์โหลดแบบฟอร์ม" },
+        { title: "พิจารณา", desc: "คณะกรรมการประเมินตามเกณฑ์", href: "/assessment", link: "ดูปฏิทินการประเมิน" },
+        { title: "ประกาศผล", desc: "เผยแพร่ผลและรายชื่อผู้ผ่านเกณฑ์", href: "/publicity", link: "ดูรายชื่อผู้ผ่านเกณฑ์" },
       ],
     },
     about: {
@@ -58,9 +58,11 @@ export const content = {
       ],
       note: "ข้อความตัวอย่างเพื่อการสาธิต",
     },
-    news: { title: "ข่าว / กิจกรรม", announcements: "ประกาศ", older: "ประกาศเก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", close: "ปิด", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
+    news: { title: "ข่าว / กิจกรรม", tag: "ข่าว", isNew: "ใหม่", viewAll: "ดูทั้งหมด", announcements: "ประชาสัมพันธ์", older: "ประชาสัมพันธ์เก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", close: "ปิด", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
     passers: {
       title: "ประชาสัมพันธ์ผู้ยื่นผ่านเกณฑ์ PSF",
+      total: "ผู้ผ่านเกณฑ์ทั้งหมด",
+      people: "คน",
       desc: "ประกาศผลรายชื่อตัวอย่างของผู้ที่ผ่านเกณฑ์",
       level: "ระดับ PSF",
       year: "ปีที่ผ่าน",
@@ -153,13 +155,68 @@ export const content = {
         intro: "ดาวน์โหลดแบบฟอร์มในรูปแบบ PDF (ข้อมูลตัวอย่าง)",
         download: "ดาวน์โหลด PDF",
       },
-      // TODO: เนื้อหาความเป็นมาจริงของ UP PSF (ตอนนี้เป็นข้อความตัวอย่าง)
+      // ข้อความไทยเป็นต้นฉบับจากผู้ใช้ ข้อความอังกฤษเป็นคำแปลร่าง TODO: ตรวจคำแปลกับฝ่ายที่รับผิดชอบก่อนเผยแพร่
       history: {
-        title: "ความเป็นมา",
+        title: "ความเป็นมาและลักษณะของมาตรฐานระดับอาจารย์มืออาชีพมหาวิทยาลัยพะเยา",
         back: "กลับไปหน้าแรก",
-        body: [
-          "ข้อความตัวอย่างความเป็นมาของมาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
-          "เนื้อหาจริงจะถูกเพิ่มภายหลัง",
+        intro: "การทำความเข้าใจที่มาที่ไปและคุณลักษณะของมาตรฐานระดับอาจารย์มืออาชีพ จะสามารถทำให้อาจารย์ในสถาบันอุดมศึกษาตระหนักและเห็นความสำคัญความเป็นครูในโลกศตวรรษที่ 21 ที่เปลี่ยนแปลงได้ และนำไปสู่ความเข้าใจที่ลึกซึ้งมากยิ่งขึ้นในการเขียนใบสมัคร UP-PSF ต่อไป ในบทนี้จึงขออธิบายเนื้อหาที่ประกอบด้วย 1) ความเป็นมาของมาตรฐานระดับอาจารย์มืออาชีพ และ 2) ลักษณะของมาตรฐานระดับอาจารย์มืออาชีพมหาวิทยาลัยพะเยา",
+        sections: [
+          {
+            no: "1",
+            heading: "ความเป็นมา",
+            paragraphs: [
+              "สถาบันอุดมศึกษาทั่วโลกกำลังให้ความสนใจการพัฒนาอาจารย์ให้เป็นมืออาชีพทั้งด้านการวิจัย การพัฒนาหลักสูตรและการจัดการเรียนการสอน นั่นคือเป็นการพัฒนาบทบาทของอาจารย์ให้มีความเชี่ยวชาญในการพัฒนาทักษะ ความรู้ความสามารถที่จำเป็นต่อการเรียนรู้ของผู้เรียนในศตวรรษที่ 21 ให้มีความสามารถในการเรียนรู้ได้ตลอดชีวิต สามารถแข่งขันในระดับภูมิภาคอาเซียนและในระดับสากล และเพื่อการพัฒนาประเทศได้อย่างยั่งยืน",
+              "การริเริ่มเกิดขึ้นจากสถาบันการอุดมศึกษาของอังกฤษ (The Higher Education Academy: HEA) ได้มีการพัฒนากรอบมาตรฐานวิชาชีพดำเนินการสอนและการสนับสนุนการเรียนรู้ (UK Professional Standards Framework: UKPSF) โดยก่อตั้งขึ้นใน พ.ศ. 2546 ซึ่งเป็นหน่วยงานอิสระระดับชาติในสหราชอาณาจักรได้จัดทำกรอบมาตรฐานวิชาชีพระดับอุดมศึกษา เพื่อประเมินและรับรองหลักสูตรการพัฒนาคุณภาพการสอนของคณาจารย์ และใน พ.ศ. 2560 HEA ได้ควบรวมกับ Equality Challenge Unit และ Leadership Foundation for Higher Education และเปลี่ยนชื่อเป็น Advance HE ร่วมกับสถาบันอุดมศึกษาทั่วโลก เพื่อจัดฝึกอบรมและประเมินคุณภาพการสอนและการกำหนดวิทยฐานะของผู้ผ่านการประเมิน (Descriptors) ซึ่งเป็นผู้รับผิดชอบ โดยต้องการให้อาจารย์มีความเป็นนักวิชาการ มีความเป็นครูและมีความเป็นมนุษย์",
+              "นอกจากประเทศอังกฤษแล้ว ยังมีแนวคิดมาตรฐานอาจารย์มืออาชีพจากประเทศต่าง ๆ เช่น Regional Pedagogical Centres for HE, Australian Professional Standards for Teachers, Australian University Teaching Criteria and Standards Framework และ National Board for Professional Teaching Standards[1] ซึ่งมีกำหนดกรอบมาตรฐานอาจารย์มืออาชีพเช่นกัน โดยมีลักษณะร่วมที่คล้ายคลึงกันแต่นำมาประยุกต์และกำหนดใช้ในบริบทที่แตกต่างของประเทศและมหาวิทยาลัยของตนเอง",
+              "ใน พ.ศ. 2558 สำนักงานคณะกรรมการการอุดมศึกษาได้ดำเนินโครงการความร่วมมือกับสหภาพยุโรป (EU) ในโครงการ “TQF and the Development of Professional Standards Framework” โดยมีวัตถุประสงค์เพื่อส่งเสริมความเป็นมืออาชีพของอาจารย์ในสถาบันอุดมศึกษาให้มีความรู้ความเชี่ยวชาญ ทั้งในด้านศาสตร์ในสาขา ด้านการออกแบบหลักสูตร การจัดการเรียนการสอน และทัศนคติที่ดีงามในความเป็นอาจารย์มืออาชีพ จนในที่สุดสำนักงานคณะกรรมการการอุดมศึกษาจัดทำกรอบมาตรฐานอาจารย์มืออาชีพที่เป็นกรอบกลาง เพื่อให้สถาบันอุดมศึกษาที่สนใจได้มีแนวทางในการพัฒนากรอบมาตรฐานอาจารย์มืออาชีพตามบริบทของตนเองด้วยความสมัครใจ[2]",
+              "มาตรฐานวิชาชีพของอาจารย์มืออาชีพ (PSF) สามารถนำมาใช้เป็นกรอบมาตรฐานการสอนและการสนับสนุนการเรียนรู้ในสาขาวิชาต่าง ๆ ได้ เนื่องจากเป็นสากลและประยุกต์ใช้ในหลายประเทศได้ผลดี สอดคล้องกับวิธีการจัดการเรียนการสอนในศตวรรษที่ 21 สำหรับมหาวิทยาลัยในประเทศไทยที่นำ PSF ของประเทศต่าง ๆ มาประยุกต์ใช้ เช่น มหาวิทยาลัยเทคโนโลยีสุรนารี (SUT-PSF) มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี (KMUTT-PSF) มหาวิทยาลัยสงขลานครินทร์ (PSU-TPSF) มหาวิทยาลัยสวนดุสิต (SDU-PSF) มหาวิทยาลัยศรีปทุม (SPU-PSF) และมหาวิทยาลัยพะเยา (UP-PSF)",
+              "จากที่มาและความสำคัญข้างต้น มหาวิทยาลัยพะเยาจึงมีประกาศเรื่อง มาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2562 เพื่อเป็นการพัฒนาคุณภาพการจัดการศึกษาของอาจารย์ไปสู่การปฏิบัติอย่างเป็นรูปธรรม ซึ่งนับว่ามหาวิทยาลัยพะเยาให้ความสำคัญกับการจัดการเรียนการสอนและมุ่งพัฒนาให้อาจารย์มีความเป็นมืออาชีพในการเรียนการสอน ที่จะพัฒนามหาวิทยาลัยพะเยาไปสู่สถาบันอุดมศึกษาที่มีคุณภาพและได้รับการยอมรับตามมาตรฐานยิ่งขึ้น",
+            ],
+          },
+          {
+            no: "2",
+            heading: "ลักษณะของมาตรฐาน",
+            intro: "การส่งเสริมคุณภาพการจัดการเรียนการสอนของอาจารย์ในสถาบันอุดมศึกษา มีวัตถุประสงค์เพื่อส่งเสริมและสนับสนุนให้อาจารย์ในสถาบันอุดมศึกษาพัฒนาตนเองให้มีสมรรถนะและประสิทธิภาพในการจัดการเรียนการสอน จำนวน 3 องค์ประกอบ ดังนี้",
+            components: [
+              {
+                code: "KNOW",
+                name: "องค์ความรู้ (Knowledge)",
+                items: [
+                  { no: "1.1", text: "ความรู้ในศาสตร์สาขาของตน" },
+                  { no: "1.2", text: "ความรู้ในศาสตร์การสอนและการเรียนรู้" },
+                ],
+              },
+              {
+                code: "DO",
+                name: "สมรรถนะการจัดการเรียนรู้ (Professional competencies)",
+                items: [
+                  { no: "2.1", text: "ออกแบบและวางแผนการจัดกิจกรรมการเรียนรู้ของผู้เรียน" },
+                  { no: "2.2", text: "ดำเนินกิจกรรมการเรียนรู้ได้อย่างมีประสิทธิภาพ" },
+                  { no: "2.3", text: "เสริมสร้างบรรยากาศการเรียนรู้และสนับสนุนการเรียนรู้ของผู้เรียน" },
+                  { no: "2.4", text: "วัดประเมินผลการเรียนรู้ของผู้เรียน พร้อมทั้งสามารถให้ข้อมูลป้อนกลับอย่างสร้างสรรค์" },
+                ],
+              },
+              {
+                code: "BE",
+                name: "คุณค่าของอาจารย์ (Professional values)",
+                items: [
+                  { no: "3.1", text: "คุณค่าในการพัฒนาวิชาชีพอาจารย์และการพัฒนาตนเองอย่างต่อเนื่อง" },
+                  { no: "3.2", text: "ธำรงไว้ซึ่งจรรยาบรรณแห่งวิชาชีพอาจารย์" },
+                ],
+              },
+            ],
+            levelsIntro: "คุณภาพการจัดการเรียนการสอนในแต่ละองค์ประกอบข้างต้น กำหนดให้มีระดับของคุณภาพของแต่ละองค์ประกอบ จำนวน 4 ระดับ ซึ่งแสดงให้เห็นถึงพัฒนาการของอาจารย์ด้านการจัดการเรียนการสอน โดยใน 4 ระดับ มีดังนี้",
+            levels: [
+              { label: "ระดับที่ 1", text: "เป็นผู้มีความรู้ความเข้าใจในศาสตร์ของตนและประยุกต์ใช้ได้ มีความรู้ความเข้าใจในศาสตร์การเรียนรู้เบื้องต้น สามารถออกแบบกิจกรรม จัดบรรยากาศ ใช้ทรัพยากรและสื่อการเรียนรู้ โดยคำนึงถึงผู้เรียนและปัจจัยที่ส่งผลต่อการเรียนรู้ สามารถวัดและประเมินผลการเรียนรู้ของผู้เรียน นำผลประเมินมาใช้ปรับปรุงพัฒนาการจัดการเรียนรู้ พัฒนาตนเองอย่างต่อเนื่อง เปิดใจรับฟังความคิดเห็นจากผู้ที่เกี่ยวข้อง และปฏิบัติตามจรรยาบรรณวิชาชีพอาจารย์ขององค์กร" },
+              { label: "ระดับที่ 2", text: "เป็นผู้มีคุณภาพการจัดการเรียนการสอนระดับที่ 1 ที่มีความรู้ลึกในศาสตร์ของตน และติดตามความก้าวหน้าของความรู้ในศาสตร์อย่างสม่ำเสมอ มีความรู้ความเข้าใจในศาสตร์การเรียนรู้ สามารถจัดการเรียนรู้ที่เหมาะสมกับกลุ่มผู้เรียน กำกับดูแลและติดตามผลการเรียนรู้ของผู้เรียนอย่างเป็นระบบ ให้คำปรึกษาชี้แนะแก่เพื่อนอาจารย์ในศาสตร์ได้ และส่งเสริมให้เกิดการปฏิบัติตามจรรยาบรรณวิชาชีพอาจารย์ภายในองค์กร" },
+              { label: "ระดับที่ 3", text: "เป็นผู้มีคุณภาพการจัดการเรียนการสอนระดับที่ 2 ที่เชี่ยวชาญในศาสตร์ของตน ศาสตร์การเรียนรู้ และการจัดการเรียนรู้ข้ามศาสตร์ นำผลการวิจัยในชั้นเรียนมาพัฒนาการจัดการเรียนรู้ เป็นพี่เลี้ยงและผู้ชี้แนะในระดับองค์กรด้านการจัดการเรียนรู้และนโยบายด้านจรรยาบรรณวิชาชีพอาจารย์" },
+              { label: "ระดับที่ 4", text: "เป็นผู้มีคุณภาพการจัดการเรียนการสอนระดับที่ 3 ที่เป็นผู้นำในศาสตร์ของตน ศาสตร์การเรียนรู้และการจัดการเรียนรู้ข้ามศาสตร์ เป็นที่ยอมรับทั้งภายในและภายนอกองค์กร มีส่วนร่วมในการกำหนดนโยบายและกลยุทธ์ในการพัฒนาองค์ความรู้ และการจัดการเรียนรู้ในระดับชาติและนานาชาติ เป็นผู้นำเชิงนโยบายด้านจรรยาบรรณวิชาชีพอาจารย์" },
+            ],
+          },
+        ],
+        notes: [
+          "[1] โปรดดูรายละเอียดใน วิจิตร ศรีสอ้าน. (สื่อนำเสนอ). ความก้าวหน้าของวิชาชีพอาจารย์และแนวทางการพัฒนากรอบมาตรฐานวิชาชีพด้านการสอนของ มทส. วิจิตร ศรีสอ้าน. (สื่อนำเสนอ). แนวทางการพัฒนาอาจารย์ตามกรอบมาตรฐานวิชาชีพ UKPSF ในประเทศไทย และ สุวมาลย์ ม่วงประเสริฐ. (สื่อนำเสนอ). กรอบมาตรฐานอาจารย์มืออาชีพด้านการสอน มหาวิทยาลัยสวนดุสิต. คณะกรรมการพัฒนากรอบมาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยสวนดุสิต.",
+          "[2] สำนักมาตรฐานและประเมินผลอุดมศึกษา สำนักงานคณะกรรมการอุดมศึกษา. (2561). แนวทางการส่งเสริมคุณภาพการจัดการเรียนการสอนของอาจารย์ในสถาบันอุดมศึกษา. กรุงเทพฯ: ภาพพิมพ์.",
         ],
       },
     },
@@ -196,15 +253,15 @@ export const content = {
       desc: "A framework for assessing lecturer competence at the University of Phayao, with the results announced publicly",
       cta: "View applicants who met the criteria",
       cta2: "Announcements",
-      imageAlt: "Banner image (sample)",
+      imageAlt: "Professional Lecturer Standards, University of Phayao",
     },
     process: {
       title: "PSF process",
       tiles: [
-        { label: "01 / FRAMEWORK", title: "Competence framework", desc: "Defines what lecturers must show at each level" },
-        { label: "02 / SUBMIT", title: "Submit", desc: "Send documents and evidence of practice" },
-        { label: "03 / REVIEW", title: "Review", desc: "A panel assesses against the criteria" },
-        { label: "04 / RESULT", title: "Announce results", desc: "Results and the list of those who met the criteria are published" },
+        { title: "Competence framework", desc: "Defines what lecturers must show at each level", href: "/process", link: "See the framework" },
+        { title: "Submit", desc: "Send documents and evidence of practice", href: "/documents/forms", link: "Download the forms" },
+        { title: "Review", desc: "A panel assesses against the criteria", href: "/assessment", link: "See the assessment calendar" },
+        { title: "Announce results", desc: "Results and the list of those who met the criteria are published", href: "/publicity", link: "See who met the criteria" },
       ],
     },
     about: {
@@ -219,9 +276,11 @@ export const content = {
       ],
       note: "Sample text for demonstration",
     },
-    news: { title: "News / Events", announcements: "Announcements", older: "Older", newer: "Newer", readMore: "Read more", close: "Close", imageAlt: "News image (sample)" },
+    news: { title: "News / Events", tag: "News", isNew: "New", viewAll: "View all", announcements: "Public Relations", older: "Older", newer: "Newer", readMore: "Read more", close: "Close", imageAlt: "News image (sample)" },
     passers: {
       title: "PR: Applicants Who Met the PSF Criteria",
+      total: "Total who met the criteria",
+      people: "people",
       desc: "Sample results announcement of those who met the criteria.",
       level: "PSF level",
       year: "Year",
@@ -312,13 +371,67 @@ export const content = {
         intro: "Download forms in PDF format (sample data).",
         download: "Download PDF",
       },
-      // TODO: real history content of UP PSF (sample text for now)
       history: {
-        title: "History",
+        title: "Background and Characteristics of the University of Phayao Professional Lecturer Standards",
         back: "Back to home",
-        body: [
-          "Sample text about the history of the Professional Lecturer Standards at the University of Phayao.",
-          "The real content will be added later.",
+        intro: "Understanding the origins and characteristics of the professional lecturer standards helps lecturers in higher education recognise the importance of being a teacher in a changing 21st century, and leads to a deeper understanding when writing the UP-PSF application. This section covers two topics: 1) the background of the professional lecturer standards, and 2) the characteristics of the University of Phayao professional lecturer standards.",
+        sections: [
+          {
+            no: "1",
+            heading: "Background",
+            paragraphs: [
+              "Higher-education institutions worldwide are paying attention to developing lecturers into professionals in research, curriculum development, and teaching and learning. This means developing lecturers' expertise and the skills and competencies students need for learning in the 21st century, so that students can learn throughout life, compete in the ASEAN region and internationally, and support sustainable national development.",
+              "The initiative began with the Higher Education Academy (HEA) in England, which developed the UK Professional Standards Framework (UKPSF). Founded in 2003, the HEA is an independent national body in the United Kingdom that produced a professional standards framework for higher education, used to assess and accredit programmes that develop teaching quality for academic staff. In 2017 the HEA merged with the Equality Challenge Unit and the Leadership Foundation for Higher Education and was renamed Advance HE. Working with higher-education institutions worldwide, it provides training, assessment of teaching quality, and descriptors for those who pass, with the aim that lecturers are scholars, teachers, and humane persons.",
+              "Beyond England, other countries also have professional lecturer standards, such as the Regional Pedagogical Centres for HE, the Australian Professional Standards for Teachers, the Australian University Teaching Criteria and Standards Framework, and the National Board for Professional Teaching Standards.[1] They share similar features but are adapted and applied to the context of each country and university.",
+              "In 2015 the Office of the Higher Education Commission ran a cooperation project with the European Union (EU), “TQF and the Development of Professional Standards Framework”. Its aim was to promote the professionalism of lecturers in higher education, with expertise in their disciplines, curriculum design, teaching and learning, and a good professional attitude. The Office then produced a central professional lecturer standards framework so that interested institutions could voluntarily develop their own framework to suit their context.[2]",
+              "The professional lecturer standards (PSF) can be used as a framework for teaching and learning support in many fields, because they are international and have worked well in several countries, and they fit 21st-century teaching. Thai universities that have adapted PSF from other countries include Suranaree University of Technology (SUT-PSF), King Mongkut's University of Technology Thonburi (KMUTT-PSF), Prince of Songkla University (PSU-TPSF), Suan Dusit University (SDU-PSF), Sripatum University (SPU-PSF), and the University of Phayao (UP-PSF).",
+              "Based on this background and importance, the University of Phayao issued the announcement on the Professional Lecturer Standards of the University of Phayao, B.E. 2562, to turn the improvement of lecturers' teaching quality into concrete practice. This reflects the University's focus on teaching and learning and its aim to develop lecturers' professionalism, so that the University can grow into a higher-education institution of quality that is recognised against standards.",
+            ],
+          },
+          {
+            no: "2",
+            heading: "Characteristics of the standard",
+            intro: "Promoting the quality of teaching and learning by lecturers in higher education aims to encourage and support lecturers to develop their competencies and effectiveness in teaching and learning. The standard has 3 components:",
+            components: [
+              {
+                code: "KNOW",
+                name: "Knowledge",
+                items: [
+                  { no: "1.1", text: "Knowledge of one's own discipline" },
+                  { no: "1.2", text: "Knowledge of teaching and learning" },
+                ],
+              },
+              {
+                code: "DO",
+                name: "Professional competencies",
+                items: [
+                  { no: "2.1", text: "Designing and planning learning activities for students" },
+                  { no: "2.2", text: "Carrying out learning activities effectively" },
+                  { no: "2.3", text: "Creating a learning atmosphere and supporting student learning" },
+                  { no: "2.4", text: "Assessing student learning and giving constructive feedback" },
+                ],
+              },
+              {
+                code: "BE",
+                name: "Professional values",
+                items: [
+                  { no: "3.1", text: "Valuing the professional development of lecturers and continuous self-development" },
+                  { no: "3.2", text: "Upholding the professional code of conduct for lecturers" },
+                ],
+              },
+            ],
+            levelsIntro: "The quality of teaching and learning in each component above is set at 4 quality levels, showing lecturers' development in teaching and learning. The 4 levels are:",
+            levels: [
+              { label: "Level 1", text: "Understands their own discipline and can apply it, with basic understanding of learning science. Can design activities, create a learning atmosphere, and use resources and learning media with learners and the factors affecting learning in mind. Can assess student learning and use the results to improve teaching. Keeps developing themselves, listens to the views of those involved, and follows the organisation's professional code of conduct." },
+              { label: "Level 2", text: "Has Level 1 teaching quality, with deep knowledge of their discipline that is kept up to date. Understands learning science and manages learning suited to the learner group. Supervises and systematically monitors student learning, advises colleagues in their discipline, and promotes compliance with the professional code of conduct within the organisation." },
+              { label: "Level 3", text: "Has Level 2 teaching quality, with expertise in their discipline, in learning science, and in cross-disciplinary teaching. Uses classroom research to improve learning and acts as a mentor and adviser at organisational level on learning management and on the professional code of conduct policy." },
+              { label: "Level 4", text: "Has Level 3 teaching quality and is a leader in their discipline, in learning science, and in cross-disciplinary teaching. Is recognised inside and outside the organisation, takes part in setting policy and strategy for developing knowledge and learning management at national and international level, and leads policy on the professional code of conduct for lecturers." },
+            ],
+          },
+        ],
+        notes: [
+          "[1] See Wichit Srisa-an. (presentation). Progress of the lecturer profession and guidelines for developing teaching standards at Suranaree University of Technology; Wichit Srisa-an. (presentation). Guidelines for developing lecturers under the UKPSF in Thailand; and Suwamal Muangprasert. (presentation). Professional lecturer standards for teaching, Suan Dusit University. Committee for Developing Professional Lecturer Standards, Suan Dusit University.",
+          "[2] Office of Higher Education Standards and Quality Assessment, Office of the Higher Education Commission. (2018). Guidelines for promoting the quality of teaching and learning by lecturers in higher education institutions. Bangkok: Pap Phim.",
         ],
       },
     },

@@ -25,7 +25,7 @@ export const nav: NavItem[] = [
   },
   {
     key: "about",
-    href: "#about", // หน้าแรก ส่วนพันธกิจ
+    href: "/mission",
     children: [
       { key: "history", href: "/history" },
       { key: "mission", href: "/mission" },

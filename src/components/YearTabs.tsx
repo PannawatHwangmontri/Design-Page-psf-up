@@ -11,9 +11,11 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
   const [sel, setSel] = useState(data[0].year);
   const cur = data.find((d) => d.year === sel) ?? data[0];
   const label = (y: number) => (lang === "th" ? y : y - 543);
+  const levels = [1, 2, 3].map((lv) => ({ lv, n: cur.people.filter((p) => p.level.en === `Level ${lv}`).length }));
   return (
     <div>
-      <div role="tablist" aria-label={t.title} className="flex flex-wrap gap-2">
+      {/* underline tabs: the selected year gets the accent line, the rest stay quiet */}
+      <div role="tablist" aria-label={t.title} className="no-scrollbar -mx-4 flex gap-8 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
         {data.map((d) => (
           <button
             key={d.year}
@@ -23,22 +25,30 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
             aria-selected={d.year === sel}
             aria-controls="year-panel"
             onClick={() => setSel(d.year)}
-            className={`h-10 rounded-lg border px-4 text-sm font-medium tabular-nums ${
-              d.year === sel ? "border-accent bg-accent text-white" : "border-ink/10 bg-card text-ink-2 hover:bg-raised"
+            className={`-mb-px shrink-0 border-b-2 pb-3 text-base tabular-nums transition-colors ${
+              d.year === sel ? "border-accent font-medium text-accent-ink" : "border-transparent text-ink-2 hover:text-ink"
             }`}
           >
             {t.yearTab} {label(d.year)}
           </button>
         ))}
       </div>
-      <div role="tabpanel" id="year-panel" aria-labelledby={`year-${cur.year}`} className="mt-8">
-        <h2 className="text-xl font-medium">
-          {t.resultTitle} {label(cur.year)}
-          <span className="ml-3 text-sm font-normal tabular-nums text-ink-3">
+      <div key={cur.year} role="tabpanel" id="year-panel" aria-labelledby={`year-${cur.year}`} className="page-swap mt-10">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+          <h2 className="text-2xl font-medium">
+            {t.resultTitle} {label(cur.year)}
+          </h2>
+          <p className="text-sm tabular-nums text-ink-3">
             {cur.people.length} {t.count}
-          </span>
-        </h2>
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {levels.map((x) => (
+              <span key={x.lv}>
+                {" · "}
+                {cur.people.find((p) => p.level.en === `Level ${x.lv}`)?.level[lang] ?? `${x.lv}`}: {x.n}
+              </span>
+            ))}
+          </p>
+        </div>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cur.people.map((p) => (
             <PasserCard key={p.id} p={p} lang={lang} />
           ))}

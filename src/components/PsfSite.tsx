@@ -6,28 +6,9 @@ import { content, type Lang } from "@/data/content";
 import { announcements, news, passers } from "@/data/mock";
 import { PasserCard } from "./PasserCard";
 import { Placeholder } from "./Placeholder";
-import { ripple } from "./ripple";
-import { TextEffect } from "./TextEffect";
 
 const PAGE = 4; // announcements shown per page
-const PASSER_PAGE = 6; // applicant cards per page (3 columns x 2 rows)
 const pageBtn = "flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-card text-ink-2 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card";
-
-function Pager({ page, pages, onPage, prev, next }: { page: number; pages: number; onPage: (p: number) => void; prev: string; next: string }) {
-  return (
-    <div className="mt-6 flex items-center justify-between gap-4">
-      <button type="button" disabled={page === 0} onClick={() => onPage(page - 1)} aria-label={prev} className={pageBtn}>
-        <Chevron dir="left" />
-      </button>
-      <span className="text-sm tabular-nums text-ink-3">
-        {page + 1} / {pages}
-      </span>
-      <button type="button" disabled={page === pages - 1} onClick={() => onPage(page + 1)} aria-label={next} className={pageBtn}>
-        <Chevron dir="right" />
-      </button>
-    </div>
-  );
-}
 
 function Chevron({ dir }: { dir: "left" | "right" }) {
   return (
@@ -79,9 +60,11 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   };
   const slide = () => track.current?.scrollBy({ left: track.current.clientWidth, behavior: "smooth" });
   const [active, setActive] = useState(0);
-  const [passerPage, setPasserPage] = useState(0);
+  const passerTrack = useRef<HTMLUListElement>(null);
+  const passersPaused = useRef(false);
   const [page, setPage] = useState(0); // announcements: PAGE per page, newest first
   const pages = Math.ceil(announcements.length / PAGE);
+  const latestYear = Math.max(...announcements.map((a) => a.year));
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -105,6 +88,30 @@ export default function PsfSite({ lang }: { lang: Lang }) {
     };
   }, []);
 
+  // passers drift left at a steady speed (rAF). The list is rendered twice, so when the first copy has scrolled out we
+  // subtract its length and the loop is seamless. Paused on hover/focus, off for reduced motion.
+  useEffect(() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const SPEED = 100; // px per second
+    let raf = 0;
+    let last = 0;
+    let pos = 0;
+    const tick = (now: number) => {
+      const el = passerTrack.current;
+      if (el) {
+        if (Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft; // user / arrow moved it: follow
+        if (!passersPaused.current && last) pos += ((now - last) / 1000) * SPEED;
+        const loop = (el.children[passers.length] as HTMLElement).offsetLeft;
+        if (loop > 0 && pos >= loop) pos -= loop;
+        el.scrollLeft = pos;
+      }
+      last = now;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   // play each [data-stagger] / [data-lines] group once, when it scrolls into view
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -125,31 +132,25 @@ export default function PsfSite({ lang }: { lang: Lang }) {
     <>
       <main>
         <section id="home" className="bg-tint">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:px-8 md:py-24">
-            <div className="rise">
-              <p className="text-sm text-ink-2">{t.hero.eyebrow}</p>
-              <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-4 block text-4xl font-medium leading-[1.2] md:text-5xl md:leading-[1.2]" />
-              {/* description starts when the title has finished */}
-              <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mt-6 block max-w-xl text-lg leading-8 text-ink-2" />
-              <div className="mt-10 flex flex-wrap items-center gap-6">
-                <a href="#passers" onClick={ripple} className="relative inline-flex h-12 overflow-hidden items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover">
-                  {t.hero.cta}
-                </a>
-                <a href="#news" className="font-medium text-ink-2 underline decoration-ink/20 underline-offset-4 hover:text-ink">
-                  {t.hero.cta2}
-                </a>
-              </div>
-            </div>
-            <Placeholder label={t.hero.imageAlt} className="rise aspect-[4/3] rounded-2xl bg-white/60! text-ink-2!" />
-          </div>
+          {/* banner fills the screen below the top bar + menu (6.5rem), anchored low so the title text is not cut */}
+          <img src="/hero-banner.jpg" alt={t.hero.imageAlt} className="block h-auto w-full md:h-[31rem] md:object-cover md:object-[50%_100%]" />
         </section>
 
-        <section id="news" className="scroll-mt-16 border-t border-ink/10">
-          <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-            <div className="grid gap-12 md:grid-cols-2 md:gap-x-32">
+        <section id="news" className="relative scroll-mt-16 overflow-hidden border-t border-ink/10 bg-[color-mix(in_srgb,var(--color-tint)_30%,var(--color-page))]">
+          {/* soft dot pattern fading out downward: fills the empty background without adding noise */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 [background-image:radial-gradient(color-mix(in_srgb,var(--color-accent)_22%,transparent)_1.2px,transparent_1.2px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_55%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-40">
+            <div className="grid gap-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:gap-x-12">
               {/* left: news carousel (one card per view, endless, dots) */}
-              <div className="min-w-0">
-                <h2 className="text-3xl font-medium">{t.news.title}</h2>
+              <div className="flex min-w-0 flex-col">
+                <div className="flex items-end justify-between gap-4">
+                  <h2 className="text-3xl font-medium">
+                    {t.news.title}
+                  </h2>
+                  <a href={`/${lang}/news`} className="text-sm font-medium text-accent-ink hover:underline">
+                    {t.news.viewAll} →
+                  </a>
+                </div>
                 <div
                   ref={track}
                   data-stagger
@@ -157,7 +158,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   onMouseLeave={() => (newsPaused.current = false)}
                   onFocus={() => (newsPaused.current = true)}
                   onBlur={() => (newsPaused.current = false)}
-                  className="no-scrollbar mt-8 flex snap-x snap-mandatory overflow-x-auto"
+                  className="no-scrollbar mt-8 flex snap-x snap-mandatory overflow-x-auto md:min-h-0 md:flex-1"
                 >
                   {/* last item = clone of the first, for the endless loop (see slide()) */}
                   {[...news, news[0]].map((n, i) => (
@@ -165,14 +166,17 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                       key={i}
                       aria-hidden={i === news.length || undefined}
                       style={idx(i)}
-                      className={`relative w-full shrink-0 snap-start overflow-hidden rounded-xl ${hairline} bg-card`}
+                      className={`relative flex w-full shrink-0 snap-start flex-col overflow-hidden rounded-xl ${hairline} bg-card transition-colors hover:border-accent/40`}
                     >
-                      <Placeholder label={t.news.imageAlt} className="aspect-video" />
-                      <div className="p-4 md:p-6">
+                      <div className="relative flex flex-1 flex-col">
+                        <Placeholder label={t.news.imageAlt} className="aspect-[16/11] bg-gradient-to-br from-tint to-raised md:aspect-auto md:min-h-72 md:flex-1" />
+                        <span className="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-medium text-white">{t.news.tag}</span>
+                      </div>
+                      <div className="p-5 md:p-8">
                         <time dateTime={n.date} className="text-xs tabular-nums text-ink-3">
                           {new Date(n.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </time>
-                        <h3 className="mt-2 text-base font-medium md:text-xl">
+                        <h3 className="mt-2 text-lg font-medium md:text-2xl">
                           {/* stretched button: the whole card opens the dialog; the hidden clone is skipped by keyboard */}
                           <button
                             type="button"
@@ -206,26 +210,36 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
               {/* right: announcements list, independent of the carousel */}
               <div>
-                <h2 className="text-3xl font-medium">{t.news.announcements}</h2>
+                <div className="flex items-end justify-between gap-4">
+                  <h2 className="text-3xl font-medium">
+                    {t.news.announcements}
+                  </h2>
+                  <a href={`/${lang}/announcement`} className="text-sm font-medium text-accent-ink hover:underline">
+                    {t.news.viewAll} →
+                  </a>
+                </div>
                 <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
                   {/* always 4 rows: a short last page is padded with invisible copies, so the arrows never move */}
                   {Array.from({ length: PAGE }, (_, i) => {
                     const shown = announcements[page * PAGE + i];
                     const a = shown ?? announcements[page * PAGE];
                     return (
-                      <li key={shown ? a.id : `pad-${i}`} style={idx(i)} aria-hidden={!shown || undefined} className={`overflow-hidden ${shown ? "" : "invisible"}`}>
-                        <div className="line py-4">
-                        <time dateTime={a.date} className="text-xs tabular-nums text-ink-3">
-                          {new Date(a.date).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                        </time>
-                        <p className="mt-1 font-medium">
-                          <a href={`/${lang}${a.href}`} className="hover:text-accent-ink">
-                            {a.title[lang]}
-                          </a>
-                        </p>
-                        <a href={`/${lang}${a.href}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
-                          {t.news.readMore}
-                        </a>
+                      <li key={shown ? a.id : `pad-${i}`} style={idx(i)} aria-hidden={!shown || undefined} className={`page-swap overflow-hidden ${shown ? "" : "invisible"}`}>
+                        <div className={`line flex gap-6 px-4 py-5 ${a.year === latestYear ? "bg-accent/10" : ""}`}>
+                          <span className="w-28 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
+                            {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
+                            {a.year === latestYear && <span className="mt-2 block w-fit rounded-md bg-accent px-2.5 py-0.5 text-sm font-medium text-white">{t.news.isNew}</span>}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="line-clamp-2 font-medium" title={a.title[lang]}>
+                              <a href={`/${lang}${a.href}`} className="hover:text-accent-ink">
+                                {a.title[lang]}
+                              </a>
+                            </p>
+                            <a href={`/${lang}${a.href}`} className="mt-2 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 transition-colors hover:decoration-accent-ink">
+                              {t.news.readMore}
+                            </a>
+                          </div>
                         </div>
                       </li>
                     );
@@ -247,55 +261,60 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        <section id="passers" className="scroll-mt-16 border-t border-ink/10">
-          <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-            <h2 className="text-3xl font-medium">{t.passers.title}</h2>
+        <section id="passers" className="scroll-mt-16 border-t border-ink/10 bg-card">
+          <div className="mx-auto max-w-6xl px-4 py-16 md:px-8">
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="text-3xl font-medium">{t.passers.title}</h2>
+              <a href={`/${lang}/publicity`} className="shrink-0 text-sm font-medium text-accent-ink hover:underline">
+                {t.news.viewAll} →
+              </a>
+            </div>
             <p className="mt-2 text-ink-2">{t.passers.desc}</p>
-            <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {passers.slice(passerPage * PASSER_PAGE, (passerPage + 1) * PASSER_PAGE).map((p, i) => (
-                <PasserCard key={p.id} p={p} lang={lang} style={idx(i)} />
+            {/* one quiet line of counts, taken from the data */}
+            <p className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm tabular-nums text-ink-3">
+              <span>
+                {t.passers.total} <b className="font-medium text-ink">{passers.length}</b> {t.passers.people}
+              </span>
+              {[1, 2, 3].map((lv) => {
+                const of = passers.filter((p) => p.level.en === `Level ${lv}`);
+                return (
+                  <span key={lv}>
+                    {of[0]?.level[lang]} <b className="font-medium text-ink">{of.length}</b> {t.passers.people}
+                  </span>
+                );
+              })}
+            </p>
+            <ul
+              ref={passerTrack}
+              onMouseEnter={() => (passersPaused.current = true)}
+              onMouseLeave={() => (passersPaused.current = false)}
+              onFocus={() => (passersPaused.current = true)}
+              onBlur={() => (passersPaused.current = false)} data-stagger className="no-scrollbar mt-8 flex gap-4 overflow-x-auto">
+              {[...passers, ...passers].map((p, i) => (
+                <PasserCard key={i} p={p} lang={lang} style={idx(i % passers.length)} tall hidden={i >= passers.length} />
               ))}
             </ul>
-            {/* shortcut: a short last page moves the arrows up; mock data divides evenly, pad rows if real data does not */}
-            <Pager page={passerPage} pages={Math.ceil(passers.length / PASSER_PAGE)} onPage={setPasserPage} prev={t.passers.prev} next={t.passers.next} />
-          </div>
-        </section>
-
-        <section id="about" className="scroll-mt-16 border-t border-ink/10">
-          <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-            <h2 className="text-3xl font-medium">{t.about.title}</h2>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-2">{t.about.intro}</p>
-            <h3 className="mt-12 text-sm text-ink-3">{t.about.missionTitle}</h3>
-            <ul data-stagger className="mt-4 grid gap-4 md:grid-cols-3">
-              {t.about.mission.map((m, i) => (
-                <li key={i} style={idx(i)} className={`rounded-xl ${hairline} bg-card p-6`}>
-                  <span className="block text-sm tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="mt-4 block text-base">{m}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 text-sm text-ink-3">{t.about.note}</p>
           </div>
         </section>
 
         <section id="process" className="scroll-mt-16 border-t border-ink/10">
           <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
             <h2 className="text-3xl font-medium">{t.process.title}</h2>
-            <ul className="bento mt-8">
+            <ol data-stagger className="mt-10 grid md:grid-cols-4">
               {t.process.tiles.map((tile, i) => (
-                <li key={tile.label} className={`bento-tile bento-${i + 1} relative`}>
-                  <span className="font-mono text-xs tracking-wide text-ink-3">{tile.label}</span>
-                  <div>
-                    <h3 className={i === 0 ? "text-2xl font-medium" : "text-lg font-medium"}>
-                      <a href={`/${lang}/process`} className="after:absolute after:inset-0">
-                        {tile.title}
-                      </a>
-                    </h3>
-                    <p className="mt-1 text-sm text-ink-2">{tile.desc}</p>
-                  </div>
+                <li key={tile.href} style={idx(i)} className="relative border-l border-ink/15 pb-10 pl-6 last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6">
+                  <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-accent bg-card md:-top-[5px] md:left-0" />
+                  <span aria-hidden="true" className="block text-6xl font-normal tabular-nums text-accent-ink/30">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-4 text-xl font-medium">{tile.title}</h3>
+                  <p className="mt-2 text-sm text-ink-2">{tile.desc}</p>
+                  <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 transition-colors hover:decoration-accent-ink">
+                    {tile.link}
+                  </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         </section>
       </main>

@@ -26,16 +26,17 @@ export const news = Array.from({ length: 6 }, (_, i) => {
   };
 });
 
-// เรียงใหม่ไปเก่า (id 1 = ล่าสุด) หน้าเว็บแสดงทีละ 4 รายการ
-export const announcements = Array.from({ length: 12 }, (_, i) => {
-  const n = i + 1;
-  return {
-    id: n,
-    date: `2026-${String(12 - i).padStart(2, "0")}-20`,
-    href: "/announcement", // หน้าตัวอย่างหน้าเดียว TODO: แยกหน้าจริงของแต่ละประกาศ
-    title: { th: `หัวข้อประกาศตัวอย่าง ${n}`, en: `Sample announcement title ${n}` },
-  };
-});
+// ประกาศจริงจากเว็บปัจจุบัน (ผู้ใช้ให้มา) เรียงใหม่ไปเก่า หน้าเว็บแสดงทีละ 4 รายการ ไม่มีวันที่ระบุ มีแต่ปี พ.ศ. คำแปลอังกฤษเป็นคำแปลชั่วคราว TODO ตรวจกับต้นฉบับ
+export const announcements = [
+  { id: 1, year: 2568, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน ประจำปี พ.ศ. 2568", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, B.E. 2568" } },
+  { id: 2, year: 2567, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน ประจำปี พ.ศ. 2567", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, B.E. 2567" } },
+  { id: 3, year: 2566, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการคัดเลือกอาจารย์ดีเด่น ด้านการสอน พ.ศ. 2566", en: "University of Phayao Announcement: Criteria and Procedure for the Outstanding Teaching Lecturer Selection, B.E. 2566" } },
+  { id: 4, year: 2566, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน ประจำปี พ.ศ. 2566", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, B.E. 2566" } },
+  { id: 5, year: 2565, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน มหาวิทยาลัยพะเยา ประจำปี พ.ศ. 2565", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, University of Phayao, B.E. 2565" } },
+  { id: 6, year: 2564, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน มหาวิทยาลัยพะเยา ประจำปี พ.ศ. 2564", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, University of Phayao, B.E. 2564" } },
+  { id: 7, year: 2563, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน มหาวิทยาลัยพะเยา ประจำปี พ.ศ. 2563", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, University of Phayao, B.E. 2563" } },
+  { id: 8, year: 2562, href: "/announcement", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการคัดเลือกอาจารย์ดีเด่น ด้านการสอน มหาวิทยาลัยพะเยา ประจำปี พ.ศ. 2562", en: "University of Phayao Announcement: Results of the Outstanding Teaching Lecturer Selection, University of Phayao, B.E. 2562" } },
+];
 
 // ประกาศผลแยกตามปี (พ.ศ. 2567-2570) ใหม่ไปเก่า สำหรับหน้าข่าวประชาสัมพันธ์ ข้อมูลสมมติทั้งหมด
 export type Passer = (typeof passers)[number];
