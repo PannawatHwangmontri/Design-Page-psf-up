@@ -13,7 +13,7 @@ const PAGE = 4; // announcements shown on the home page (the rest are on /announ
 const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline = "border border-ink/10";
-const linkCls = "font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink";
+const linkCls = "font-semibold text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 
 // Section head: eyebrow, heavy heading, optional link on the right, hairline across the full width below
 function Head({ eyebrow, title, intro, action }: { eyebrow: string; title: string; intro?: string; action?: React.ReactNode }) {
@@ -21,7 +21,7 @@ function Head({ eyebrow, title, intro, action }: { eyebrow: string; title: strin
     <div className="border-b border-ink/15 pb-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="eyebrow text-ink-2">{eyebrow}</p>
+          <p className="eyebrow text-accent-ink">{eyebrow}</p>
           <h2 className="mt-4 text-3xl leading-[1.3] md:text-5xl md:leading-[1.25]">{title}</h2>
         </div>
         {action}
@@ -67,8 +67,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
     <main>
       {/* hero: desaturated photo under a dark scrim, left-aligned text, the single gradient button */}
       <section id="home" className="relative isolate flex min-h-[600px] flex-col justify-center overflow-hidden bg-forest text-white md:min-h-[720px]">
-        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="absolute inset-0 -z-20 h-full w-full object-cover grayscale" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/60" />
+        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-forest/70" />
         <div className="mx-auto w-full max-w-6xl px-4 pb-32 pt-20 md:px-8">
           <p className="eyebrow rise text-white/70">{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-5 block max-w-4xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]" />
@@ -156,7 +156,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               <li key={n.id} style={idx(i)}>
                 <a href={`/${lang}/news/${n.id}`} className={`group flex h-full flex-col rounded-xl bg-card p-3 ${hairline}`}>
                   {n.image ? (
-                    <img src={n.image} alt={t.news.imageAlt} className={`aspect-[16/10] w-full rounded-xl ${hairline} object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0`} />
+                    <img src={n.image} alt={t.news.imageAlt} className={`aspect-[16/10] w-full rounded-xl ${hairline} object-cover`} />
                   ) : (
                     <Placeholder label={t.news.imageAlt} className="aspect-[16/10] rounded-xl" />
                   )}
@@ -184,7 +184,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 <div className="line flex gap-6 py-5">
                   <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-2">
                     {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                    {a.year === latestYear && <span className="eyebrow mt-2 block text-ink">{t.news.isNew}</span>}
+                    {a.year === latestYear && <span className="eyebrow mt-2 block text-accent-ink">{t.news.isNew}</span>}
                   </span>
                   <p className="line-clamp-2 min-w-0 font-semibold" title={a.title[lang]}>
                     <a href={`/${lang}/announcement/${a.id}`} className="hover:underline">
@@ -200,8 +200,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
       {/* the oversized wordmark moment: 243px "UP PSF" over a desaturated photo, with one real number */}
       <section aria-label={t.passers.total} className="relative isolate overflow-hidden bg-forest text-white">
-        <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover grayscale" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/75" />
+        <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-forest/80" />
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
           <p aria-hidden="true" className="text-[clamp(96px,21vw,243px)] font-extrabold leading-none tracking-[-0.074em]">
             UP PSF
@@ -225,13 +225,13 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <Head eyebrow="PSF" title={t.levels.title} intro={t.levels.desc} />
           <ol data-stagger className="mt-10 grid gap-3 md:grid-cols-3">
             {t.levels.items.map((l, n) => (
-              <li key={l.name} style={idx(n)} className={`flex flex-col rounded-xl bg-card p-6 ${hairline}`}>
+              <li key={l.name} style={{ ...idx(n), borderTopWidth: 4, borderTopColor: `var(--color-level-${n + 1})` }} className={`flex flex-col rounded-xl bg-card p-6 ${hairline}`}>
                 <div className="flex items-start justify-between">
                   <p className="eyebrow flex items-center gap-2">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: `var(--color-level-${n + 1})` }} />
                     {l.name}
                   </p>
-                  <span aria-hidden="true" className="text-6xl font-extrabold leading-none tabular-nums text-ink/10">
+                  <span aria-hidden="true" className="text-6xl font-extrabold leading-none tabular-nums text-accent/15">
                     {n + 1}
                   </span>
                 </div>
@@ -248,8 +248,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <ol data-stagger className="mt-10 grid md:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
               <li key={tile.href} style={idx(i)} className="relative border-l border-ink/15 pb-10 pl-6 last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6">
-                <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-ink bg-card md:-top-[5px] md:left-0" />
-                <span aria-hidden="true" className="block text-6xl font-extrabold tabular-nums text-ink/15">
+                <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-accent bg-card md:-top-[5px] md:left-0" />
+                <span aria-hidden="true" className="block text-6xl font-extrabold tabular-nums text-accent/25">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-4 text-xl">{tile.title}</h3>
@@ -277,7 +277,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 aria-selected={lvl === n}
                 onClick={() => setLvl(n)}
                 className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors ${
-                  lvl === n ? "border-ink font-semibold text-ink" : "border-transparent text-ink-2 hover:text-ink"
+                  lvl === n ? "border-accent font-semibold text-accent-ink" : "border-transparent text-ink-2 hover:text-ink"
                 }`}
               >
                 {n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}{" "}
