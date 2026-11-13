@@ -81,6 +81,58 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         )}
       </section>
 
+      {/* quick links: bento of rounded tiles. Two big photo tiles lead (apply, passers), the rest are card or dark tiles;
+          photos zoom slowly on hover and each arrow turns accent. Layout per index: span, photo (if any), tone. */}
+      <section aria-label={t.home.quickTitle} className="relative">
+        <div className="mx-auto max-w-6xl px-4 pt-12 md:px-8 md:pt-16">
+          <ul data-stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4">
+            {t.home.quick.map((q, i) => {
+              const cfg = [
+                { span: "lg:col-span-6 lg:row-span-2 min-h-[320px]", photo: "/img/does/activity-signing.webp", big: true },
+                { span: "lg:col-span-3 min-h-[200px]" },
+                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/does/activity-award.jpg" },
+                { span: "lg:col-span-3 min-h-[200px]" },
+                { span: "lg:col-span-3 min-h-[200px]", dark: true },
+                { span: "sm:col-span-2 lg:col-span-12 min-h-[140px]" },
+              ][i] ?? { span: "lg:col-span-3" };
+              const onDark = !!cfg.photo || !!cfg.dark;
+              return (
+                <li key={q.href} style={idx(i)} className={cfg.span}>
+                  <a
+                    href={`/${lang}${q.href}`}
+                    className={`group relative isolate flex h-full min-h-[inherit] flex-col justify-between overflow-hidden rounded-3xl border p-6 md:p-8 ${
+                      onDark ? "border-transparent bg-forest text-page" : "border-ink/10 bg-card text-ink hover:bg-raised"
+                    }`}
+                  >
+                    {cfg.photo && (
+                      <>
+                        <img src={cfg.photo} alt="" className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-ui group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
+                        <span aria-hidden="true" className="absolute inset-0 -z-10 bg-black/60 transition-colors duration-150 group-hover:bg-black/45" />
+                      </>
+                    )}
+                    <span className="flex items-start justify-between gap-4">
+                      <span className={`font-mono text-xs tabular-nums ${onDark ? "text-page/70" : "text-ink-3"}`}>{String(i + 1).padStart(2, "0")}</span>
+                      <span
+                        aria-hidden="true"
+                        className={`flex size-11 shrink-0 items-center justify-center rounded-full border text-lg transition-colors duration-150 group-hover:border-accent group-hover:bg-accent group-hover:text-white ${
+                          onDark ? "border-page/40" : "border-ink/15 text-ink-2"
+                        }`}
+                      >
+                        →
+                      </span>
+                    </span>
+                    <span className="mt-10 block">
+                      <span className={`block font-serif font-light leading-snug ${cfg.big ? "text-4xl md:text-5xl" : "text-2xl"}`}>{q.title}</span>
+                      <span className={`mt-2 block max-w-md text-sm ${onDark ? "text-page/80" : "text-ink-2"}`}>{q.desc}</span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
       {/* calendar: the real poster beside a table of the latest year's dates */}
       <section id="calendar" className="relative scroll-mt-16">
         <Side>{t.home.calendarTitle}</Side>

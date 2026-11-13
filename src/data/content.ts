@@ -49,6 +49,15 @@ export const content = {
     },
     // ปฏิทินบนหน้าแรก: ตารางสรุปปีล่าสุดจาก mock ส่วนภาพเป็นโปสเตอร์ปฏิทินประเมิน พ.ศ. 2568 จากเว็บกองบริการการศึกษา
     home: {
+      quickTitle: "ทางลัด",
+      quick: [
+        { title: "ยื่นขอรับการประเมิน", desc: "แบบฟอร์มและขั้นตอนการยื่น", href: "/documents/forms" },
+        { title: "ปฏิทินการประเมิน", desc: "กำหนดรับสมัคร ประเมิน และประกาศผล", href: "/calendar" },
+        { title: "ผู้ผ่านเกณฑ์", desc: "รายชื่อแยกตามปีและระดับ", href: "/publicity" },
+        { title: "ประกาศและคู่มือ", desc: "ประกาศ PSF ฉบับจริงของมหาวิทยาลัย", href: "/documents/manuals" },
+        { title: "ขั้นตอน PSF", desc: "ภาพรวม 4 ขั้นตอนตั้งแต่ต้นจนประกาศผล", href: "/process" },
+        { title: "ติดต่อเรา", desc: "ช่องทางสอบถามหน่วยงาน", href: "/contact" },
+      ],
       calendarTitle: "ปฏิทินการประเมิน",
       calendarLead: "กำหนดการรับสมัคร ประเมิน และประกาศผล ของปีล่าสุด",
       calendarPosterAlt: "โปสเตอร์ปฏิทินการดำเนินงานการประเมินระดับอาจารย์มืออาชีพ พ.ศ. 2568",
@@ -430,6 +439,15 @@ export const content = {
     },
     // Home calendar: summary table for the latest year (mock) next to the real B.E. 2568 poster from the Division of Educational Services site
     home: {
+      quickTitle: "Quick links",
+      quick: [
+        { title: "Apply for assessment", desc: "Forms and how to submit", href: "/documents/forms" },
+        { title: "Assessment calendar", desc: "Application, assessment and result dates", href: "/calendar" },
+        { title: "Passers", desc: "Listed by year and level", href: "/publicity" },
+        { title: "Announcements and manuals", desc: "The university's official PSF announcements", href: "/documents/manuals" },
+        { title: "PSF process", desc: "The 4 steps from start to results", href: "/process" },
+        { title: "Contact us", desc: "How to reach the unit", href: "/contact" },
+      ],
       calendarTitle: "Assessment calendar",
       calendarLead: "Application, assessment and result dates for the latest year",
       calendarPosterAlt: "Poster of the Professional Lecturer assessment calendar, B.E. 2568",
