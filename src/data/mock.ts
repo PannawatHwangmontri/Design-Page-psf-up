@@ -59,7 +59,18 @@ export const assessmentCalendars = [
       { round: 2, type: "result", start: "2027-02-10" },
     ],
   },
-] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string }[] }[];
+  {
+    year: 2568, // วันที่จากโปสเตอร์ปฏิทินจริง (does.up.ac.th) ผลประกาศระบุเป็นเดือนจึงใช้ note
+    events: [
+      { round: 1, type: "apply", start: "2025-01-02", end: "2025-01-31" },
+      { round: 1, type: "assess", start: "2025-02-01", end: "2025-02-28" },
+      { round: 1, type: "result", start: "2025-04-30", note: { th: "ภายในเดือนเมษายน 2568", en: "Within April 2025" } },
+      { round: 2, type: "apply", start: "2025-05-01", end: "2025-05-30" },
+      { round: 2, type: "assess", start: "2025-06-02", end: "2025-06-30" },
+      { round: 2, type: "result", start: "2025-08-31", note: { th: "ภายในเดือนสิงหาคม 2568", en: "Within August 2025" } },
+    ],
+  },
+] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string; note?: { th: string; en: string } }[] }[];
 
 // แบบฟอร์ม PDF สำหรับหน้า "แบบฟอร์มอื่น ๆ" ไฟล์จริงยังไม่มี ลิงก์เป็น # ชั่วคราว
 export const forms = [
@@ -69,13 +80,28 @@ export const forms = [
   { id: 4, title: { th: "แบบอุทธรณ์ผลการประเมิน", en: "Assessment appeal form" }, file: "#" /* TODO: ไฟล์ PDF จริง */, updated: "2026-06-10" },
 ];
 
-// เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน ข้อมูลตัวอย่างทั้งหมด
-export const calendarDocs = [2569, 2568, 2567].map((year, i) => ({
-  id: i + 1,
-  year,
-  title: {
-    th: `ประกาศมหาวิทยาลัยพะเยา เรื่อง ปฏิทินการประเมินระดับอาจารย์มืออาชีพ พ.ศ. ${year} (ตัวอย่าง)`,
-    en: `University of Phayao announcement: assessment calendar, B.E. ${year} (sample)`,
+// เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน poster = รูปโปสเตอร์ (มีจริงเฉพาะ 2568)
+// 2569 ชี้ไปไฟล์ PDF จริงของมหาวิทยาลัย (หลักเกณฑ์และวิธีการประเมิน 2569, public/docs) ปีอื่นยังไม่มีไฟล์
+export const calendarDocs = [
+  {
+    id: 1,
+    year: 2569,
+    title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2569", en: "University of Phayao announcement: criteria and methods of the Professional Lecturer assessment, B.E. 2569" },
+    file: "/docs/psf-criteria-2569.pdf",
+    poster: undefined as string | undefined,
   },
-  file: "#", // TODO: ไฟล์ PDF จริง
-}));
+  {
+    id: 2,
+    year: 2568,
+    title: { th: "ปฏิทินการดำเนินงานการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2568", en: "Professional Lecturer assessment calendar, University of Phayao, B.E. 2568" },
+    file: "#", // TODO: ไฟล์ PDF จริง (เว็บต้นทางมีแต่รูปโปสเตอร์)
+    poster: "/img/does/calendar-poster-2568.webp" as string | undefined,
+  },
+  {
+    id: 3,
+    year: 2567,
+    title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ปฏิทินการประเมินระดับอาจารย์มืออาชีพ พ.ศ. 2567 (ตัวอย่าง)", en: "University of Phayao announcement: assessment calendar, B.E. 2567 (sample)" },
+    file: "#", // TODO: ไฟล์ PDF จริง
+    poster: undefined as string | undefined,
+  },
+];
