@@ -21,7 +21,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
           { id: "apply", label: t.nav.outstandingApply },
         ];
         return (
-          <main className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+          <main className="mx-auto max-w-6xl px-4 pb-16 pt-28 md:px-8 md:pb-24">
             <h1 className="text-3xl font-medium leading-[1.2] md:text-4xl">{o.title}</h1>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-2">{o.intro}</p>
             <nav aria-label={o.title} className="mt-8 flex flex-wrap gap-2">

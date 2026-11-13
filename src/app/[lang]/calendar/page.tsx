@@ -13,7 +13,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         return (
           <main>
             <section className="bg-forest text-page">
-              <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+              <div className="mx-auto max-w-6xl px-4 pb-12 pt-28 md:px-8 md:pb-16">
                 <p className="text-sm text-page/70">
                   {t.nav.publicity} / {t.nav.calendar}
                 </p>
@@ -21,7 +21,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 <p className="mt-3 max-w-2xl text-page/85">{p.intro}</p>
               </div>
             </section>
-            <section className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+            <section className="mx-auto max-w-6xl px-4 pb-12 pt-28 md:px-8 md:pb-16">
               <ul className="divide-y divide-ink/10 border-y border-ink/10">
                 {calendarDocs.map((d) => {
                   const has = !!d.file && d.file !== "#";
@@ -38,7 +38,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                         <span className="ml-3 rounded-full bg-accent/10 px-3 py-0.5 text-sm font-medium tabular-nums text-accent-ink">{lang === "th" ? d.year : d.year - 543}</span>
                       </span>
                       {has ? (
-                        <a href={d.file} download className="inline-flex h-10 shrink-0 items-center rounded-lg bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover">
+                        <a href={d.file} download className="inline-flex h-10 shrink-0 items-center rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover">
                           {p.download}
                         </a>
                       ) : (

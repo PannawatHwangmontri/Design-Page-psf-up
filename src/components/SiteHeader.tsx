@@ -22,14 +22,15 @@ const caret = (dir: "down" | "right") => (
   </Icon>
 );
 
-const link = "block rounded-lg px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
+const link = "block rounded-full px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
 // display:none (not visibility) so closed panels add no horizontal scroll width
-const panel = "absolute z-20 hidden min-w-64 rounded-xl border border-ink/10 bg-card p-1";
-const panelItem = "flex items-center justify-between gap-4 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink";
+const panel = "absolute z-20 hidden min-w-64 rounded-2xl border border-ink/10 bg-card p-1";
+const panelItem = "flex items-center justify-between gap-4 rounded-full px-3 py-2 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink";
 
 // Floating capsule menu with the language switch. Contact details live in the footer. Menu = src/data/nav.ts.
 export function SiteHeader({ lang }: { lang: Lang }) {
-  const t = useSite().content[lang];
+  const { content, announcements } = useSite();
+  const t = content[lang];
   const pathname = usePathname();
   const base = `/${lang}`;
   const href = (h: string) => `${base}${h}`;
@@ -59,9 +60,21 @@ export function SiteHeader({ lang }: { lang: Lang }) {
     ));
 
   return (
-    <header className="relative z-30 border-b border-ink/10 bg-card">
-      <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="flex h-16 items-center gap-3 md:gap-6">
+    <>
+      {/* announcement bar: the latest announcement, UP purple */}
+      {announcements[0] && (
+        <div className="bg-accent px-4 py-2 text-center text-sm text-white">
+          <span className="text-white/80">{t.hero.latest}: </span>
+          <Link href={`${base}/announcement/${announcements[0].id}`} className="underline underline-offset-4 hover:no-underline">
+            {announcements[0].title[lang]}
+          </Link>
+        </div>
+      )}
+      {/* zero-height sticky wrapper: the frosted menu floats over the hero without pushing content down */}
+      <div className="sticky top-0 z-30 h-0">
+        <div className="mx-auto max-w-6xl px-4 pt-3 md:px-8">
+          <header className="rounded-2xl border border-white/40 bg-card/80 backdrop-blur-md">
+          <div className="flex h-16 items-center gap-3 pl-5 pr-3 md:gap-6">
             <Link href={base} className="flex min-w-0 items-center gap-3">
               <Placeholder label={t.logo} className="h-8 w-8 shrink-0 rounded-lg" />
               <span className="min-w-0 leading-tight">
@@ -73,7 +86,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             <nav aria-label="main" className="relative ml-auto hidden md:block" onMouseLeave={() => { setPill(null); setOpen(null); }} onBlur={() => setPill(null)} onKeyDown={(e) => e.key === "Escape" && setOpen(null)}>
               <span
                 aria-hidden="true"
-                className="nav-pill absolute inset-y-0 rounded-lg bg-accent/10"
+                className="nav-pill absolute inset-y-0 rounded-full bg-accent/10"
                 style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
               />
               <ul className="flex gap-1">
@@ -100,7 +113,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                       </Link>
                     )}
                     {item.children && (
-                      <ul className={`absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-card p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
+                      <ul className={`absolute top-full z-20 min-w-64 rounded-2xl border border-ink/10 bg-card p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
                         {item.children.map((c) => (
                           <li key={`${c.key}-${c.href}`} className="group/sub relative">
                             <Link href={href(c.href)} className={panelItem}>
@@ -133,7 +146,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                   key={l}
                   href={swap(l)}
                   aria-current={lang === l ? "true" : undefined}
-                  className={`flex h-8 items-center rounded-lg px-2 hover:text-accent-ink ${lang === l ? "bg-ink/5 font-medium text-ink" : "text-ink-3"}`}
+                  className={`flex h-8 items-center rounded-full px-2 hover:text-accent-ink ${lang === l ? "bg-ink/5 font-medium text-ink" : "text-ink-3"}`}
                 >
                   {l.toUpperCase()}
                 </Link>
@@ -145,7 +158,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               aria-expanded={menu}
               aria-controls="mobile-menu"
               onClick={() => setMenu(!menu)}
-              className="flex h-10 shrink-0 items-center rounded-lg border border-ink/10 px-4 text-sm font-medium text-ink-2 hover:bg-raised md:hidden"
+              className="flex h-10 shrink-0 items-center rounded-full border border-ink/10 px-4 text-sm font-medium text-ink-2 hover:bg-raised md:hidden"
             >
               {t.menu}
             </button>
@@ -155,7 +168,9 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               <ul>{mobileList(nav)}</ul>
             </nav>
           )}
+          </header>
+        </div>
       </div>
-    </header>
+    </>
   );
 }

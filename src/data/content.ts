@@ -49,6 +49,8 @@ export const content = {
       calendarMore: "ปฏิทินและแบบฟอร์ม",
       activity: "กิจกรรม",
       yearLabel: "พ.ศ.",
+      stats: { levels: "ระดับ PSF", passers: "ผู้ผ่านเกณฑ์", rounds: "รอบการประเมินต่อปี" },
+      ctaTitle: "พร้อมยื่นขอรับการประเมินแล้วหรือยัง",
     },
     // TODO: ข้อความระดับเป็นข้อความสมมติ รอเนื้อหาจริงจากหน่วยงาน
     levels: {
@@ -373,6 +375,8 @@ export const content = {
       calendarMore: "Calendar and forms",
       activity: "Activity",
       yearLabel: "B.E.",
+      stats: { levels: "PSF levels", passers: "Passed the criteria", rounds: "Assessment rounds a year" },
+      ctaTitle: "Ready to apply for assessment?",
     },
     // TODO: level text is sample text, waiting for real content from the unit
     levels: {

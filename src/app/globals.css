@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
-/* Tokens: see DESIGN.md. Lavender-tinted neutrals, UP purple accent, one gradient on the hero button. */
+/* Tokens: see DESIGN.md. Warm cream neutrals, UP purple accent, serif headings. */
 @theme {
-  --color-page: #f4f0fa;
-  --color-card: #ffffff;
-  --color-raised: #ebe3f6;
-  --color-ink: #1c1030;
-  --color-ink-2: #574a6e;
-  --color-ink-3: #675b7c;
-  --color-tint: #e6d9f5;
-  --color-forest: #2a0f4a;
-  /* UP purple is the accent; the gradient (mint to violet) stays on the single hero button, its hues colour the level dots */
+  --color-page: #f6f0e6;
+  --color-card: #fffbf5;
+  --color-raised: #ddd6ca;
+  --color-ink: #2a2b2f;
+  --color-ink-2: #5b5750;
+  --color-ink-3: #6a655d;
+  --color-tint: #e9ddf5;
+  --color-forest: #2a2b2f;
+  /* UP purple accent; teal / blue / purple for the three PSF levels */
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
-  --color-level-1: #00a99d;
-  --color-level-2: #2f7bff;
-  --color-level-3: #a162ff;
-  --gradient-speedrun: linear-gradient(90deg, #00c6c6 0%, #00b5f4 20%, #00a1ff 40%, #398cff 50%, #757aff 60%, #906dff 75%, #a162ff 100%);
+  --color-level-1: #2f8f83;
+  --color-level-2: #3b6fd0;
+  --color-level-3: #8d38c9;
   --font-sans: var(--font-sarabun);
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-serif: var(--font-serif-th), Georgia, serif;
   --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -35,18 +35,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Headings: heavy, tight (Thai tone marks limit how tight; see DESIGN.md). Unlayered so it wins over Tailwind font-medium. */
-h1 {
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
+/* Headings: serif (Noto Serif Thai) for h1/h2, sans semibold for card titles. Unlayered so it wins over Tailwind font-medium. */
+h1,
 h2 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 h3,
 h4 {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Eyebrow: small uppercase label above a heading (uppercase only affects Latin) */
@@ -54,15 +52,6 @@ h4 {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.33;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* The one chromatic element per view */
-.btn-gradient {
-  background-image: var(--gradient-speedrun);
-  color: #000;
-  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }

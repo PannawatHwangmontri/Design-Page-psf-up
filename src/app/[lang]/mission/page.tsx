@@ -11,7 +11,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const t = content[lang];
         const row = "mt-12 border-t border-ink/10 pt-10 md:grid md:grid-cols-[16rem_minmax(0,1fr)] md:gap-16";
         return (
-          <main className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+          <main className="mx-auto max-w-7xl px-4 pb-16 pt-28 md:px-8 md:pb-24">
             <h1 className="max-w-4xl text-3xl font-medium leading-[1.2] md:text-5xl">{t.nav.mission}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-ink-2">{t.about.intro}</p>
 

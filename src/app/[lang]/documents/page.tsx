@@ -11,12 +11,12 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         return (
           <main>
             <section className="bg-forest text-page">
-              <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+              <div className="mx-auto max-w-6xl px-4 pb-12 pt-28 md:px-8 md:pb-16">
                 <p className="text-sm text-page/70">{t.nav.documents} / {t.nav.relatedAnnouncements}</p>
                 <h1 className="mt-2 text-3xl font-medium md:text-4xl">{t.nav.relatedAnnouncements}</h1>
               </div>
             </section>
-            <section className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+            <section className="mx-auto max-w-6xl px-4 pb-12 pt-28 md:px-8 md:pb-16">
               <ul className="divide-y divide-ink/10 border-y border-ink/10">
                 {announcements.map((a) => (
                   <li key={a.id} className="flex items-center gap-4 py-4">

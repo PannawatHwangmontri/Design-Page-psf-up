@@ -24,7 +24,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   <a
                     href={f.file}
                     download
-                    className="inline-flex h-10 shrink-0 items-center rounded-lg bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover"
+                    className="inline-flex h-10 shrink-0 items-center rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover"
                   >
                     {t.download}
                   </a>

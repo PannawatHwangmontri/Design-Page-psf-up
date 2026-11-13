@@ -54,7 +54,7 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
               type="button"
               aria-pressed={lv === n}
               onClick={() => setLv(n)}
-              className={`rounded-lg border px-4 py-1.5 text-sm transition-colors ${lv === n ? "border-accent bg-accent font-medium text-white" : "border-ink/15 text-ink-2 hover:bg-accent/10 hover:text-accent-ink"}`}
+              className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${lv === n ? "border-accent bg-accent font-medium text-white" : "border-ink/15 text-ink-2 hover:bg-accent/10 hover:text-accent-ink"}`}
             >
               {n === 0 ? t.levelAll : `${t.level} ${n}`}{" "}
               <span className="tabular-nums opacity-70">{inLevel(n).length}</span>
