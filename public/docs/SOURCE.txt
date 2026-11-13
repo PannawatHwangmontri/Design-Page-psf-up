@@ -1,0 +1,13 @@
+Real PSF announcements of the University of Phayao, from https://does.up.ac.th/announce/info/33 (saved 2026-11-13).
+The PDFs are scanned images. File names were corrected on 2026-11-13 after reading the first page of each file:
+
+psf-support-2569.pdf          funding for units that promote PSF certification, 2569
+psf-awards-2569.pdf           awards for lecturers who pass the assessment, 2569
+psf-standard-2568.pdf         Professional Lecturer standard (UP-PSF), 2568
+psf-faculty-result-2568.pdf   result of the units selected for funding, FY 2568
+psf-competency-2567.pdf       developing lecturer competence, 2567
+psf-faculty-result-2567.pdf   result of the units selected for funding, FY 2567
+psf-faculty-result-2566.pdf   result of the units selected for funding, FY 2566
+psf-equivalence-2566.pdf      criteria and methods for equating levels (Thailand PSF / UK PSF to UP-PSF), 2566
+
+Not saved yet: criteria and methods of the assessment, 2569 (listed first on the source page).

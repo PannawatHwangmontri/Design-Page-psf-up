@@ -29,6 +29,7 @@ export const nav: NavItem[] = [
     children: [
       { key: "history", href: "/history" },
       { key: "mission", href: "/mission" },
+      { key: "eligibility", href: "/eligibility" },
       { key: "processPage", href: "/process" },
       { key: "assessment", href: "/assessment" },
     ],

@@ -20,7 +20,7 @@
 - `npm run dev` รันเว็บในเครื่อง
 - `npm run build` สร้างและ prerender ทุกหน้า
 - `npx tsc --noEmit` ตรวจชนิดข้อมูล
-- `npx eslint src` ตรวจ lint ตอนนี้ยังมี error เดิม 1 จุด: `src/app/[lang]/assessment/page.tsx` บรรทัด 27 ("Calling setState synchronously within an effect") ยังไม่ได้แก้ ถ้ามี error เพิ่มจากงานของคุณให้แก้ก่อนส่ง
+- `npx eslint src` ตรวจ lint ตอนนี้ 0 error (มีแต่ warning เรื่อง `<img>`) ถ้ามี error เพิ่มจากงานของคุณให้แก้ก่อนส่ง
 - ถ้า dev server แสดง CSS เก่า ให้แตะไฟล์ `globals.css` หรือรีเฟรชแบบ hard refresh
 
 ## โครงสร้างโค้ด
@@ -41,7 +41,7 @@
 |---|---|
 | หน้าแรก | `/` (Hero, ปฏิทิน, ข่าว, ประกาศ, ผู้ผ่านเกณฑ์, ขั้นตอน PSF) |
 | ประชาสัมพันธ์ | `/publicity` (ข่าวและผู้ผ่านเกณฑ์แยกปี 2566–2569), `/calendar`, `/outstanding` (อาจารย์ดีเด่นด้านการสอน) |
-| เกี่ยวกับ | `/history`, `/mission`, `/process`, `/assessment` |
+| เกี่ยวกับ | `/history`, `/mission`, `/eligibility`, `/process`, `/assessment` |
 | เอกสาร | `/documents/forms`, `/documents/manuals` (ประกาศ PSF จริง 8 ไฟล์) |
 | ช่วยเหลือ | `/faq`, `/contact` (ข้อมูลตัวอย่าง ติดป้าย "ตัวอย่าง") |
 
@@ -50,7 +50,7 @@
 ## ไฟล์จริงจากเว็บมหาวิทยาลัย
 
 - `public/img/does` รูปกิจกรรมจริงจาก https://does.up.ac.th (ที่มาใน `SOURCE.txt`) เป็นรูปคนจริง ต้องขออนุญาตเจ้าของก่อนเผยแพร่จริง
-- `public/docs` ประกาศ PSF จริง 8 ไฟล์จาก https://does.up.ac.th/announce/info/33
+- `public/docs` ประกาศ PSF จริง 8 ไฟล์จาก https://does.up.ac.th/announce/info/33 (ไฟล์เป็นภาพสแกน ชื่อไฟล์แก้ให้ตรงเนื้อหาแล้วเมื่อ 2026-11-13 ดู `public/docs/SOURCE.txt` ยังไม่มีไฟล์ประกาศหลักเกณฑ์และวิธีการประเมิน 2569)
 - `public/brand` โลโก้มหาวิทยาลัยจาก https://www.up.ac.th/icon/logo-up.png เป็นเครื่องหมายของมหาวิทยาลัย ห้ามเปลี่ยนสี
 - ห้ามนำรูปคนจริงมาใช้คู่กับชื่อผู้ผ่านเกณฑ์สมมติ
 - ชื่อภาษาอังกฤษของไฟล์และข้อความที่ agent แปลเองเป็นคำแปลไม่เป็นทางการ

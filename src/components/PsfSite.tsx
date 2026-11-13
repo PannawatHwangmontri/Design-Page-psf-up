@@ -93,7 +93,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 { span: "lg:col-span-3 min-h-[200px]", photo: "/img/does/activity-award.jpg" },
                 { span: "lg:col-span-3 min-h-[200px]", photo: "/img/commons/kwan-phayao-morning.webp" },
                 { span: "lg:col-span-3 min-h-[200px]", dark: true },
-                { span: "sm:col-span-2 lg:col-span-12 min-h-[180px]", photo: "/img/commons/up-sign.webp" },
+                { span: "lg:col-span-6 min-h-[180px]", photo: "/img/does/activity-workshop.webp" },
+                { span: "sm:col-span-2 lg:col-span-6 min-h-[180px]", photo: "/img/commons/up-sign.webp" },
               ][i] ?? { span: "lg:col-span-3" };
               const onDark = !!cfg.photo || !!cfg.dark;
               return (
