@@ -5,6 +5,7 @@ import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { PasserTile } from "./PasserCard";
 import { Placeholder } from "./Placeholder";
+import { CountUp } from "./CountUp";
 import { TextEffect } from "./TextEffect";
 import { ripple } from "./ripple";
 
@@ -33,7 +34,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const pic = (src: string | undefined, alt: string, cls: string) =>
     src ? <img src={src} alt={alt} className={`${cls} object-cover`} /> : <Placeholder label={alt} className={cls} />;
 
-  // play each [data-stagger] / [data-lines] group once, when it scrolls into view
+  // play each [data-stagger] / [data-lines] / [data-reveal] group once, when it scrolls into view
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) =>
@@ -44,7 +45,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         }),
       { threshold: 0.1 },
     );
-    document.querySelectorAll("[data-stagger],[data-lines]").forEach((el) => io.observe(el));
+    document.querySelectorAll("[data-stagger],[data-lines],[data-reveal]").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
@@ -52,7 +53,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
     <main>
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
       <section id="home" className="relative isolate flex h-svh max-h-[960px] min-h-[600px] flex-col justify-center overflow-hidden bg-forest text-page">
-        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/55" />
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <p className="rise font-mono text-xs tracking-[0.05em] text-page/70">{t.hero.eyebrow}</p>
@@ -85,7 +86,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-medium">{t.home.calendarTitle}</h2>
+              <h2 data-reveal className="text-3xl font-medium">{t.home.calendarTitle}</h2>
               <p className="mt-2 text-ink-2">{t.home.calendarLead}</p>
             </div>
             <a href={`/${lang}/assessment`} className={`${linkCls} shrink-0 text-sm`}>
@@ -94,10 +95,10 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </div>
           <div className="mt-10 grid items-start gap-10 md:grid-cols-12 md:gap-12">
             <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className={`aspect-[615/346] w-full rounded-xl ${hairline} object-cover`} />
+              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className={`aspect-[615/346] w-full rounded-xl ${hairline} object-cover`} />
             </a>
             {cal && (
-              <div className="md:col-span-7">
+              <div data-reveal className="md:col-span-7">
                 <p className="text-sm tabular-nums text-ink-3">
                   {t.home.yearLabel} {cal.year}
                 </p>
@@ -140,14 +141,14 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.news.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-3xl font-medium">{t.news.title}</h2>
+            <h2 data-reveal className="text-3xl font-medium">{t.news.title}</h2>
             <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
           </div>
           {lead && (
             <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-12">
-              <article className="md:col-span-7">
+              <article data-reveal className="md:col-span-7">
                 <a href={`/${lang}/news/${lead.id}`} className="group block">
                   {pic(lead.image, t.news.imageAlt, "aspect-[16/10] w-full rounded-xl")}
                   <time dateTime={lead.date} className="mt-4 block text-sm tabular-nums text-ink-3">
@@ -182,7 +183,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.news.announcements}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 className="text-3xl font-medium">{t.news.announcements}</h2>
+            <h2 data-reveal className="text-3xl font-medium">{t.news.announcements}</h2>
             <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -215,7 +216,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <div>
             <p className="font-mono text-xs tracking-[0.05em] text-page/70">{t.passers.total}</p>
             <p className="mt-3 font-serif text-7xl font-light tabular-nums md:text-8xl">
-              {passedTotal} <span className="text-3xl md:text-4xl">{t.passers.people}</span>
+              <CountUp value={passedTotal} /> <span className="text-3xl md:text-4xl">{t.passers.people}</span>
             </p>
           </div>
           <a href={`/${lang}/publicity`} className="text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
@@ -229,7 +230,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.levels.title}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 className="text-3xl font-medium">{t.levels.title}</h2>
+            <h2 data-reveal className="text-3xl font-medium">{t.levels.title}</h2>
             <p className="mt-3 text-ink-2">{t.levels.desc}</p>
           </div>
           <ol data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
@@ -252,7 +253,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       <section id="process" className="relative scroll-mt-16">
         <Side>{t.process.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <h2 className="text-3xl font-medium">{t.process.title}</h2>
+          <h2 data-reveal className="text-3xl font-medium">{t.process.title}</h2>
           <ol data-stagger className="mt-10 grid md:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
               <li key={tile.href} style={idx(i)} className="group relative border-l border-ink/15 pb-10 pl-6 last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6">
@@ -275,7 +276,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.passers.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-3xl font-medium">{t.passers.title}</h2>
+            <h2 data-reveal className="text-3xl font-medium">{t.passers.title}</h2>
             <a href={`/${lang}/publicity`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>

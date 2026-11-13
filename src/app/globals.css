@@ -132,6 +132,52 @@ button {
   }
 }
 
+/* Reveal: headings and blocks marked [data-reveal] fade and rise once when they scroll into view (same observer as
+   [data-stagger]). [data-reveal="image"] wipes in from the top while it settles from a slight zoom. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-in]) {
+    opacity: 0;
+  }
+  [data-reveal][data-in] {
+    animation: reveal 800ms var(--ease-ui) backwards;
+  }
+  [data-reveal="image"]:not([data-in]) {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+  }
+  [data-reveal="image"][data-in] {
+    animation: reveal-image 1100ms var(--ease-ui) backwards;
+  }
+  /* hero photo: a slow settle from a slight zoom, once on load */
+  .hero-zoom {
+    animation: hero-zoom 14s var(--ease-ui) both;
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@keyframes reveal-image {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
+  }
+  to {
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 /* Page swap: a list that changes page or year (remounted by key) fades in and rises a few px. Rows are staggered by --i. */
 .page-swap {
   animation: page-swap 400ms var(--ease-ui) backwards;

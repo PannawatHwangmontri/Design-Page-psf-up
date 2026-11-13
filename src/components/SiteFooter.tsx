@@ -11,7 +11,10 @@ export function SiteFooter({ lang }: { lang: Lang }) {
     <footer className="bg-forest text-page">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-12 md:px-8">
         <div className="md:col-span-6">
-          <p className="font-serif text-2xl font-light">{t.siteName}</p>
+          <span className="inline-block rounded-xl bg-card p-3">
+            <img src="/brand/logo-up.png" alt={t.siteOrg} width={188} height={40} className="h-10 w-auto" />
+          </span>
+          <p className="mt-6 font-serif text-2xl font-light">{t.siteName}</p>
           <p className="mt-1 font-mono text-xs tracking-[0.05em] text-page/60">{t.siteOrg}</p>
         </div>
         <ul className="space-y-1 text-sm text-page/80 md:col-span-6">

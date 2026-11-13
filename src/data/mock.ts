@@ -105,3 +105,17 @@ export const calendarDocs = [
     poster: undefined as string | undefined,
   },
 ];
+
+// ประกาศ/หลักเกณฑ์ PSF จริงจาก https://does.up.ac.th/announce/info/33 (ไฟล์อยู่ใน public/docs) ชื่ออังกฤษเป็นคำแปลไม่เป็นทางการ
+// ไม่อยู่ใน defaults ของ /admin จึงแก้ที่ไฟล์นี้
+export type Manual = { id: number; year: number; title: { th: string; en: string }; file: string };
+export const manuals: Manual[] = [
+  { id: 1, year: 2569, file: "/docs/psf-criteria-2569.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2569", en: "Announcement: criteria and methods of the Professional Lecturer assessment, B.E. 2569" } },
+  { id: 2, year: 2569, file: "/docs/psf-support-2569.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง เงินสนับสนุนสำหรับส่วนงานที่ส่งเสริมการขอรับการรับรองระดับอาจารย์มืออาชีพ พ.ศ. 2569", en: "Announcement: funding for units that promote applications for Professional Lecturer recognition, B.E. 2569" } },
+  { id: 3, year: 2569, file: "/docs/psf-awards-2569.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง รางวัลสำหรับอาจารย์ที่ผ่านการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2569", en: "Announcement: awards for lecturers who passed the Professional Lecturer assessment, B.E. 2569" } },
+  { id: 4, year: 2568, file: "/docs/psf-standard-2568.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง มาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2568", en: "Announcement: the Professional Lecturer Standards, University of Phayao, B.E. 2568" } },
+  { id: 5, year: 2568, file: "/docs/psf-faculty-result-2568.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการพิจารณาส่วนงานที่ส่งเสริมการขอรับการรับรองระดับอาจารย์มืออาชีพ ประจำปีงบประมาณ พ.ศ. 2568", en: "Announcement: results for units that promote Professional Lecturer recognition, fiscal year B.E. 2568" } },
+  { id: 6, year: 2567, file: "/docs/psf-competency-2567.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง การพัฒนาสมรรถนะอาจารย์ มหาวิทยาลัยพะเยา พ.ศ. 2567", en: "Announcement: developing lecturer competence, University of Phayao, B.E. 2567" } },
+  { id: 7, year: 2567, file: "/docs/psf-faculty-result-2567.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการพิจารณาส่วนงานที่ส่งเสริมการขอรับการรับรองระดับอาจารย์มืออาชีพ ประจำปีงบประมาณ พ.ศ. 2567", en: "Announcement: results for units that promote Professional Lecturer recognition, fiscal year B.E. 2567" } },
+  { id: 8, year: 2566, file: "/docs/psf-faculty-result-2566.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการพิจารณาส่วนงานที่ส่งเสริมการขอรับการรับรองระดับอาจารย์มืออาชีพ ประจำปีงบประมาณ พ.ศ. 2566", en: "Announcement: results for units that promote Professional Lecturer recognition, fiscal year B.E. 2566" } },
+];

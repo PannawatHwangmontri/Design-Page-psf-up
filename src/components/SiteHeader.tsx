@@ -6,7 +6,6 @@ import { useState } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
-import { Placeholder } from "./Placeholder";
 
 function Icon({ children, size = 16 }: { children: React.ReactNode; size?: number }) {
   return (
@@ -22,7 +21,7 @@ const caret = (dir: "down" | "right") => (
   </Icon>
 );
 
-const link = "block rounded-full px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
+const link = "block whitespace-nowrap rounded-full px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
 // display:none (not visibility) so closed panels add no horizontal scroll width
 const panel = "absolute z-20 hidden min-w-64 rounded-xl border border-ink/10 bg-card p-1";
 const panelItem = "flex items-center justify-between gap-4 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink";
@@ -61,11 +60,11 @@ export function SiteHeader({ lang }: { lang: Lang }) {
   return (
     // zero-height sticky wrapper: the capsule floats over the page (and over the hero image) without pushing content down
     <div className="sticky top-0 z-30 h-0">
-      <div className="mx-auto max-w-6xl px-4 pt-4 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-4 md:px-8">
         <header className="rounded-[30px] border border-ink/10 bg-page/85 backdrop-blur-md">
-          <div className="flex h-14 items-center gap-3 pl-5 pr-3 md:gap-6">
-            <Link href={base} className="flex min-w-0 items-center gap-3">
-              <Placeholder label={t.logo} className="h-8 w-8 shrink-0 rounded-lg" />
+          <div className="flex h-14 items-center gap-3 pl-5 pr-3 lg:gap-4 xl:gap-5">
+            <Link href={base} className="flex min-w-0 shrink items-center gap-3">
+              <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
                 <span className="block truncate text-base font-medium text-ink">{t.siteName}</span>
                 <span className="block font-mono text-[11px] tracking-[0.05em] text-ink-3">{t.siteOrg}</span>
@@ -129,6 +128,13 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               </ul>
             </nav>
 
+            {/* shown only where the bar has room: login from 1024px, the apply button from 1280px (both are also at the end of the mobile menu) */}
+            <Link href={`${base}/login`} className="hidden shrink-0 whitespace-nowrap text-sm text-ink-2 hover:text-accent-ink lg:block">
+              {t.nav.login}
+            </Link>
+            <Link href={`${base}/documents/forms`} className="hidden h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover xl:inline-flex">
+              {t.nav.apply}
+            </Link>
             <div className="ml-auto flex items-center gap-1 font-mono text-xs tracking-[0.05em] md:ml-0">
               {(["th", "en"] as const).map((l) => (
                 <Link
@@ -155,6 +161,14 @@ export function SiteHeader({ lang }: { lang: Lang }) {
           {menu && (
             <nav id="mobile-menu" aria-label="main mobile" className="max-h-[70vh] overflow-y-auto border-t border-ink/10 px-1 py-2 md:hidden">
               <ul>{mobileList(nav)}</ul>
+              <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
+                <Link href={`${base}/documents/forms`} onClick={() => setMenu(false)} className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-hover">
+                  {t.nav.apply}
+                </Link>
+                <Link href={`${base}/login`} onClick={() => setMenu(false)} className="py-2 text-center text-sm text-ink-2 hover:text-accent-ink">
+                  {t.nav.login}
+                </Link>
+              </div>
             </nav>
           )}
         </header>
