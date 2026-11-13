@@ -24,6 +24,14 @@ export const news = [
   { id: 4, image: "/img/does/activity-up-backdrop.webp", date: "2026-08-20", title: { th: "ชี้แจงกรอบสมรรถนะและเกณฑ์การประเมินสำหรับผู้สนใจ", en: "Briefing on the competence framework and criteria" }, excerpt: { th: "เปิดให้ผู้สนใจสอบถามเกณฑ์ ขั้นตอน และตัวอย่างหลักฐานที่ใช้ในแต่ละระดับ", en: "Open session on the criteria, the process and sample evidence for each level." } },
   { id: 5, image: "/img/does/activity-team.webp", date: "2026-07-08", title: { th: "ปรับปรุงแบบฟอร์มขอรับการประเมิน ฉบับปี 2569", en: "Updated assessment application form, 2026 edition" }, excerpt: { th: "แบบฟอร์มใหม่ลดความซ้ำซ้อนของข้อมูลและเพิ่มช่องแนบหลักฐานดิจิทัล", en: "The new form removes duplicate fields and adds a slot for digital evidence." } },
   { id: 6, image: "/img/does/campus-statue.webp", date: "2026-06-16", title: { th: "เปิดรับสมัครอาจารย์ดีเด่นด้านการสอน ประจำปีการศึกษาใหม่", en: "Outstanding Teaching Lecturer applications open" }, excerpt: { th: "อาจารย์ที่สนใจสามารถดาวน์โหลดใบสมัครและตรวจสอบคุณสมบัติได้ที่หน้าโครงการ", en: "Interested lecturers can download the application and check eligibility on the project page." } },
+  { id: 7, image: "/img/commons/kwan-phayao-sunset.webp", date: "2026-05-22", title: { th: "ประกาศปฏิทินการประเมินระดับอาจารย์มืออาชีพ ประจำปี 2569", en: "Assessment calendar for 2026 announced" }, excerpt: { th: "สรุปกำหนดการรับสมัคร ประเมิน และประกาศผลทั้ง 2 รอบของปีนี้ พร้อมไฟล์ปฏิทินให้ดาวน์โหลด", en: "Application, assessment and result dates for both rounds this year, with the calendar file to download." } },
+  { id: 8, image: "/img/does/activity-signing.webp", date: "2026-04-30", title: { th: "ลงนามความร่วมมือพัฒนาสมรรถนะอาจารย์ระหว่างส่วนงาน", en: "Units sign cooperation to develop lecturer competence" }, excerpt: { th: "ส่วนงานวิชาการร่วมกำหนดแนวทางสนับสนุนอาจารย์ที่ยื่นขอรับการประเมินอย่างต่อเนื่อง", en: "Academic units agree on continued support for lecturers applying for assessment." } },
+  { id: 9, image: "/img/commons/kwan-phayao-morning.webp", date: "2026-04-10", title: { th: "อบรมเชิงปฏิบัติการ: การออกแบบการเรียนรู้เชิงรุก", en: "Workshop: designing active learning" }, excerpt: { th: "ผู้เข้าร่วมฝึกออกแบบกิจกรรมการเรียนรู้เชิงรุกและเก็บหลักฐานเพื่อใช้ประกอบการประเมิน", en: "Participants practise designing active learning activities and collecting evidence for assessment." } },
+  { id: 10, image: "/img/does/activity-gifts.webp", date: "2026-03-18", title: { th: "แลกเปลี่ยนเรียนรู้: เคล็ดลับการเตรียมแฟ้มหลักฐานเชิงประจักษ์", en: "Sharing session: tips for preparing the evidence portfolio" }, excerpt: { th: "ผู้ผ่านเกณฑ์รอบก่อนแนะนำการจัดโครงสร้างแฟ้มและตัวอย่างหลักฐานที่คณะกรรมการมองหา", en: "Past passers explain how to structure the portfolio and what evidence the committee looks for." } },
+  { id: 11, image: "/img/commons/ce-building-dusk.webp", date: "2026-02-26", title: { th: "เปิดรับคำขอรับการประเมินระดับอาจารย์มืออาชีพ รอบที่ 1", en: "Applications open for the first assessment round" }, excerpt: { th: "รับคำขอตั้งแต่วันที่ 2 ถึง 27 กุมภาพันธ์ ตรวจสอบแบบฟอร์มและคุณสมบัติก่อนยื่น", en: "Applications run from 2 to 27 February. Check the forms and eligibility before you apply." } },
+  { id: 12, date: "2026-01-20", title: { th: "ชี้แจงขั้นตอนการอุทธรณ์ผลการประเมิน", en: "How to appeal an assessment result" }, excerpt: { th: "อธิบายช่องทาง เงื่อนไข และระยะเวลาการยื่นอุทธรณ์ พร้อมแบบฟอร์มที่เกี่ยวข้อง", en: "Explains the channel, conditions and time limit for an appeal, with the related form." } },
+  { id: 13, image: "/img/commons/up-sign.webp", date: "2025-12-12", title: { th: "สรุปผลการดำเนินงาน PSF ประจำปี 2568", en: "PSF progress summary for 2025" }, excerpt: { th: "รวบรวมจำนวนผู้ยื่นและผู้ผ่านเกณฑ์ตามระดับ พร้อมข้อเสนอแนะเพื่อปรับปรุงปีถัดไป", en: "Numbers of applicants and passers by level, with suggestions for next year." } },
+  { id: 14, image: "/img/does/activity-meeting.webp", date: "2025-11-05", title: { th: "ประชุมคณะกรรมการพิจารณาเกณฑ์การประเมิน ครั้งที่ 3", en: "Assessment criteria committee, meeting 3" }, excerpt: { th: "ที่ประชุมพิจารณาปรับถ้อยคำของเกณฑ์ระดับ 2 และ 3 ให้ชัดเจนขึ้น", en: "The committee reviews clearer wording for the level 2 and 3 criteria." } },
 ] as NewsItem[];
 
 // ประกาศจริงจากเว็บปัจจุบัน (ผู้ใช้ให้มา) เรียงใหม่ไปเก่า หน้าเว็บแสดงทีละ 4 รายการ ไม่มีวันที่ระบุ มีแต่ปี พ.ศ. คำแปลอังกฤษเป็นคำแปลชั่วคราว TODO ตรวจกับต้นฉบับ
@@ -81,13 +89,13 @@ export const forms = [
 ];
 
 // เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน poster = รูปโปสเตอร์ (มีจริงเฉพาะ 2568)
-// 2569 ชี้ไปไฟล์ PDF จริงของมหาวิทยาลัย (หลักเกณฑ์และวิธีการประเมิน 2569, public/docs) ปีอื่นยังไม่มีไฟล์
+// ยังไม่มีไฟล์ PDF ปฏิทินจริงของปีใด (ปุ่มดูเอกสาร/ดาวน์โหลดในหน้า /calendar จะแสดงเมื่อ file ไม่ใช่ "#") ประกาศหลักเกณฑ์ 2569 (psf-criteria-2569.pdf) ไม่ใช่ปฏิทิน จึงอยู่เฉพาะหน้าคู่มือ
 export const calendarDocs = [
   {
     id: 1,
     year: 2569,
-    title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2569", en: "University of Phayao announcement: criteria and methods of the Professional Lecturer assessment, B.E. 2569" },
-    file: "/docs/psf-criteria-2569.pdf",
+    title: { th: "ปฏิทินการดำเนินงานการประเมินระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2569 (ตัวอย่าง)", en: "Professional Lecturer assessment calendar, University of Phayao, B.E. 2569 (sample)" },
+    file: "#", // TODO: ไฟล์ PDF ปฏิทินจริง
     poster: undefined as string | undefined,
   },
   {

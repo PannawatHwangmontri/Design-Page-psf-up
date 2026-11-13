@@ -1,5 +1,6 @@
 "use client";
 
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { WithLang } from "@/components/WithLang";
 
 // อื่น ๆ (เมนู เอกสาร > อื่น ๆ): รายการเอกสารแบบเดียวกับหน้าปฏิทิน ไม่มีแท็บ
@@ -14,7 +15,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               <img src="/img/does/activity-workshop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
               <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/70">{t.nav.documents} / {t.nav.relatedAnnouncements}</p>
+                <Breadcrumb lang={lang} items={[{ label: t.nav.documents }, { label: t.nav.relatedAnnouncements }]} />
                 <h1 className="mt-5 max-w-3xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{t.nav.relatedAnnouncements}</h1>
               </div>
             </section>

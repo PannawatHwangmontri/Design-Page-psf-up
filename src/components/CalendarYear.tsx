@@ -47,9 +47,7 @@ export function CalendarYear({ lang, doc, events, borrowedFrom }: { lang: Lang; 
                 {c.download}
               </a>
             </>
-          ) : (
-            <span className="text-sm text-ink-3">{c.noFile}</span>
-          )}
+          ) : null}
         </div>
       </div>
 

@@ -196,8 +196,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   <time dateTime={lead.date} className="mt-4 block text-sm tabular-nums text-ink-3">
                     {fullDate(lead.date)}
                   </time>
-                  <h3 className="mt-1 text-2xl font-medium group-hover:text-accent-ink">{lead.title[lang]}</h3>
-                  <p className="mt-2 text-ink-2">{lead.excerpt[lang]}</p>
+                  <h3 className="mt-1 line-clamp-3 text-2xl font-medium group-hover:text-accent-ink">{lead.title[lang]}</h3>
+                  <p className="mt-2 line-clamp-3 text-ink-2">{lead.excerpt[lang]}</p>
                 </a>
               </article>
               <ul data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-5 md:self-start">
@@ -216,6 +216,22 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 ))}
               </ul>
             </div>
+          )}
+          {/* more stories: the next four after the lead and the three beside it (the full list is on /news) */}
+          {rest.length > 3 && (
+            <ul data-stagger className="mt-12 grid grid-cols-2 gap-4 border-t border-ink/10 pt-10 sm:gap-6 lg:grid-cols-4">
+              {rest.slice(3, 7).map((n, i) => (
+                <li key={n.id} style={idx(i)}>
+                  <a href={`/${lang}/news/${n.id}`} className="group block">
+                    {pic(n.image, t.news.imageAlt, "aspect-[4/3] w-full rounded-xl")}
+                    <time dateTime={n.date} className="mt-3 block text-sm tabular-nums text-ink-3">
+                      {fullDate(n.date)}
+                    </time>
+                    <h3 className="mt-1 line-clamp-2 font-medium group-hover:text-accent-ink">{n.title[lang]}</h3>
+                  </a>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </section>

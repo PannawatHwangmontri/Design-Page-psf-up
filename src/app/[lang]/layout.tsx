@@ -32,8 +32,11 @@ async function LangFrame({ children, params }: { children: React.ReactNode; para
   return (
     <div lang={lang} className="flex min-h-full flex-1 flex-col">
       <LangAttr lang={lang} />
+      <a href="#content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-accent focus:px-5 focus:py-2 focus:text-sm focus:text-white">
+        {content[lang].nav.skip}
+      </a>
       <SiteHeader lang={lang} />
-      <div className="flex-1">{children}</div>
+      <div id="content" tabIndex={-1} className="flex-1 outline-none">{children}</div>
       <SiteFooter lang={lang} />
     </div>
   );

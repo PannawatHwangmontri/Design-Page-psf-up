@@ -11,6 +11,8 @@ export const content = {
     contact: { address: "19 หมู่ 2 ต.แม่กา อ.เมือง จ.พะเยา 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
     nav: {
       home: "หน้าแรก",
+      skip: "ข้ามไปยังเนื้อหา",
+      breadcrumb: "เส้นทางหน้า",
       about: "เกี่ยวกับ",
       history: "ความเป็นมา",
       mission: "พันธกิจ",
@@ -403,6 +405,8 @@ export const content = {
     contact: { address: "19 Moo 2, Mae Ka, Mueang, Phayao 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
     nav: {
       home: "Home",
+      skip: "Skip to content",
+      breadcrumb: "Breadcrumb",
       about: "About",
       history: "History",
       mission: "Mission",

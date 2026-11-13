@@ -19,7 +19,7 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
   const shown = inLevel(lv);
   return (
     <div className="grid gap-10 md:grid-cols-12 md:gap-12">
-      <div className="md:col-span-3">
+      <div className="min-w-0 md:col-span-3">
         <div className="md:sticky md:top-28">
           <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{t.yearTab}</p>
           <div role="tablist" aria-label={t.title} className="no-scrollbar -mx-4 mt-3 flex gap-6 overflow-x-auto px-4 md:mx-0 md:flex-col md:gap-1 md:px-0">
@@ -59,7 +59,7 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
         </div>
       </div>
 
-      <div key={cur.year} role="tabpanel" id="year-panel" aria-labelledby={`year-${cur.year}`} className="page-swap md:col-span-9">
+      <div key={cur.year} role="tabpanel" id="year-panel" aria-labelledby={`year-${cur.year}`} className="page-swap min-w-0 md:col-span-9">
         <div className="flex flex-col gap-2 border-b border-ink/10 pb-6 sm:flex-row sm:items-baseline sm:justify-between">
           <h2 className="text-3xl md:text-4xl">
             {t.resultTitle} {label(cur.year)}
