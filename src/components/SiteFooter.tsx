@@ -3,7 +3,7 @@
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 
-// Dark band like the documentary sections; contact details moved here from the old top bar.
+// Obsidian band like the hero; contact details live here.
 export function SiteFooter({ lang }: { lang: Lang }) {
   const { content } = useSite();
   const t = content[lang];
@@ -11,8 +11,8 @@ export function SiteFooter({ lang }: { lang: Lang }) {
     <footer className="bg-forest text-page">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-12 md:px-8">
         <div className="md:col-span-6">
-          <p className="font-serif text-2xl font-light">{t.siteName}</p>
-          <p className="mt-1 font-mono text-xs tracking-[0.05em] text-page/60">{t.siteOrg}</p>
+          <p className="text-2xl font-extrabold tracking-[-0.02em] text-white">{t.siteName}</p>
+          <p className="eyebrow mt-2 text-page/60">{t.siteOrg}</p>
         </div>
         <ul className="space-y-1 text-sm text-page/80 md:col-span-6">
           <li>{t.contact.address}</li>

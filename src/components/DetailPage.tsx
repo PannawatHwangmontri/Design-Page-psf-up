@@ -17,7 +17,7 @@ export function DetailPage({
   children?: React.ReactNode; // extra block under the text (e.g. download button)
 }) {
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
+    <main className="mx-auto max-w-3xl px-4 py-16 md:px-8 md:py-24">
       <Link href={backHref} className="text-sm text-ink-2 underline decoration-ink/20 underline-offset-4 hover:text-ink">
         {backLabel}
       </Link>
@@ -38,7 +38,7 @@ export function DetailPage({
 // page frame for the list pages (publicity, documents, outstanding index, assessment)
 export function PageFrame({ title, intro, children }: { title: string; intro: string; children: React.ReactNode }) {
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
+    <main className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
       <h1 className="text-3xl font-medium leading-[1.2] md:text-4xl md:leading-[1.2]">{title}</h1>
       <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-2">{intro}</p>
       <div className="mt-12">{children}</div>
@@ -47,4 +47,4 @@ export function PageFrame({ title, intro, children }: { title: string; intro: st
 }
 
 export const downloadBtn =
-  "mt-8 inline-flex h-12 items-center rounded-full bg-accent px-6 font-medium text-white hover:bg-accent-hover";
+  "mt-8 inline-flex h-12 items-center rounded-lg bg-accent px-6 font-medium text-white hover:bg-accent-hover";
