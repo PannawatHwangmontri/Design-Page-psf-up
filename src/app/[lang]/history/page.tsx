@@ -15,7 +15,7 @@ function History({ lang }: { lang: Lang }) {
   const link = "text-ink-2 underline decoration-ink/20 underline-offset-4 hover:text-accent-ink hover:decoration-accent-ink";
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+    <main className="mx-auto max-w-7xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
       <h1 className="max-w-4xl text-3xl font-medium leading-[1.2] md:text-5xl">{h.title}</h1>
       <p className="mt-6 max-w-3xl text-lg leading-8 text-ink-2">{h.intro}</p>
 

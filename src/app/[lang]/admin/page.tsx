@@ -27,7 +27,7 @@ function Admin({ lang }: { lang: Lang }) {
 
   if (!ok)
     return (
-      <main className="mx-auto max-w-3xl px-4 py-16 md:py-24">
+      <main className="mx-auto max-w-3xl px-4 pb-16 pt-32 md:pb-24">
         <p className="text-lg">{ui.needLogin}</p>
         <Link href={`/${lang}/login`} className={`${btnMain} mt-6`}>
           {ui.goLogin}
@@ -78,7 +78,7 @@ function Admin({ lang }: { lang: Lang }) {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+    <main className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-medium">{ui.title}</h1>
@@ -97,7 +97,7 @@ function Admin({ lang }: { lang: Lang }) {
             role="tab"
             aria-selected={k === key}
             onClick={() => setKey(k)}
-            className={`inline-flex h-10 items-center rounded-lg px-4 text-sm font-medium ${k === key ? "bg-accent text-white" : "border border-ink/20 text-ink-2 hover:bg-raised"}`}
+            className={`inline-flex h-10 items-center rounded-full px-4 text-sm font-medium ${k === key ? "bg-accent text-white" : "border border-ink/20 text-ink-2 hover:bg-raised"}`}
           >
             {ui.tabs[k]}
           </button>

@@ -41,7 +41,7 @@ export function GroupedEditor({
             type="button"
             aria-pressed={g.year === cur?.year}
             onClick={() => setSel(g.year)}
-            className={`h-10 rounded-lg px-4 text-sm tabular-nums ${g.year === cur?.year ? "bg-accent font-medium text-white" : "border border-ink/20 text-ink-2 hover:bg-raised"}`}
+            className={`h-10 rounded-full px-4 text-sm tabular-nums ${g.year === cur?.year ? "bg-accent font-medium text-white" : "border border-ink/20 text-ink-2 hover:bg-raised"}`}
           >
             {label(g.year)}
           </button>

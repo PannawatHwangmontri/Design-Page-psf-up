@@ -2,13 +2,14 @@
 
 /* Tokens: see DESIGN.md. Warm neutral ramp, brand purple only as accent. */
 @theme {
-  --color-page: #f7f4ee;
-  --color-card: #fdfbf7;
-  --color-raised: #efe9df;
-  --color-ink: #1f1b16;
-  --color-ink-2: #5e554a;
-  --color-ink-3: #7b7266;
-  --color-tint: #ebddf7;
+  --color-page: #fffefb;
+  --color-card: #f3f2ee;
+  --color-raised: #e7e5df;
+  --color-ink: #271503;
+  --color-ink-2: #5a4b3a;
+  --color-ink-3: #75685a;
+  --color-tint: #efe6f6;
+  --color-forest: #040c06;
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
@@ -17,6 +18,7 @@
   --color-level-3: #b7791f;
   --font-sans: var(--font-sarabun);
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-serif: var(--font-serif-th), Georgia, serif;
   --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -30,6 +32,38 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Headings: light serif (Noto Serif Thai). Unlayered on purpose, so it wins over Tailwind's font-medium on headings. */
+h1,
+h2 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+/* Section marker on the left page edge, only where the margin is wide enough */
+.side-label {
+  display: none;
+}
+@media (min-width: 1360px) {
+  .side-label {
+    display: block;
+    position: absolute;
+    left: 24px;
+    top: 96px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-3);
+  }
 }
 
 a,

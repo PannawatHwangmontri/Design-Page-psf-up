@@ -1,31 +1,30 @@
-// Mock data ทั้งหมดเป็นข้อมูลสมมติ ไม่ใช่บุคคลหรือเหตุการณ์จริง
+// Mock data ทั้งหมดเป็นข้อมูลสมมติ ไม่ใช่บุคคลหรือเหตุการณ์จริง (ชื่อบุคคลสุ่มจับคู่จากรายการชื่อทั่วไป)
+type L = { th: string; en: string };
+const firsts: [string, string][] = [["สมชาย", "Somchai"], ["วิภา", "Wipa"], ["ธนากร", "Thanakorn"], ["พิมพ์ชนก", "Pimchanok"], ["อนุชา", "Anucha"], ["กัญญา", "Kanya"], ["ปรีชา", "Preecha"], ["สุนิสา", "Sunisa"], ["ณัฐพล", "Nattaphon"], ["รัตนา", "Rattana"], ["ชัยวัฒน์", "Chaiwat"], ["มาลี", "Malee"], ["ภานุ", "Phanu"], ["อรทัย", "Orathai"]];
+const lasts: [string, string][] = [["ใจดี", "Jaidee"], ["ศรีสุข", "Srisuk"], ["แก้วมณี", "Kaewmanee"], ["วงศ์ไทย", "Wongthai"], ["บุญมา", "Boonma"], ["พรหมวงศ์", "Phromwong"], ["สุวรรณ", "Suwan"], ["ทองดี", "Thongdee"], ["จันทร์เพ็ญ", "Chanphen"], ["เจริญผล", "Charoenphon"], ["รุ่งเรือง", "Rungrueang"]];
+const units: [string, string][] = [["คณะวิทยาศาสตร์", "School of Science"], ["คณะพยาบาลศาสตร์", "School of Nursing"], ["คณะเทคโนโลยีสารสนเทศและการสื่อสาร", "School of Information and Communication Technology"], ["คณะบริหารธุรกิจและนิเทศศาสตร์", "School of Business and Communication Arts"], ["คณะศิลปศาสตร์", "School of Liberal Arts"], ["คณะแพทยศาสตร์", "School of Medicine"], ["คณะสถาปัตยกรรมศาสตร์และศิลปกรรมศาสตร์", "School of Architecture and Fine Arts"]];
+// คนที่ n: ก้าวของดัชนีต่างกัน ชื่อจึงไม่ซ้ำกันในช่วง 24 คน
+const person = (n: number, levelNo: number, year: L) => ({
+  id: n,
+  name: { th: `อ.${firsts[(n * 5) % firsts.length][0]} ${lasts[(n * 3) % lasts.length][0]}`, en: `${firsts[(n * 5) % firsts.length][1]} ${lasts[(n * 3) % lasts.length][1]}` },
+  unit: { th: units[n % units.length][0], en: units[n % units.length][1] },
+  level: { th: `ระดับ ${levelNo}`, en: `Level ${levelNo}` },
+  year,
+});
 export const passers = Array.from({ length: 18 }, (_, i) => {
-  const n = i + 1;
-  const levelNo = (i % 3) + 1;
-  const unit = String.fromCharCode(65 + (i % 3)); // A, B, C
   const yearCE = i % 2 === 0 ? 2025 : 2026;
-  return {
-    id: n,
-    name: { th: `ชื่อ นามสกุล ตัวอย่าง ${n}`, en: `Sample Name ${n}` },
-    unit: { th: `คณะ/หน่วยงาน ตัวอย่าง ${unit}`, en: `Faculty/Unit Sample ${unit}` },
-    level: { th: `ระดับ ${levelNo}`, en: `Level ${levelNo}` },
-    year: { th: String(yearCE + 543), en: String(yearCE) },
-  };
+  return person(i + 1, (i % 3) + 1, { th: String(yearCE + 543), en: String(yearCE) });
 });
 
 export type NewsItem = { id: number; date: string; title: { th: string; en: string }; excerpt: { th: string; en: string }; image?: string; file?: string };
-export const news = Array.from({ length: 6 }, (_, i): NewsItem => {
-  const n = i + 1;
-  return {
-    id: n,
-    date: `2026-0${n}-15`,
-    title: { th: `หัวข้อข่าว/กิจกรรมตัวอย่าง ${n}`, en: `Sample news / event title ${n}` },
-    excerpt: {
-      th: "ข้อความย่อตัวอย่างของข่าวหรือกิจกรรม สำหรับแสดงในการ์ด",
-      en: "Sample excerpt of a news item or event, shown on the card.",
-    },
-  };
-});
+export const news = [
+  { id: 1, image: "/img/does/activity-meeting.webp", date: "2026-11-03", title: { th: "เปิดรับคำขอรับการประเมินระดับอาจารย์มืออาชีพ รอบที่ 2", en: "Applications for the second assessment round" }, excerpt: { th: "รับคำขอตั้งแต่วันที่ 2 ถึง 30 พฤศจิกายน ผ่านแบบฟอร์มและแนบหลักฐานการปฏิบัติงานให้ครบถ้วน", en: "Applications run from 2 to 30 November. Submit the form with complete evidence of teaching practice." } },
+  { id: 2, image: "/img/does/activity-award.jpg", date: "2026-10-24", title: { th: "ประกาศผลผู้ผ่านเกณฑ์ PSF รอบที่ 1 ประจำปี 2569", en: "Round 1 PSF results announced for 2026" }, excerpt: { th: "คณะกรรมการประกาศรายชื่อผู้ผ่านเกณฑ์ทั้ง 3 ระดับ ตรวจสอบรายชื่อได้ที่หน้าผู้ผ่านเกณฑ์", en: "The committee has announced those who met the criteria at all 3 levels. See the list on the passers page." } },
+  { id: 3, image: "/img/does/activity-workshop.webp", date: "2026-09-12", title: { th: "เสวนาแลกเปลี่ยนประสบการณ์: การเขียนบันทึกสะท้อนผลการสอน", en: "Panel: writing reflective teaching statements" }, excerpt: { th: "ผู้ผ่านเกณฑ์ร่วมแบ่งปันแนวทางเตรียมหลักฐานและเรียบเรียงบันทึกสะท้อนผล", en: "Lecturers who passed share how they prepared evidence and wrote their reflections." } },
+  { id: 4, image: "/img/does/activity-up-backdrop.webp", date: "2026-08-20", title: { th: "ชี้แจงกรอบสมรรถนะและเกณฑ์การประเมินสำหรับผู้สนใจ", en: "Briefing on the competence framework and criteria" }, excerpt: { th: "เปิดให้ผู้สนใจสอบถามเกณฑ์ ขั้นตอน และตัวอย่างหลักฐานที่ใช้ในแต่ละระดับ", en: "Open session on the criteria, the process and sample evidence for each level." } },
+  { id: 5, image: "/img/does/activity-team.webp", date: "2026-07-08", title: { th: "ปรับปรุงแบบฟอร์มขอรับการประเมิน ฉบับปี 2569", en: "Updated assessment application form, 2026 edition" }, excerpt: { th: "แบบฟอร์มใหม่ลดความซ้ำซ้อนของข้อมูลและเพิ่มช่องแนบหลักฐานดิจิทัล", en: "The new form removes duplicate fields and adds a slot for digital evidence." } },
+  { id: 6, image: "/img/does/campus-statue.webp", date: "2026-06-16", title: { th: "เปิดรับสมัครอาจารย์ดีเด่นด้านการสอน ประจำปีการศึกษาใหม่", en: "Outstanding Teaching Lecturer applications open" }, excerpt: { th: "อาจารย์ที่สนใจสามารถดาวน์โหลดใบสมัครและตรวจสอบคุณสมบัติได้ที่หน้าโครงการ", en: "Interested lecturers can download the application and check eligibility on the project page." } },
+] as NewsItem[];
 
 // ประกาศจริงจากเว็บปัจจุบัน (ผู้ใช้ให้มา) เรียงใหม่ไปเก่า หน้าเว็บแสดงทีละ 4 รายการ ไม่มีวันที่ระบุ มีแต่ปี พ.ศ. คำแปลอังกฤษเป็นคำแปลชั่วคราว TODO ตรวจกับต้นฉบับ
 export type Announcement = { id: number; year: number; href: string; title: { th: string; en: string }; file?: string };
@@ -44,18 +43,7 @@ export const announcements: Announcement[] = [
 export type Passer = (typeof passers)[number] & { photo?: string }; // photo: data URL uploaded in /admin
 export const publicity = [2569, 2568, 2567, 2566].map((year, yi) => ({
   year, // พ.ศ.
-  people: Array.from({ length: 6 }, (_, i): Passer => {
-    const n = yi * 6 + i + 1;
-    const levelNo = (i % 3) + 1;
-    const unit = String.fromCharCode(65 + (i % 3));
-    return {
-      id: n,
-      name: { th: `ชื่อ นามสกุล ตัวอย่าง ${n}`, en: `Sample Name ${n}` },
-      unit: { th: `คณะ/หน่วยงาน ตัวอย่าง ${unit}`, en: `Faculty/Unit Sample ${unit}` },
-      level: { th: `ระดับ ${levelNo}`, en: `Level ${levelNo}` },
-      year: { th: String(year), en: String(year - 543) },
-    };
-  }),
+  people: Array.from({ length: 6 }, (_, i): Passer => person(yi * 6 + i + 1, (i % 3) + 1, { th: String(year), en: String(year - 543) })),
 }));
 
 // ปฏิทินการประเมินรายปี (พ.ศ.) หน้าเว็บแสดงปีล่าสุด 2 รอบ/ปี: รับสมัคร -> ประเมิน -> ประกาศผล
@@ -74,12 +62,12 @@ export const assessmentCalendars = [
 ] as { year: number; events: { round: number; type: "apply" | "assess" | "result"; start: string; end?: string }[] }[];
 
 // แบบฟอร์ม PDF สำหรับหน้า "แบบฟอร์มอื่น ๆ" ไฟล์จริงยังไม่มี ลิงก์เป็น # ชั่วคราว
-export const forms = [1, 2, 3, 4].map((n) => ({
-  id: n,
-  title: { th: `แบบฟอร์มตัวอย่างที่ ${n}`, en: `Sample form ${n}` },
-  file: "#", // TODO: ไฟล์ PDF จริง
-  updated: `2026-0${n}-10`, // วันที่อัปเดต (ตัวอย่าง)
-}));
+export const forms = [
+  { id: 1, title: { th: "แบบคำขอรับการประเมินระดับอาจารย์มืออาชีพ", en: "Application form for lecturer assessment" }, file: "#" /* TODO: ไฟล์ PDF จริง */, updated: "2026-03-10" },
+  { id: 2, title: { th: "แบบบันทึกสะท้อนผลการปฏิบัติงานด้านการเรียนการสอน", en: "Reflective teaching practice record" }, file: "#" /* TODO: ไฟล์ PDF จริง */, updated: "2026-04-10" },
+  { id: 3, title: { th: "แบบรวบรวมหลักฐานเชิงประจักษ์ประกอบการประเมิน", en: "Evidence portfolio checklist" }, file: "#" /* TODO: ไฟล์ PDF จริง */, updated: "2026-05-10" },
+  { id: 4, title: { th: "แบบอุทธรณ์ผลการประเมิน", en: "Assessment appeal form" }, file: "#" /* TODO: ไฟล์ PDF จริง */, updated: "2026-06-10" },
+];
 
 // เอกสารประกาศปฏิทินการประเมินรายปี (พ.ศ.) หน้าปฏิทิน ข้อมูลตัวอย่างทั้งหมด
 export const calendarDocs = [2569, 2568, 2567].map((year, i) => ({

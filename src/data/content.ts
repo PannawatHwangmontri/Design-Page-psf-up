@@ -8,7 +8,7 @@ export const content = {
     logo: "โลโก้",
     menu: "เมนู",
     // TODO: ข้อมูลติดต่อจริงของหน่วยงาน (ตอนนี้เป็นข้อมูลสมมติ)
-    contact: { address: "ที่อยู่หน่วยงาน (ตัวอย่าง)", email: "email@example.com", phone: "0 0000 0000" },
+    contact: { address: "19 หมู่ 2 ต.แม่กา อ.เมือง จ.พะเยา 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
     nav: {
       home: "หน้าแรก",
       about: "เกี่ยวกับ",
@@ -37,6 +37,28 @@ export const content = {
       cta: "ดูผู้ยื่นผ่านเกณฑ์",
       cta2: "ประกาศ",
       imageAlt: "มาตรฐานระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
+      photoAlt: "กิจกรรมของมหาวิทยาลัยพะเยา ณ ลานอนุสาวรีย์",
+      photoCaption: "ภาพกิจกรรม มหาวิทยาลัยพะเยา",
+      latest: "ประกาศล่าสุด",
+    },
+    // ปฏิทินบนหน้าแรก: ตารางสรุปปีล่าสุดจาก mock ส่วนภาพเป็นโปสเตอร์ปฏิทินประเมิน พ.ศ. 2568 จากเว็บกองบริการการศึกษา
+    home: {
+      calendarTitle: "ปฏิทินการประเมิน",
+      calendarLead: "กำหนดการรับสมัคร ประเมิน และประกาศผล ของปีล่าสุด",
+      calendarPosterAlt: "โปสเตอร์ปฏิทินการดำเนินงานการประเมินระดับอาจารย์มืออาชีพ พ.ศ. 2568",
+      calendarMore: "ปฏิทินและแบบฟอร์ม",
+      activity: "กิจกรรม",
+      yearLabel: "พ.ศ.",
+    },
+    // TODO: ข้อความระดับเป็นข้อความสมมติ รอเนื้อหาจริงจากหน่วยงาน
+    levels: {
+      title: "PSF คืออะไร",
+      desc: "กรอบประเมินสมรรถนะของอาจารย์ แบ่งเป็น 3 ระดับ ตามประสบการณ์และบทบาทด้านการเรียนการสอน",
+      items: [
+        { name: "ระดับ 1", desc: "แสดงความสามารถในการจัดการเรียนการสอนและประเมินผลผู้เรียนอย่างเป็นระบบ" },
+        { name: "ระดับ 2", desc: "ออกแบบและพัฒนาการเรียนรู้อย่างต่อเนื่อง พร้อมแนะนำและสนับสนุนเพื่อนร่วมงาน" },
+        { name: "ระดับ 3", desc: "เป็นผู้นำด้านการเรียนการสอน สร้างนวัตกรรมและขยายผลสู่หน่วยงานและสถาบัน" },
+      ],
     },
     // ข้อความขั้นตอนเป็นข้อความสมมติ ลิงก์ชี้ไปหน้าที่มีอยู่ (TODO หน้ารายละเอียดจริงของแต่ละขั้น)
     process: {
@@ -310,7 +332,7 @@ export const content = {
     siteOrg: "University of Phayao",
     logo: "Logo",
     menu: "Menu",
-    contact: { address: "Office address (sample)", email: "email@example.com", phone: "0 0000 0000" },
+    contact: { address: "19 Moo 2, Mae Ka, Mueang, Phayao 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
     nav: {
       home: "Home",
       about: "About",
@@ -339,6 +361,28 @@ export const content = {
       cta: "View applicants who met the criteria",
       cta2: "Announcements",
       imageAlt: "Professional Lecturer Standards, University of Phayao",
+      photoAlt: "University of Phayao event at the memorial plaza",
+      photoCaption: "University of Phayao activity",
+      latest: "Latest announcement",
+    },
+    // Home calendar: summary table for the latest year (mock) next to the real B.E. 2568 poster from the Division of Educational Services site
+    home: {
+      calendarTitle: "Assessment calendar",
+      calendarLead: "Application, assessment and result dates for the latest year",
+      calendarPosterAlt: "Poster of the Professional Lecturer assessment calendar, B.E. 2568",
+      calendarMore: "Calendar and forms",
+      activity: "Activity",
+      yearLabel: "B.E.",
+    },
+    // TODO: level text is sample text, waiting for real content from the unit
+    levels: {
+      title: "What is PSF",
+      desc: "A competence framework for lecturers, in 3 levels based on experience and teaching role.",
+      items: [
+        { name: "Level 1", desc: "Shows the ability to organise teaching and assess learners systematically" },
+        { name: "Level 2", desc: "Designs and improves learning continuously and mentors colleagues" },
+        { name: "Level 3", desc: "Leads teaching practice, creates innovation and extends impact across the institution" },
+      ],
     },
     process: {
       title: "PSF process",

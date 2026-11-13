@@ -67,7 +67,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
                 </span>
               </p>
               <p className="mt-1 tabular-nums text-ink-2">{range(current)}</p>
-              <p className="mt-3 inline-block rounded-md bg-accent px-3 py-1 text-sm font-medium text-white">{status(current)}</p>
+              <p className="mt-3 inline-block rounded-lg bg-accent px-3 py-1 text-sm font-medium text-white">{status(current)}</p>
             </>
           ) : upcoming ? (
             <>
