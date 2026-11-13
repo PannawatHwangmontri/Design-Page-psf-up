@@ -24,6 +24,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const passedTotal = passers.length;
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
+  const [step, setStep] = useState(0); // PSF step shown in the process panel
   const latestYear = Math.max(...announcements.map((a) => a.year));
   const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
   const loc = lang === "th" ? "th-TH" : "en-GB";
@@ -250,25 +251,51 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section id="process" className="relative scroll-mt-16">
-        <Side>{t.process.title}</Side>
+      <section id="process" className="relative isolate scroll-mt-16 overflow-hidden bg-forest text-page">
+        <img src="/img/does/activity-meeting.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/75" />
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <h2 data-reveal className="text-3xl font-medium">{t.process.title}</h2>
-          <ol data-stagger className="mt-10 grid md:grid-cols-4">
-            {t.process.tiles.map((tile, i) => (
-              <li key={tile.href} style={idx(i)} className="group relative border-l border-ink/15 pb-10 pl-6 last:pb-0 md:border-l-0 md:border-t md:pb-0 md:pl-0 md:pr-8 md:pt-6">
-                <span aria-hidden="true" className="absolute -left-[5px] top-0 h-2.5 w-2.5 rounded-full border border-accent bg-card md:-top-[5px] md:left-0" />
-                <span aria-hidden="true" className="block text-6xl font-normal tabular-nums text-accent-ink/30">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-4 text-xl font-medium">{tile.title}</h3>
-                <p className="mt-2 text-sm text-ink-2">{tile.desc}</p>
-                <a href={`/${lang}${tile.href}`} className={`${linkCls} mt-4 inline-block text-sm`}>
-                  {tile.link}
-                </a>
-              </li>
-            ))}
-          </ol>
+          {/* pick a step on the left (hover, focus or tap); its detail shows in the soft glass panel on the right */}
+          <div className="mt-10 grid gap-8 md:mt-14 lg:grid-cols-12 lg:gap-12">
+            <ol className="lg:col-span-5">
+              {t.process.tiles.map((tile, i) => (
+                <li key={tile.href} className="border-b border-page/15 first:border-t">
+                  <button
+                    type="button"
+                    onMouseEnter={() => setStep(i)}
+                    onFocus={() => setStep(i)}
+                    onClick={() => setStep(i)}
+                    aria-pressed={step === i}
+                    className={`flex w-full items-baseline gap-5 py-5 text-left transition-colors duration-150 md:py-6 ${step === i ? "text-page" : "text-page/50 hover:text-page/80"}`}
+                  >
+                    <span className="font-mono text-xs tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-serif text-2xl font-light leading-snug md:text-3xl">{tile.title}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+
+            <div className="lg:col-span-7">
+              {t.process.tiles.map((tile, i) =>
+                step === i ? (
+                  <div key={tile.href} className="rise relative overflow-hidden rounded-[2rem] border border-page/15 bg-page/10 p-8 backdrop-blur-md md:p-12">
+                    <span aria-hidden="true" className="absolute -right-3 -top-8 font-serif text-[11rem] font-light leading-none tabular-nums text-page/10">
+                      {i + 1}
+                    </span>
+                    <p className="relative font-mono text-xs tabular-nums text-page/70">
+                      {String(i + 1).padStart(2, "0")} / {String(t.process.tiles.length).padStart(2, "0")}
+                    </p>
+                    <h3 className="relative mt-6 font-serif text-3xl font-light leading-snug md:text-4xl">{tile.title}</h3>
+                    <p className="relative mt-4 max-w-xl text-lg leading-8 text-page/80">{tile.desc}</p>
+                    <a href={`/${lang}${tile.href}`} className="relative mt-8 inline-flex h-11 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
+                      {tile.link} →
+                    </a>
+                  </div>
+                ) : null,
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
