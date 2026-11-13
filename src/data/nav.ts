@@ -29,6 +29,8 @@ export const nav: NavItem[] = [
     children: [
       { key: "history", href: "/history" },
       { key: "mission", href: "/mission" },
+      { key: "processPage", href: "/process" },
+      { key: "assessment", href: "/assessment" },
     ],
   },
   {
@@ -36,13 +38,15 @@ export const nav: NavItem[] = [
     href: "/documents",
     children: [
       { key: "otherForms", href: "/documents/forms" },
+      { key: "manuals", href: "/documents/manuals" },
     ],
   },
   {
-    // หัวข้อแยกของ "อื่น ๆ" (ลิงก์หัวข้อไปประกาศที่เกี่ยวข้อง)
-    key: "other",
-    href: "/documents",
-    children: [{ key: "login", href: "/login" }],
+    key: "help",
+    href: "/faq",
+    children: [
+      { key: "faq", href: "/faq" },
+      { key: "contact", href: "/contact" },
+    ],
   },
 ];
-

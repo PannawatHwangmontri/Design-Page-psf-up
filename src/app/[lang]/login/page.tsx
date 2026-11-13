@@ -17,7 +17,7 @@ function Login({ lang }: { lang: Lang }) {
   const [bad, setBad] = useState(false);
   const input = "mt-1 h-12 w-full rounded-lg border border-ink/20 bg-card px-4 text-ink";
   return (
-    <main className="mx-auto max-w-md px-4 py-16 md:py-24">
+    <main className="mx-auto max-w-md px-4 pb-16 pt-32 md:pb-24">
       <h1 className="text-3xl font-medium">{t.title}</h1>
       <p className="mt-2 text-ink-2">{t.intro}</p>
       <form
@@ -42,7 +42,7 @@ function Login({ lang }: { lang: Lang }) {
             {t.error}
           </p>
         )}
-        <button className="h-12 w-full rounded-lg bg-accent font-medium text-white hover:bg-accent-hover">{t.submit}</button>
+        <button className="h-12 w-full rounded-full bg-accent font-medium text-white hover:bg-accent-hover">{t.submit}</button>
       </form>
       <p className="mt-6 text-sm text-ink-3">{t.demo}</p>
     </main>

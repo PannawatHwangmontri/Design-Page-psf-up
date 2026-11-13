@@ -6,7 +6,6 @@ import { useState } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
-import { Placeholder } from "./Placeholder";
 
 function Icon({ children, size = 16 }: { children: React.ReactNode; size?: number }) {
   return (
@@ -22,12 +21,12 @@ const caret = (dir: "down" | "right") => (
   </Icon>
 );
 
-const link = "block rounded-lg px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
+const link = "block whitespace-nowrap rounded-full px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
 // display:none (not visibility) so closed panels add no horizontal scroll width
 const panel = "absolute z-20 hidden min-w-64 rounded-xl border border-ink/10 bg-card p-1";
 const panelItem = "flex items-center justify-between gap-4 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink";
 
-// Top bar (purple: contact + language, scrolls away) and the white menu bar (sticky). Menu = src/data/nav.ts.
+// Floating capsule menu with the language switch. Contact details live in the footer. Menu = src/data/nav.ts.
 export function SiteHeader({ lang }: { lang: Lang }) {
   const t = useSite().content[lang];
   const pathname = usePathname();
@@ -59,128 +58,121 @@ export function SiteHeader({ lang }: { lang: Lang }) {
     ));
 
   return (
-    <>
-      {/* top bar: contact + language; scrolls away, the white menu bar below stays sticky */}
-      <div className="bg-accent text-sm text-white">
-        <div className="mx-auto flex h-10 max-w-6xl items-center gap-6 px-4 md:px-8">
-          <span className="hidden items-center gap-2 md:flex">
-            <Icon>
-              <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0116 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </Icon>
-            {t.contact.address}
-          </span>
-          <a href={`mailto:${t.contact.email}`} className="hidden items-center gap-2 hover:underline md:flex">
-            <Icon>
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="m3 7 9 6 9-6" />
-            </Icon>
-            {t.contact.email}
-          </a>
-          <a href={`tel:${t.contact.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 hover:underline">
-            <Icon>
-              <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z" />
-            </Icon>
-            {t.contact.phone}
-          </a>
-          <div className="ml-auto flex items-center gap-1">
-            {(["th", "en"] as const).map((l) => (
-              <Link
-                key={l}
-                href={swap(l)}
-                aria-current={lang === l ? "true" : undefined}
-                className={`flex h-8 items-center rounded-lg px-2 hover:bg-white/15 ${lang === l ? "font-semibold underline underline-offset-4" : "text-white/80"}`}
-              >
-                {l.toUpperCase()}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+    // zero-height sticky wrapper: the capsule floats over the page (and over the hero image) without pushing content down
+    <div className="sticky top-0 z-30 h-0">
+      <div className="mx-auto max-w-7xl px-4 pt-4 md:px-8">
+        <header className="rounded-[30px] border border-ink/10 bg-page/85 backdrop-blur-md">
+          <div className="flex h-14 items-center gap-3 pl-5 pr-3 lg:gap-4 xl:gap-5">
+            <Link href={base} className="flex min-w-0 shrink items-center gap-3">
+              <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+              <span className="min-w-0 leading-tight">
+                <span className="block truncate text-base font-medium text-ink">{t.siteName}</span>
+                <span className="block font-mono text-[11px] tracking-[0.05em] text-ink-3">{t.siteOrg}</span>
+              </span>
+            </Link>
 
-      <header className="sticky top-0 z-10 border-b border-ink/10 bg-card">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 md:px-8">
-          <Link href={base} className="flex items-center gap-3">
-            <Placeholder label={t.logo} className="h-8 w-8 shrink-0 rounded-lg" />
-            <span className="leading-tight">
-              <span className="block text-base font-medium text-ink">{t.siteName}</span>
-              <span className="block text-xs text-ink-3">{t.siteOrg}</span>
-            </span>
-          </Link>
+            <nav aria-label="main" className="relative ml-auto hidden md:block" onMouseLeave={() => { setPill(null); setOpen(null); }} onBlur={() => setPill(null)} onKeyDown={(e) => e.key === "Escape" && setOpen(null)}>
+              <span
+                aria-hidden="true"
+                className="nav-pill absolute inset-y-0 rounded-full bg-accent/10"
+                style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
+              />
+              <ul className="flex gap-1">
+                {nav.map((item, i) => (
+                  <li key={item.key} className="group relative" onMouseEnter={(e) => { movePill(e); setOpen(item.key); }} onFocus={(e) => { movePill(e); setOpen(item.key); }}>
+                    {item.children ? (
+                      // parent with a dropdown only opens it; it does not navigate
+                      <button
+                        type="button"
+                        aria-expanded={open === item.key}
+                        onClick={() => setOpen(item.key)}
+                        className={`${link} relative flex items-center gap-1 ${open === item.key ? "text-accent-ink" : ""}`}
+                      >
+                        {t.nav[item.key]}
+                        {caret("down")}
+                      </button>
+                    ) : (
+                      <Link
+                        href={href(item.href)}
+                        aria-current={active(item) ? "page" : undefined}
+                        className={`${link} relative flex items-center gap-1 ${active(item) ? "font-medium text-accent-ink" : ""}`}
+                      >
+                        {t.nav[item.key]}
+                      </Link>
+                    )}
+                    {item.children && (
+                      <ul className={`absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-page p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
+                        {item.children.map((c) => (
+                          <li key={`${c.key}-${c.href}`} className="group/sub relative">
+                            <Link href={href(c.href)} className={panelItem}>
+                              {t.nav[c.key]}
+                              {c.children && caret("right")}
+                            </Link>
+                            {c.children && (
+                              <ul className={`${panel} left-full top-0 group-focus-within/sub:block group-hover/sub:block`}>
+                                {c.children.map((g) => (
+                                  <li key={g.key}>
+                                    <Link href={href(g.href)} className={panelItem}>
+                                      {t.nav[g.key]}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <nav aria-label="main" className="relative ml-auto hidden md:block" onMouseLeave={() => { setPill(null); setOpen(null); }} onBlur={() => setPill(null)} onKeyDown={(e) => e.key === "Escape" && setOpen(null)}>
-            <span
-              aria-hidden="true"
-              className="nav-pill absolute inset-y-0 rounded-lg bg-accent/10"
-              style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
-            />
-            <ul className="flex gap-1">
-              {nav.map((item, i) => (
-                <li key={item.key} className="group relative" onMouseEnter={(e) => { movePill(e); setOpen(item.key); }} onFocus={(e) => { movePill(e); setOpen(item.key); }}>
-                  {item.children ? (
-                    // parent with a dropdown only opens it; it does not navigate
-                    <button
-                      type="button"
-                      aria-expanded={open === item.key}
-                      onClick={() => setOpen(item.key)}
-                      className={`${link} relative flex items-center gap-1 ${open === item.key ? "bg-accent/10 text-accent-ink" : ""}`}
-                    >
-                      {t.nav[item.key]}
-                      {caret("down")}
-                    </button>
-                  ) : (
-                    <Link
-                      href={href(item.href)}
-                      aria-current={active(item) ? "page" : undefined}
-                      className={`${link} relative flex items-center gap-1 ${active(item) ? "font-medium text-accent-ink" : ""}`}
-                    >
-                      {t.nav[item.key]}
-                    </Link>
-                  )}
-                  {item.children && (
-                    <ul className={`absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-card p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
-                      {item.children.map((c) => (
-                        <li key={`${c.key}-${c.href}`} className="group/sub relative">
-                          <Link href={href(c.href)} className={panelItem}>
-                            {t.nav[c.key]}
-                            {c.children && caret("right")}
-                          </Link>
-                          {c.children && (
-                            <ul className={`${panel} left-full top-0 group-focus-within/sub:block group-hover/sub:block`}>
-                              {c.children.map((g) => (
-                                <li key={g.key}>
-                                  <Link href={href(g.href)} className={panelItem}>
-                                    {t.nav[g.key]}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
+            {/* shown only where the bar has room: login from 1024px, the apply button from 1280px (both are also at the end of the mobile menu) */}
+            <Link href={`${base}/login`} className="hidden shrink-0 whitespace-nowrap text-sm text-ink-2 hover:text-accent-ink lg:block">
+              {t.nav.login}
+            </Link>
+            <Link href={`${base}/documents/forms`} className="hidden h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover xl:inline-flex">
+              {t.nav.apply}
+            </Link>
+            <div className="ml-auto flex items-center gap-1 font-mono text-xs tracking-[0.05em] md:ml-0">
+              {(["th", "en"] as const).map((l) => (
+                <Link
+                  key={l}
+                  href={swap(l)}
+                  aria-current={lang === l ? "true" : undefined}
+                  className={`flex h-8 items-center rounded-full px-2 hover:text-accent-ink ${lang === l ? "bg-ink/5 font-medium text-ink" : "text-ink-3"}`}
+                >
+                  {l.toUpperCase()}
+                </Link>
               ))}
-            </ul>
-          </nav>
+            </div>
 
-          <button
-            type="button"
-            aria-expanded={menu}
-            aria-controls="mobile-menu"
-            onClick={() => setMenu(!menu)}
-            className="ml-auto flex h-10 items-center rounded-lg border border-ink/10 bg-card px-4 text-sm font-medium text-ink-2 hover:bg-raised md:hidden"
-          >
-            {t.menu}
-          </button>
-        </div>
-        {menu && (
-          <nav id="mobile-menu" aria-label="main mobile" className="max-h-[70vh] overflow-y-auto border-t border-ink/10 px-1 py-2 md:hidden">
-            <ul>{mobileList(nav)}</ul>
-          </nav>
-        )}
-      </header>
-    </>
+            <button
+              type="button"
+              aria-expanded={menu}
+              aria-controls="mobile-menu"
+              onClick={() => setMenu(!menu)}
+              className="flex h-10 shrink-0 items-center rounded-full border border-ink/10 px-4 text-sm font-medium text-ink-2 hover:bg-raised md:hidden"
+            >
+              {t.menu}
+            </button>
+          </div>
+          {menu && (
+            <nav id="mobile-menu" aria-label="main mobile" className="max-h-[70vh] overflow-y-auto border-t border-ink/10 px-1 py-2 md:hidden">
+              <ul>{mobileList(nav)}</ul>
+              <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
+                <Link href={`${base}/documents/forms`} onClick={() => setMenu(false)} className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-hover">
+                  {t.nav.apply}
+                </Link>
+                <Link href={`${base}/login`} onClick={() => setMenu(false)} className="py-2 text-center text-sm text-ink-2 hover:text-accent-ink">
+                  {t.nav.login}
+                </Link>
+              </div>
+            </nav>
+          )}
+        </header>
+      </div>
+    </div>
   );
 }

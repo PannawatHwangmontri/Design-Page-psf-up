@@ -1,0 +1,3 @@
+University of Phayao logo, downloaded 2026-11-13 from https://www.up.ac.th/icon/logo-up.png (wide logo).
+logo-up-mark.png and src/app/icon.png are the emblem only, cropped from that file.
+The emblem and name are the university's marks: use them as the owner allows, do not alter the colours.
