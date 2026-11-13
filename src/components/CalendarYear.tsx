@@ -8,7 +8,8 @@ type Ev = { round: number; type: "apply" | "assess" | "result"; start: string; e
 type Doc = { id: number; year: number; title: { th: string; en: string }; file: string; poster?: string };
 
 // One year of the calendar: poster, the dates of both rounds, the PDF download and the PDF shown inline.
-export function CalendarYear({ lang, doc, events }: { lang: Lang; doc: Doc; events?: Ev[] }) {
+// borrowedFrom = the B.E. year whose schedule/poster fill in when this year has none (labelled as a sample).
+export function CalendarYear({ lang, doc, events, borrowedFrom }: { lang: Lang; doc: Doc; events?: Ev[]; borrowedFrom?: number }) {
   const t = useSite().content[lang];
   const c = t.pages.calendar;
   const [open, setOpen] = useState(false);
@@ -51,6 +52,12 @@ export function CalendarYear({ lang, doc, events }: { lang: Lang; doc: Doc; even
           )}
         </div>
       </div>
+
+      {borrowedFrom && (
+        <p className="mt-6 inline-block rounded-lg border border-ink/15 px-3 py-1.5 text-sm text-ink-2">
+          {c.borrowed.replace("{y}", String(lang === "th" ? borrowedFrom : borrowedFrom - 543))}
+        </p>
+      )}
 
       <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-5">
@@ -107,4 +114,21 @@ export function CalendarYear({ lang, doc, events }: { lang: Lang; doc: Doc; even
       )}
     </article>
   );
+}
+
+type Cal = { year: number; events: Ev[] };
+
+// A year without a schedule or poster borrows them from the nearest year that has one, so the page never looks empty.
+// Returns the props for <CalendarYear>; borrowedFrom is set only when something was borrowed.
+export function withFallback(doc: Doc, docs: Doc[], cals: Cal[]) {
+  const near = <T extends { year: number }>(a: T[]): T | undefined => [...a].sort((x, y) => Math.abs(x.year - doc.year) - Math.abs(y.year - doc.year) || y.year - x.year)[0];
+  const own = cals.find((c) => c.year === doc.year);
+  const fbCal = own ? undefined : near(cals.filter((c) => c.year !== doc.year));
+  const fbPoster = doc.poster ? undefined : near(docs.filter((d) => d.poster && d.year !== doc.year));
+  const from = fbCal?.year ?? fbPoster?.year;
+  return {
+    doc: { ...doc, poster: doc.poster ?? fbPoster?.poster },
+    events: (own ?? fbCal)?.events,
+    borrowedFrom: from,
+  };
 }

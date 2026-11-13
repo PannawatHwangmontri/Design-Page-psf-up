@@ -132,6 +132,35 @@ button {
   }
 }
 
+/* Lift: home quick-link tiles rise 10px on hover with a large soft shadow while the other tiles dim, so the pointed tile stands out.
+   transform and box-shadow share one 0.5s spring (overshoots, so the tile bobs as it settles). Off with reduced motion. */
+.lift {
+  transition:
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 300ms var(--ease-ui),
+    background-color 150ms var(--ease-ui);
+}
+.lift:hover,
+.lift:focus-visible {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
+.lift-group:has(.lift:hover, .lift:focus-visible) .lift:not(:hover, :focus-visible) {
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift {
+    transition: none;
+  }
+  .lift:hover,
+  .lift:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 /* Reveal: headings and blocks marked [data-reveal] fade and rise once when they scroll into view (same observer as
    [data-stagger]). [data-reveal="image"] wipes in from the top while it settles from a slight zoom. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
@@ -288,4 +317,3 @@ button {
   height: 100%;
   mix-blend-mode: normal;
 }
-

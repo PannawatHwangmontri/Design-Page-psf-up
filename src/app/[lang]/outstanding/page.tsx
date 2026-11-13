@@ -5,7 +5,8 @@ import { downloadBtn } from "@/components/DetailPage";
 import { WithLang } from "@/components/WithLang";
 
 // Outstanding teaching lecturers: one scrollable page (project, announcements, steps, application) + a comparison with PSF.
-// The menu items link to the anchors below. TODO: real text for the project, steps and comparison (placeholders in content.ts).
+// The menu items link to the anchors below. Dark photo band on top, then the sections. The text for the project, steps and comparison is
+// sample text (content.ts, marked "sample" in the band); TODO: real text from the project owner.
 export default function Page({ params }: { params: Promise<{ lang: string }> }) {
   return (
     <WithLang params={params}>
@@ -21,18 +22,27 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
           { id: "apply", label: t.nav.outstandingApply },
         ];
         return (
-          <main className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
-            <h1 className="text-3xl font-medium leading-[1.2] md:text-4xl">{o.title}</h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-2">{o.intro}</p>
-            <nav aria-label={o.title} className="mt-8 flex flex-wrap gap-2">
-              {anchors.map((a) => (
-                <a key={a.id} href={`#${a.id}`} className="rounded-full border border-ink/15 px-4 py-1.5 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink">
-                  {a.label}
-                </a>
-              ))}
-            </nav>
+          <main>
+            <section className="relative isolate overflow-hidden bg-forest text-page">
+              <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
+                <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{o.title}</h1>
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-page/80">{o.intro}</p>
+                <span className="mt-6 inline-block rounded-full border border-page/30 px-3 py-1 text-xs text-page/80">{t.pages.faq.sample}</span>
+              </div>
+            </section>
 
-            <div className="mt-12 space-y-12">
+            <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+              <nav aria-label={o.title} className="flex flex-wrap gap-2">
+                {anchors.map((a) => (
+                  <a key={a.id} href={`#${a.id}`} className="rounded-full border border-ink/15 px-4 py-1.5 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink">
+                    {a.label}
+                  </a>
+                ))}
+              </nav>
+
+              <div className="mt-12 space-y-12">
               <section id="project" className={sec}>
                 <h2 className={h2}>{t.nav.outstandingProject}</h2>
                 <p className="mt-4 max-w-3xl leading-8 text-ink-2 md:mt-0">{o.projectBody}</p>
@@ -108,6 +118,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   </a>
                 </div>
               </section>
+              </div>
             </div>
           </main>
         );

@@ -81,26 +81,26 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         )}
       </section>
 
-      {/* quick links: bento of rounded tiles. Two big photo tiles lead (apply, passers), the rest are card or dark tiles;
+      {/* quick links: bento of rounded tiles. Photo tiles: apply, calendar, passers, announcements, contact (the process tile stays solid dark);
           photos zoom slowly on hover and each arrow turns accent. Layout per index: span, photo (if any), tone. */}
       <section aria-label={t.home.quickTitle} className="relative">
-        <div className="mx-auto max-w-6xl px-4 pt-12 md:px-8 md:pt-16">
-          <ul data-stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4">
+        <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+          <ul data-stagger className="lift-group grid gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4">
             {t.home.quick.map((q, i) => {
               const cfg = [
                 { span: "lg:col-span-6 lg:row-span-2 min-h-[320px]", photo: "/img/does/activity-signing.webp", big: true },
-                { span: "lg:col-span-3 min-h-[200px]" },
+                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/commons/kwan-phayao-sunset.webp" },
                 { span: "lg:col-span-3 min-h-[200px]", photo: "/img/does/activity-award.jpg" },
-                { span: "lg:col-span-3 min-h-[200px]" },
+                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/commons/kwan-phayao-morning.webp" },
                 { span: "lg:col-span-3 min-h-[200px]", dark: true },
-                { span: "sm:col-span-2 lg:col-span-12 min-h-[140px]" },
+                { span: "sm:col-span-2 lg:col-span-12 min-h-[180px]", photo: "/img/commons/up-sign.webp" },
               ][i] ?? { span: "lg:col-span-3" };
               const onDark = !!cfg.photo || !!cfg.dark;
               return (
                 <li key={q.href} style={idx(i)} className={cfg.span}>
                   <a
                     href={`/${lang}${q.href}`}
-                    className={`group relative isolate flex h-full min-h-[inherit] flex-col justify-between overflow-hidden rounded-3xl border p-6 md:p-8 ${
+                    className={`lift group relative isolate flex h-full min-h-[inherit] flex-col justify-between overflow-hidden rounded-3xl border p-6 md:p-8 ${
                       onDark ? "border-transparent bg-forest text-page" : "border-ink/10 bg-card text-ink hover:bg-raised"
                     }`}
                   >
@@ -133,59 +133,48 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      {/* calendar: the real poster beside a table of the latest year's dates */}
-      <section id="calendar" className="relative scroll-mt-16">
-        <Side>{t.home.calendarTitle}</Side>
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+      {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
+      <section id="calendar" className="relative isolate scroll-mt-16 overflow-hidden bg-forest text-page">
+        <img src="/img/commons/ce-building-dusk.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+        <div className="mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 data-reveal className="text-3xl font-medium">{t.home.calendarTitle}</h2>
-              <p className="mt-2 text-ink-2">{t.home.calendarLead}</p>
+              <p className="mt-2 text-page/70">
+                {t.home.calendarLead}
+                {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
+              </p>
             </div>
-            <a href={`/${lang}/assessment`} className={`${linkCls} shrink-0 text-sm`}>
+            <a href={`/${lang}/assessment`} className="inline-flex h-11 shrink-0 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
               {t.home.calendarMore} →
             </a>
           </div>
-          <div className="mt-10 grid items-start gap-10 md:grid-cols-12 md:gap-12">
+          <div className="mt-12 grid items-stretch gap-6 md:grid-cols-12 md:gap-8">
             <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className={`aspect-[615/346] w-full rounded-xl ${hairline} object-cover`} />
+              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-full min-h-56 w-full rounded-3xl border border-page/15 object-cover" />
             </a>
             {cal && (
-              <div data-reveal className="md:col-span-7">
-                <p className="text-sm tabular-nums text-ink-3">
-                  {t.home.yearLabel} {cal.year}
-                </p>
-                <table className="mt-3 w-full border-t border-ink/10 text-left">
-                  <thead>
-                    <tr className="text-sm text-ink-3">
-                      <th scope="col" className="py-3 pr-4 font-normal">
-                        {t.home.activity}
-                      </th>
-                      {[1, 2].map((r) => (
-                        <th key={r} scope="col" className="py-3 pr-4 font-normal">
-                          {t.pages.assessment.round} {r}
-                        </th>
+              <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
+                {[1, 2].map((r) => (
+                  <div key={r} className="rounded-3xl border border-page/15 bg-page/10 p-6 backdrop-blur-md md:p-8">
+                    <p className="font-serif text-3xl font-light">
+                      {t.pages.assessment.round} {r}
+                    </p>
+                    <dl className="mt-5 divide-y divide-page/15">
+                      {(["apply", "assess", "result"] as const).map((k) => (
+                        <div key={k} className="flex items-baseline justify-between gap-4 py-4">
+                          <dt className="text-page/60">{t.pages.assessment.types[k]}</dt>
+                          <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
+                        </div>
                       ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-ink/10 border-y border-ink/10">
-                    {(["apply", "assess", "result"] as const).map((k) => (
-                      <tr key={k}>
-                        <th scope="row" className="py-4 pr-4 align-top font-medium">
-                          {t.pages.assessment.types[k]}
-                        </th>
-                        {[1, 2].map((r) => (
-                          <td key={r} className="py-4 pr-4 align-top tabular-nums text-ink-2">
-                            {range(cal.events.find((e) => e.round === r && e.type === k))}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </dl>
+                  </div>
+                ))}
               </div>
             )}
           </div>
+          <p className="mt-10 text-xs text-page/50">{t.home.photoCredit}</p>
         </div>
       </section>
 

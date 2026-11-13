@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarYear } from "@/components/CalendarYear";
+import { CalendarYear, withFallback } from "@/components/CalendarYear";
 import { WithLang } from "@/components/WithLang";
 
 // Calendar (menu: Publicity > Calendar): one block per year with the poster, the dates of both rounds,
@@ -37,7 +37,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             </section>
             <section className="mx-auto max-w-6xl px-4 md:px-8">
               {docs.map((d) => (
-                <CalendarYear key={d.id} lang={lang} doc={d} events={assessmentCalendars.find((c) => c.year === d.year)?.events} />
+                <CalendarYear key={d.id} lang={lang} {...withFallback(d, docs, assessmentCalendars)} />
               ))}
             </section>
           </main>
