@@ -598,6 +598,17 @@ export const content = {
         content: "ข้อความทั่วไป",
       },
     },
+    footerRelated: {
+      title: "หน่วยงานที่เกี่ยวข้อง",
+      links: [
+        { label: "เว็บไซต์ มหาวิทยาลัยพะเยา", href: "https://up.ac.th/" },
+        { label: "สำนักงานสภามหาวิทยาลัยพะเยา", href: "https://council-new.up.ac.th/" },
+        { label: "กองคลัง", href: "https://finance.up.ac.th/V2/" },
+        { label: "กองกลาง", href: "http://www.doga.up.ac.th/" },
+        { label: "กองการเจ้าหน้าที่", href: "https://personnel.up.ac.th" },
+      ],
+    },
+    footerContact: "ติดต่อ",
     footer: "© มาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา — เว็บตัวอย่างเพื่อการสาธิต ข้อมูลทั้งหมดเป็นข้อมูลสมมติ",
   },
   en: {
@@ -1191,6 +1202,17 @@ export const content = {
         content: "General text",
       },
     },
+    footerRelated: {
+      title: "Related units",
+      links: [
+        { label: "University of Phayao website", href: "https://up.ac.th/" },
+        { label: "Office of the University Council", href: "https://council-new.up.ac.th/" },
+        { label: "Finance Division", href: "https://finance.up.ac.th/V2/" },
+        { label: "General Affairs Division", href: "http://www.doga.up.ac.th/" },
+        { label: "Personnel Division", href: "https://personnel.up.ac.th" },
+      ],
+    },
+    footerContact: "Contact",
     footer: "© Professional Lecturer Standards, University of Phayao — demo site. All data is fictional.",
   },
 } as const;
