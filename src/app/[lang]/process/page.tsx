@@ -41,7 +41,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                     <span className="absolute left-0 top-0 flex size-10 items-center justify-center rounded-full border border-accent bg-card font-mono text-sm tabular-nums text-accent-ink">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <div className="rounded-xl border border-ink/10 bg-card p-6 md:p-8">
+                    <div className="lift rounded-xl border border-ink/10 bg-card p-6 md:p-8">
                       <h2 className="text-2xl md:text-3xl">{s.title}</h2>
                       <p className="mt-3 text-lg leading-8 text-ink-2">{s.desc}</p>
                       <Link href={`/${lang}${s.href}`} className="mt-5 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">

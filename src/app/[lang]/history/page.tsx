@@ -94,8 +94,8 @@ function History({ lang }: { lang: Lang }) {
 
                   <ul id={`components-${sec.no}`} data-spy className="mt-10 grid scroll-mt-28 gap-4 lg:grid-cols-3">
                     {sec.components.map((c) => (
-                      <li key={c.code} className="rounded-xl border border-ink/10 bg-card p-6">
-                        <p className="font-serif text-5xl font-light text-accent-ink">{c.code}</p>
+                      <li key={c.code} className="lift rounded-xl border border-ink/10 bg-card p-6">
+                        <p className="font-ui font-semibold text-5xl font-light text-accent-ink">{c.code}</p>
                         <p className="mt-3 font-semibold">{c.name}</p>
                         <ul className="mt-5 space-y-3 border-t border-ink/10 pt-5">
                           {c.items.map((it) => (
@@ -110,7 +110,7 @@ function History({ lang }: { lang: Lang }) {
                   </ul>
 
                   <div id={`levels-${sec.no}`} data-spy className="mt-16 scroll-mt-28">
-                    <h3 className="font-serif text-2xl font-light md:text-3xl">{h.levelsHeading}</h3>
+                    <h3 className="font-ui font-semibold text-2xl font-light md:text-3xl">{h.levelsHeading}</h3>
                     <p className="mt-4 max-w-3xl text-lg leading-8 text-ink-2">{sec.levelsIntro}</p>
                     <ul className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
                       {sec.levels.map((lv, k) => (

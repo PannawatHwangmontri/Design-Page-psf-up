@@ -27,7 +27,7 @@ function Admin({ lang }: { lang: Lang }) {
 
   if (!ok)
     return (
-      <main className="mx-auto max-w-3xl px-4 pb-16 pt-32 md:pb-24">
+      <main className="font-ui mx-auto max-w-3xl px-4 pb-16 pt-32 md:pb-24">
         <p className="text-lg">{ui.needLogin}</p>
         <Link href={`/${lang}/login`} className={`${btnMain} mt-6`}>
           {ui.goLogin}
@@ -78,15 +78,20 @@ function Admin({ lang }: { lang: Lang }) {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
+    <main className="font-ui mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-medium">{ui.title}</h1>
           <p className="mt-2 text-ink-2">{ui.intro}</p>
         </div>
-        <button type="button" onClick={logout} className={btnLine}>
-          {ui.logout}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <Link href={`/${lang}/admin/applications`} className={btnLine}>
+            {site.content[lang].applicant.reviewLink}
+          </Link>
+          <button type="button" onClick={logout} className={btnLine}>
+            {ui.logout}
+          </button>
+        </div>
       </div>
 
       <div role="tablist" className="mt-8 flex flex-wrap gap-2 border-b border-ink/10 pb-4">

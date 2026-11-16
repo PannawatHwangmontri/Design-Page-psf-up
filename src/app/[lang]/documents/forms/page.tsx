@@ -1,5 +1,6 @@
 "use client";
 
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { WithLang } from "@/components/WithLang";
 import { fileSize, fmtDate } from "@/lib/lang";
 
@@ -17,9 +18,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               <img src="/img/does/activity-workshop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
               <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/70">
-                  {c.nav.documents} / {c.nav.otherForms}
-                </p>
+                <Breadcrumb lang={lang} items={[{ label: c.nav.documents }, { label: c.nav.otherForms }]} />
                 <h1 className="mt-5 max-w-3xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{t.title}</h1>
                 <p className="mt-6 max-w-xl text-lg text-page/80">{t.intro}</p>
               </div>
@@ -28,7 +27,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
               <div className="md:col-span-4">
                 <div className="md:sticky md:top-28">
-                  <p className="font-serif text-7xl font-light tabular-nums">{forms.length}</p>
+                  <p className="font-ui font-semibold text-7xl font-light tabular-nums">{forms.length}</p>
                   <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{t.title}</p>
                   <p className="mt-8 text-ink-2">{c.pages.assessment.formDesc}</p>
                   <a
@@ -44,13 +43,13 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 {forms.map((f, i) => {
                   const meta = [fileSize(f.file) && `${t.size} ${fileSize(f.file)}`, f.updated && `${t.updated} ${fmtDate(f.updated, lang)}`].filter(Boolean).join(" · ");
                   return (
-                    <li key={f.id} className="flex flex-col gap-6 rounded-xl border border-ink/10 bg-card p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+                    <li key={f.id} className="lift flex flex-col gap-6 rounded-xl border border-ink/10 bg-card p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
                       <div className="flex min-w-0 gap-6">
-                        <span aria-hidden="true" className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">
+                        <span aria-hidden="true" className="font-ui font-semibold text-4xl font-light tabular-nums text-accent-ink/60">
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <div className="min-w-0">
-                          <h2 className="font-serif text-2xl font-light leading-snug">{f.title[lang]}</h2>
+                          <h2 className="font-ui font-semibold text-2xl font-light leading-snug">{f.title[lang]}</h2>
                           {meta && <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{meta}</p>}
                         </div>
                       </div>
