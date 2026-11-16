@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { PasserTile } from "./PasserCard";
 import { Placeholder } from "./Placeholder";
-import { CountUp } from "./CountUp";
 import { TextEffect } from "./TextEffect";
 import { ripple } from "./ripple";
 
@@ -21,7 +20,6 @@ const Side = ({ children }: { children: React.ReactNode }) => <span aria-hidden=
 
 export default function PsfSite({ lang }: { lang: Lang }) {
   const { content, announcements, news, passers, assessmentCalendars } = useSite();
-  const passedTotal = passers.length;
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
   const latestYear = Math.max(...announcements.map((a) => a.year));
@@ -158,20 +156,20 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               {t.home.calendarMore} →
             </a>
           </div>
-          <div className="mt-12 grid items-stretch gap-6 md:grid-cols-12 md:gap-8">
+          <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
             <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-full min-h-56 w-full rounded-3xl border border-ink/10 object-cover" />
+              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
             </a>
             {cal && (
               <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
                 {[1, 2].map((r) => (
-                  <div key={r} className="rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md md:p-8">
+                  <div key={r} className="rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
                     <p className="font-ui font-semibold text-3xl font-light">
                       {t.pages.assessment.round} {r}
                     </p>
-                    <dl className="mt-5 divide-y divide-page/15">
+                    <dl className="mt-3 divide-y divide-page/15">
                       {(["apply", "assess", "result"] as const).map((k) => (
-                        <div key={k} className="flex items-baseline justify-between gap-4 py-4">
+                        <div key={k} className="flex items-baseline justify-between gap-4 py-3">
                           <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
                           <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
                         </div>
@@ -182,7 +180,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               </div>
             )}
           </div>
-          <p className="mt-10 text-xs text-ink-2">{t.home.photoCredit}</p>
         </div>
       </section>
 
@@ -271,21 +268,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* documentary band: one real number from the data over a photo */}
-      <section aria-label={t.passers.total} className="relative isolate overflow-hidden bg-page text-ink">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-24 md:flex-row md:items-end md:justify-between md:px-8 md:py-32">
-          <div>
-            <p className="font-mono text-xs tracking-[0.05em] text-ink-2">{t.passers.total}</p>
-            <p className="mt-3 font-ui font-semibold text-7xl font-light tabular-nums md:text-8xl">
-              <CountUp value={passedTotal} /> <span className="text-3xl md:text-4xl">{t.passers.people}</span>
-            </p>
-          </div>
-          <a href={`/${lang}/publicity`} className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
-            {t.passers.title} →
-          </a>
         </div>
       </section>
 
