@@ -16,9 +16,37 @@ const hairline = "border border-ink/10";
 const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 
 // vertical section marker on the left page edge (wide screens only, see .side-label)
-const Side = ({ children }: { children: React.ReactNode }) => <span aria-hidden="true" className="side-label">{children}</span>;
+
+// line icons for the category bar, one array of paths per item (24 px grid, 1.6 stroke)
+const CAT_ICONS: string[][] = [
+  // apply: document with a check
+  ["M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z", "M14 3v5h5", "M9 14l2 2 4-4"],
+  // calendar
+  ["M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z", "M4 10h16", "M8 2v4", "M16 2v4", "M8 14h2", "M14 14h2", "M8 17h2"],
+  // passers: medal with ribbons
+  ["M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10z", "M9 13.2L7.5 21l4.5-2.4L16.5 21 15 13.2"],
+  // announcements: megaphone
+  ["M3 10v4a1 1 0 0 0 1 1h2l6 4V5L6 9H4a1 1 0 0 0-1 1z", "M16 9a4 4 0 0 1 0 6", "M19 6a8 8 0 0 1 0 12"],
+  // process: three linked steps
+  ["M4 5h5v5H4z", "M15 14h5v5h-5z", "M9 7.5h3a3 3 0 0 1 3 3v3"],
+  // eligibility: clipboard with a check
+  ["M6 5h12a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z", "M9 3h6v4H9z", "M9 13l2 2 4-4"],
+];
 
 export default function PsfSite({ lang }: { lang: Lang }) {
+  // mobile category bar: shown at the bottom, hidden while scrolling down, back when scrolling up
+  const [barShown, setBarShown] = useState(true);
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 6) return;
+      setBarShown(y < last || y < 80);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const { content, announcements, news, passers, assessmentCalendars } = useSite();
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
@@ -52,24 +80,25 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
       <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-page">
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/55" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/30" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
-          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/25 bg-page/10 px-4 py-1.5 text-sm font-medium text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
-          <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-5xl leading-[1.25] md:text-7xl md:leading-[1.2]" />
-          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-page/80" />
+          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/40 bg-page/20 px-5 py-2 text-base font-semibold text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
+          <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
+          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-page" />
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
             <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
-            <a href="#announcements" className="font-medium text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
+            <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-page/70 px-6 text-sm font-medium text-page hover:bg-page/10">
               {t.hero.cta2}
             </a>
           </div>
         </div>
         {announcements[0] && (
-          <div className="absolute inset-x-0 bottom-0 border-t border-page/20 bg-black/30">
+          <div className="absolute inset-x-0 bottom-0 border-t border-page/20 bg-[#1d1630]/85">
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 md:flex-row md:items-center md:gap-6 md:px-8">
-              <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-ink-3">{t.hero.latest}</span>
+              <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-page/80">{t.hero.latest}</span>
               <a href={`/${lang}/announcement/${announcements[0].id}`} className="line-clamp-1 text-sm hover:underline">
                 {announcements[0].title[lang]}
               </a>
@@ -78,77 +107,13 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         )}
       </section>
 
-      {/* strip: four short claims under the hero, top rule and title per column */}
-      <section aria-label={t.home.quickTitle} className="border-y border-ink/10 bg-card">
-        <ul className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 md:px-8 lg:grid-cols-4">
-          {t.home.strip.map((s) => (
-            <li key={s.title}>
-              <p className="font-semibold text-ink">{s.title}</p>
-              <p className="mt-1 text-sm leading-6 text-ink-2">{s.desc}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* quick links: bento of rounded tiles. Photo tiles: apply, calendar, passers, announcements, contact (the process tile stays solid dark);
-          photos zoom slowly on hover and each arrow turns accent. Layout per index: span, photo (if any), tone. */}
-      <section aria-label={t.home.quickTitle} className="relative">
-        <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
-          <ul data-stagger className="lift-group grid gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4">
-            {t.home.quick.map((q, i) => {
-              const cfg = [
-                { span: "lg:col-span-6 lg:row-span-2 min-h-[320px]", photo: "/img/does/activity-signing.webp", big: true },
-                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/commons/kwan-phayao-sunset.webp" },
-                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/does/activity-award.jpg" },
-                { span: "lg:col-span-3 min-h-[200px]", photo: "/img/commons/kwan-phayao-morning.webp" },
-                { span: "lg:col-span-3 min-h-[200px]", dark: true },
-                { span: "lg:col-span-6 min-h-[180px]", photo: "/img/does/activity-workshop.webp" },
-                { span: "sm:col-span-2 lg:col-span-6 min-h-[180px]", photo: "/img/commons/up-sign.webp" },
-              ][i] ?? { span: "lg:col-span-3" };
-              const onDark = !!cfg.photo || !!cfg.dark;
-              return (
-                <li key={q.href} style={idx(i)} className={cfg.span}>
-                  <a
-                    href={`/${lang}${q.href}`}
-                    className={`lift group relative isolate flex h-full min-h-[inherit] flex-col justify-between overflow-hidden rounded-3xl border p-6 md:p-8 ${
-                      onDark ? "border-transparent bg-forest text-page" : "border-ink/10 bg-card text-ink hover:bg-raised"
-                    }`}
-                  >
-                    {cfg.photo && (
-                      <>
-                        <img src={cfg.photo} alt="" className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-ui group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
-                        <span aria-hidden="true" className="absolute inset-0 -z-10 bg-black/60 transition-colors duration-150 group-hover:bg-black/45" />
-                      </>
-                    )}
-                    <span className="flex items-start justify-between gap-4">
-                      <span className={`font-mono text-xs tabular-nums ${onDark ? "text-page/70" : "text-ink-3"}`}>{String(i + 1).padStart(2, "0")}</span>
-                      <span
-                        aria-hidden="true"
-                        className={`flex size-11 shrink-0 items-center justify-center rounded-full border text-lg transition-colors duration-150 group-hover:border-accent group-hover:bg-accent group-hover:text-white ${
-                          onDark ? "border-page/40" : "border-ink/15 text-ink-2"
-                        }`}
-                      >
-                        →
-                      </span>
-                    </span>
-                    <span className="mt-10 block">
-                      <span className={`block font-ui font-semibold leading-snug ${cfg.big ? "text-4xl md:text-5xl" : "text-2xl"}`}>{q.title}</span>
-                      <span className={`mt-2 block max-w-md text-sm ${onDark ? "text-page/80" : "text-ink-2"}`}>{q.desc}</span>
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
 
       {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
       <section id="calendar" className="relative isolate scroll-mt-16 overflow-hidden bg-page text-ink">
-        <div className="mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-40">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 data-reveal className="text-4xl md:text-5xl">{t.home.calendarTitle}</h2>
+              <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
               <p className="mt-2 text-ink-2">
                 {t.home.calendarLead}
                 {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
@@ -165,8 +130,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             {cal && (
               <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
                 {[1, 2].map((r) => (
-                  <div key={r} className="rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
-                    <p className="font-ui font-semibold text-3xl font-light">
+                  <div key={r} className="overflow-hidden rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
+                    <p className="-mx-6 -mt-6 mb-5 bg-gradient-to-r from-accent to-[#c2378f] px-6 py-4 font-ui font-semibold text-2xl text-white">
                       {t.pages.assessment.round} {r}
                     </p>
                     <dl className="mt-3 divide-y divide-page/15">
@@ -187,13 +152,24 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
       {/* news: one lead story with a photo, the next three beside it */}
       <section id="news" className="relative scroll-mt-16 bg-card">
-        <Side>{t.news.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <div className="flex items-end justify-between gap-4">
-            <h2 data-reveal className="text-4xl md:text-5xl">{t.news.title}</h2>
+          <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
             <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {[
+              { href: "#news", label: t.news.title },
+              { href: "#announcements", label: t.news.announcements },
+              { href: "#calendar", label: t.home.calendarTitle },
+              { href: "#passers", label: t.passers.title },
+            ].map((c) => (
+              <a key={c.href} href={c.href} className="rounded-full border border-ink/10 bg-page px-4 py-1.5 text-sm font-medium text-ink hover:bg-raised">
+                {c.label}
+              </a>
+            ))}
           </div>
           {lead && (
             <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-12">
@@ -245,10 +221,9 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
       {/* announcements: a plain register, year on the left like a gazette */}
       <section id="announcements" className="font-sans relative scroll-mt-16">
-        <Side>{t.news.announcements}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 data-reveal className="text-4xl md:text-5xl">{t.news.announcements}</h2>
+            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.announcements}</h2>
             <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -275,10 +250,9 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
       {/* PSF: three levels as a ledger, then the four steps */}
       <section id="levels" className="relative scroll-mt-16 bg-card">
-        <Side>{t.levels.title}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 data-reveal className="text-4xl md:text-5xl">{t.levels.title}</h2>
+            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.levels.title}</h2>
             <p className="mt-3 text-ink-2">{t.levels.desc}</p>
           </div>
           <ol data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
@@ -301,7 +275,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       {/* process: four steps in columns, each with a top rule, number and title */}
       <section id="process" className="relative scroll-mt-16 bg-forest text-page">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <h2 data-reveal className="text-4xl md:text-5xl">{t.process.title}</h2>
+          <h2 data-reveal className="text-4xl leading-tight tracking-tight text-page md:text-5xl">{t.process.title}</h2>
           <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
               <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-page/15 bg-page/5 p-6">
@@ -318,10 +292,9 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       <section id="passers" className="relative scroll-mt-16 bg-card">
-        <Side>{t.passers.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <div className="flex items-end justify-between gap-4">
-            <h2 data-reveal className="text-4xl md:text-5xl">{t.passers.title}</h2>
+          <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.passers.title}</h2>
             <a href={`/${lang}/publicity`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -359,6 +332,24 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </ul>
         </div>
       </section>
+      <nav aria-label={t.home.quickTitle} className={`fixed inset-x-3 bottom-3 z-40 rounded-[22px] border border-ink/10 bg-card/95 p-2 shadow-none backdrop-blur-md transition-transform duration-300 md:inset-x-auto md:bottom-6 md:left-1/2 md:w-[46rem] md:-translate-x-1/2 md:p-3 ${barShown ? "translate-y-0" : "translate-y-[150%]"}`}>
+        <ul className="flex gap-1 overflow-x-auto md:grid md:grid-cols-6 md:gap-2 md:overflow-visible">
+          {t.home.quick.slice(0, 6).map((q, i) => (
+            <li key={q.href} className="w-[30vw] shrink-0 md:w-auto">
+              <a href={`/${lang}${q.href}`} className="flex flex-col items-center gap-1.5 rounded-xl px-1 py-2 text-center text-[11px] font-medium leading-tight text-ink hover:bg-raised md:text-sm">
+                <span className="flex size-11 items-center justify-center rounded-full bg-tint">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="size-5 text-accent" aria-hidden="true">
+                    {CAT_ICONS[i % CAT_ICONS.length].map((d) => (
+                      <path key={d} d={d} />
+                    ))}
+                  </svg>
+                </span>
+                <span className="flex h-[2.4em] items-center justify-center">{q.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </main>
   );
 }

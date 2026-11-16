@@ -60,14 +60,14 @@ export function SiteHeader({ lang }: { lang: Lang }) {
   return (
     // zero-height sticky wrapper: the capsule floats over the page (and over the hero image) without pushing content down
     <div className="font-ui sticky top-0 z-30 h-0">
-      <div className="mx-auto max-w-7xl px-0 pt-0 md:px-0">
-        <header className="border-b border-ink/10 bg-page/95 px-4 backdrop-blur-md md:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-3 md:px-8">
+        <header className="rounded-[30px] border border-ink/10 bg-page/95 px-4 shadow-[0_10px_30px_-12px_rgba(29,22,48,0.35)] backdrop-blur-md md:px-6">
           <div className="flex h-14 items-center gap-3 pl-5 pr-3 lg:gap-4 xl:gap-5">
             <Link href={base} className="flex min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
-                <span className="block truncate text-base font-medium text-ink">{t.siteName}</span>
-                <span className="block font-mono text-[11px] tracking-[0.05em] text-ink-3">{t.siteOrg}</span>
+                <span className="block truncate text-sm font-medium text-ink sm:text-base">{t.siteName}</span>
+                <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 sm:block">{t.siteOrg}</span>
               </span>
             </Link>
 
@@ -148,6 +148,9 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               ))}
             </div>
 
+            <Link href={`${base}/documents/forms`} className="inline-flex h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-3 text-xs font-medium text-white md:hidden">
+              {t.nav.apply}
+            </Link>
             <button
               type="button"
               aria-expanded={menu}

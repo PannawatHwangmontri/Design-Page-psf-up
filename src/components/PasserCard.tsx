@@ -3,7 +3,6 @@
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import type { Passer } from "@/data/mock";
-import { Placeholder } from "./Placeholder";
 
 // การ์ดผู้ผ่านเกณฑ์ของหน้าข่าวประชาสัมพันธ์: รูปบน ป้ายระดับ/ปีแบบ mono ชื่อเซอริฟบาง ไม่มีลิงก์ไปหน้าอื่น
 const DOT: Record<string, string> = { "1": "bg-level-1", "2": "bg-level-2", "3": "bg-level-3" };
@@ -12,7 +11,7 @@ export function PasserCard({ p, lang, style }: { p: Passer; lang: Lang; style?: 
   const lv = p.level.en.slice(-1);
   return (
     <li style={style} className="lift overflow-hidden rounded-xl border border-ink/10 bg-card">
-      {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <Placeholder label={t.passers.photoAlt} className="aspect-[4/3]" />}
+      {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className="flex aspect-[4/3] items-center justify-center bg-raised font-ui text-5xl font-semibold text-ink-3">{p.name[lang].trim().charAt(0)}</span>}
       <div className="p-6">
         <p className="flex items-center gap-2 font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">
           <span aria-hidden="true" className={`h-2 w-2 rounded-full ${DOT[lv]}`} />
@@ -33,7 +32,7 @@ export function PasserTile({ p, lang, style }: { p: Passer; lang: Lang; style?: 
   return (
     <li style={style}>
       <a href={`/${lang}/publicity`} className="block overflow-hidden rounded-xl border border-ink/10 bg-page transition-colors hover:border-accent/40">
-        {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <Placeholder label={t.passers.photoAlt} className="aspect-[4/3]" />}
+        {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className="flex aspect-[4/3] items-center justify-center bg-raised font-ui text-5xl font-semibold text-ink-3">{p.name[lang].trim().charAt(0)}</span>}
         <div className="p-4">
           <p className="line-clamp-2 font-medium">{p.name[lang]}</p>
           <p className="mt-1 line-clamp-1 text-sm text-ink-2">{p.unit[lang]}</p>
