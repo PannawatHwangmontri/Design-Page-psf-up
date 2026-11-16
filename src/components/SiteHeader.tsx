@@ -62,11 +62,11 @@ export function SiteHeader({ lang }: { lang: Lang }) {
     <div className="font-ui sticky top-0 z-30 h-0">
       <div className="mx-auto max-w-7xl px-4 pt-3 md:px-8">
         <header className="rounded-[30px] border border-ink/10 bg-page/95 px-4 shadow-[0_10px_30px_-12px_rgba(29,22,48,0.35)] backdrop-blur-md md:px-6">
-          <div className="flex h-14 items-center gap-3 pl-5 pr-3 lg:gap-4 xl:gap-5">
+          <div className="flex h-14 items-center gap-2 pl-2 pr-2 sm:gap-3 sm:pl-5 sm:pr-3 lg:gap-4 xl:gap-5">
             <Link href={base} className="flex min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
-                <span className="block truncate text-sm font-medium text-ink sm:text-base">{t.siteName}</span>
+                <span className="hidden truncate text-sm font-medium text-ink sm:block sm:text-base">{t.siteName}</span>
                 <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 sm:block">{t.siteOrg}</span>
               </span>
             </Link>
@@ -149,14 +149,14 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             </div>
 
             <Link href={`${base}/documents/forms`} className="inline-flex h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-3 text-xs font-medium text-white md:hidden">
-              {t.nav.apply}
+              {t.nav.applyShort}
             </Link>
             <button
               type="button"
               aria-expanded={menu}
               aria-controls="mobile-menu"
               onClick={() => setMenu(!menu)}
-              className="flex h-10 shrink-0 items-center rounded-full border border-ink/10 px-4 text-sm font-medium text-ink-2 hover:bg-raised md:hidden"
+              className="flex h-10 shrink-0 items-center rounded-full border border-ink/10 px-3 text-sm font-medium text-ink-2 hover:bg-raised sm:px-4 md:hidden"
             >
               {t.menu}
             </button>

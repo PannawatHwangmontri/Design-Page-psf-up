@@ -83,7 +83,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                     <li key={a.id} className="flex gap-6 py-5">
                       <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
                         {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                        {a.year === latestYear && <span className="mt-2 block text-accent-ink">{c.news.isNew}</span>}
+                        {a.year === latestYear && <span className="mt-2 inline-block rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-white">{c.news.isNew}</span>}
                       </span>
                       <div className="min-w-0">
                         <p className="font-medium">

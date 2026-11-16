@@ -8,8 +8,8 @@ export function Intro() {
   const [phase, setPhase] = useState<"in" | "out" | "done">("in");
 
   useEffect(() => {
-    const leave = window.setTimeout(() => setPhase("out"), 1100);
-    const done = window.setTimeout(() => setPhase("done"), 2100);
+    const leave = window.setTimeout(() => setPhase("out"), 700);
+    const done = window.setTimeout(() => setPhase("done"), 1400);
     return () => {
       window.clearTimeout(leave);
       window.clearTimeout(done);
