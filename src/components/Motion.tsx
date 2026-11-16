@@ -20,10 +20,19 @@ export function Motion() {
       frame = requestAnimationFrame(() => {
         const max = document.documentElement.scrollHeight - window.innerHeight;
         if (bar) bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+        // hero photo drifts slower than the page: CSS reads --hero-shift (set on <html>, so React-rendered markup is never touched)
+        document.documentElement.style.setProperty("--hero-shift", `${Math.min(window.scrollY, 900) * 0.35}px`);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
+    // pointer position on <html> for the hero glow (CSS variables, React markup untouched)
+    const onMove = (e: MouseEvent) => {
+      document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${e.clientY}px`);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
 
     const cleanups: (() => void)[] = [];
     document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
@@ -47,6 +56,7 @@ export function Motion() {
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(frame);
       cleanups.forEach((f) => f());
     };

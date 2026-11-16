@@ -126,6 +126,7 @@ button {
 @keyframes stagger-fade {
   from {
     opacity: 0;
+    transform: translateY(40px) scale(0.92);
     filter: blur(12px);
   }
   to {
@@ -195,7 +196,7 @@ button {
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(56px) scale(0.94);
   }
 }
 @keyframes reveal-image {
@@ -362,5 +363,84 @@ button {
 @media (prefers-reduced-motion: reduce) {
   [data-magnetic] {
     transition: none;
+  }
+}
+
+/* Motion pack (home): concentric pulse rings, tilted floating card, growing rule under a heading. Off with reduced motion. */
+.pulse-ring {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  animation: pulse-ring 3.6s var(--ease-ui) infinite;
+}
+@keyframes pulse-ring {
+  from {
+    transform: scale(0.35);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+.tilt-float {
+  animation: tilt-float 6s ease-in-out infinite;
+}
+@keyframes tilt-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-3deg);
+  }
+}
+.line-grow {
+  transform-origin: left;
+  animation: line-grow 1s var(--ease-ui) both;
+}
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-ring,
+  .tilt-float,
+  .line-grow {
+    animation: none;
+  }
+}
+
+/* Louder entrance: sections and cards bounce up with a small overshoot. */
+[data-reveal]:not([data-in]),
+[data-stagger]:not([data-in]) > * {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lift:hover {
+  transform: translateY(-14px) scale(1.02);
+}
+
+/* Hero parallax: Motion.tsx sets --hero-shift on <html> while scrolling. */
+#home img.hero-zoom {
+  translate: 0 var(--hero-shift, 0px);
+}
+@media (prefers-reduced-motion: reduce) {
+  #home img.hero-zoom {
+    translate: none;
+  }
+}
+
+/* Hero glow: a soft purple light that follows the pointer (Motion.tsx sets --mx / --my on <html>). */
+.hero-glow {
+  background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 40%), rgba(141, 56, 201, 0.38), transparent 62%);
+  mix-blend-mode: screen;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow {
+    background: none;
   }
 }

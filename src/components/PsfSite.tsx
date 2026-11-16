@@ -82,6 +82,14 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/30" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
+        {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
+        <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
+        <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 -z-10 hidden size-[46rem] -translate-x-1/2 -translate-y-1/2 md:block">
+          <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
+          <span className="pulse-ring inset-0" style={{ animationDelay: "1s" }} />
+          <span className="pulse-ring inset-0" style={{ animationDelay: "2s" }} />
+          <span className="pulse-ring inset-0" style={{ animationDelay: "3s" }} />
+        </div>
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/40 bg-page/20 px-5 py-2 text-base font-semibold text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
@@ -273,9 +281,22 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative scroll-mt-16 bg-forest text-page">
+      <section id="process" className="relative overflow-hidden scroll-mt-16 bg-forest text-page">
+        {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
+        <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-10 hidden size-[34rem] md:block">
+          <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
+          <span className="pulse-ring inset-0" style={{ animationDelay: "1.2s" }} />
+          <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
+        </div>
+        <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-page p-5 md:block">
+          <span className="block h-2 w-16 rounded-full bg-accent" />
+          <span className="mt-4 block h-2 w-28 rounded-full bg-raised" />
+          <span className="mt-2 block h-2 w-20 rounded-full bg-raised" />
+          <span className="mt-5 block h-8 rounded-full bg-accent/15" />
+        </div>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <h2 data-reveal className="text-4xl leading-tight tracking-tight text-page md:text-5xl">{t.process.title}</h2>
+          <TextEffect as="h2" text={t.process.title} className="text-4xl leading-tight tracking-tight text-page md:text-5xl" />
+          <span aria-hidden="true" className="line-grow mt-5 block h-px w-28 bg-page/70" />
           <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
               <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-page/15 bg-page/5 p-6">
