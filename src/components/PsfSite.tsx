@@ -50,22 +50,24 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   return (
     <main className="font-ui">
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
-      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-page text-ink">
+      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-page">
+        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/55" />
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
-          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-ink/10 bg-card px-4 py-1.5 text-sm font-medium text-accent-ink"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />{t.hero.eyebrow}</p>
+          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/25 bg-page/10 px-4 py-1.5 text-sm font-medium text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-5xl leading-[1.25] md:text-7xl md:leading-[1.2]" />
-          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-ink-2" />
+          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-page/80" />
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
             <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
-            <a href="#announcements" className="font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+            <a href="#announcements" className="font-medium text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
               {t.hero.cta2}
             </a>
           </div>
         </div>
         {announcements[0] && (
-          <div className="absolute inset-x-0 bottom-0 border-t border-ink/10 bg-card">
+          <div className="absolute inset-x-0 bottom-0 border-t border-page/20 bg-black/30">
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 md:flex-row md:items-center md:gap-6 md:px-8">
               <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-ink-3">{t.hero.latest}</span>
               <a href={`/${lang}/announcement/${announcements[0].id}`} className="line-clamp-1 text-sm hover:underline">
@@ -146,7 +148,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 data-reveal className="text-3xl font-medium">{t.home.calendarTitle}</h2>
+              <h2 data-reveal className="text-4xl md:text-5xl">{t.home.calendarTitle}</h2>
               <p className="mt-2 text-ink-2">
                 {t.home.calendarLead}
                 {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
@@ -188,7 +190,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.news.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex items-end justify-between gap-4">
-            <h2 data-reveal className="text-3xl font-medium">{t.news.title}</h2>
+            <h2 data-reveal className="text-4xl md:text-5xl">{t.news.title}</h2>
             <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -246,7 +248,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.news.announcements}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 data-reveal className="text-3xl font-medium">{t.news.announcements}</h2>
+            <h2 data-reveal className="text-4xl md:text-5xl">{t.news.announcements}</h2>
             <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -276,7 +278,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.levels.title}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
-            <h2 data-reveal className="text-3xl font-medium">{t.levels.title}</h2>
+            <h2 data-reveal className="text-4xl md:text-5xl">{t.levels.title}</h2>
             <p className="mt-3 text-ink-2">{t.levels.desc}</p>
           </div>
           <ol data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
@@ -297,16 +299,16 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative scroll-mt-16 bg-page">
+      <section id="process" className="relative scroll-mt-16 bg-forest text-page">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <h2 data-reveal className="text-3xl">{t.process.title}</h2>
+          <h2 data-reveal className="text-4xl md:text-5xl">{t.process.title}</h2>
           <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
-              <li key={tile.href} style={idx(i)} className="border-t-2 border-ink pt-6">
-                <p className="font-mono text-xs tabular-nums text-accent-ink">{String(i + 1).padStart(2, "0")}</p>
+              <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-page/15 bg-page/5 p-6">
+                <p className="font-mono text-xs tabular-nums text-page/60">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="mt-3 text-xl">{tile.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-ink-2">{tile.desc}</p>
-                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-accent-ink underline underline-offset-4 hover:decoration-accent-ink">
+                <p className="mt-3 text-sm leading-6 text-page/75">{tile.desc}</p>
+                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-page underline underline-offset-4 hover:decoration-page">
                   {tile.link}
                 </a>
               </li>
@@ -319,7 +321,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Side>{t.passers.title}</Side>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex items-end justify-between gap-4">
-            <h2 data-reveal className="text-3xl font-medium">{t.passers.title}</h2>
+            <h2 data-reveal className="text-4xl md:text-5xl">{t.passers.title}</h2>
             <a href={`/${lang}/publicity`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
