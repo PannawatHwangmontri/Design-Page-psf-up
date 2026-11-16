@@ -12,7 +12,7 @@
 ## เทคโนโลยี
 
 - Next.js (App Router) + TypeScript + Tailwind CSS
-- ฟอนต์: Sarabun สำหรับเนื้อหา, Noto Serif Thai น้ำหนัก 300 สำหรับหัวข้อ (ผู้ใช้อนุมัติ 2026-11-13), IBM Plex Mono สำหรับป้ายเล็ก, IBM Plex Sans Thai (คลาส `font-ui`) สำหรับตัวควบคุม แถบหัว และส่วนสถานะในหน้าอาจารย์/แอดมิน (ผู้ใช้อนุมัติ 2026-11-16)
+- ฟอนต์ (design/design02): IBM Plex Sans Thai เป็นฟอนต์หลักทั้งเว็บ หัวข้อหนา 700 (ผู้ใช้สั่งให้ redesign ตาม propertyco.vercel.app/welcome), IBM Plex Mono สำหรับป้ายเล็ก ฟอนต์เดิม Noto Serif Thai และ Sarabun ยังโหลดอยู่แต่ไม่ได้ใช้หัวข้อแล้ว
 - เว็บรองรับ 2 ภาษา: ไทย (TH) และอังกฤษ (EN) ภาษาอยู่ในเส้นทาง `/th` `/en`
 
 ## คำสั่ง

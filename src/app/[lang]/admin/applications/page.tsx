@@ -64,7 +64,7 @@ function ReviewCard({ user, app, t }: { user: string; app: Application | null; t
   return (
     <article className="rounded-xl border border-ink/10 bg-card p-6 md:p-8">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="font-serif text-2xl font-light">{user}</h2>
+        <h2 className="font-ui font-semibold text-2xl font-light">{user}</h2>
         <span className="font-mono text-xs text-ink-3">{app ? statusLabel(app.status) : t.reviewNotSubmitted}</span>
       </div>
       {app?.status === "refer" && !app.submitted && <p className="mt-4 text-sm text-ink-2">{t.statusRefer}</p>}

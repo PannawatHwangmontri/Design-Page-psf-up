@@ -60,8 +60,8 @@ export function SiteHeader({ lang }: { lang: Lang }) {
   return (
     // zero-height sticky wrapper: the capsule floats over the page (and over the hero image) without pushing content down
     <div className="font-ui sticky top-0 z-30 h-0">
-      <div className="mx-auto max-w-7xl px-4 pt-4 md:px-8">
-        <header className="rounded-[30px] border border-ink/10 bg-page/85 backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-0 pt-0 md:px-0">
+        <header className="border-b border-ink/10 bg-page/95 px-4 backdrop-blur-md md:px-8">
           <div className="flex h-14 items-center gap-3 pl-5 pr-3 lg:gap-4 xl:gap-5">
             <Link href={base} className="flex min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />

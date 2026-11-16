@@ -32,7 +32,7 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
                 aria-selected={d.year === sel}
                 aria-controls="year-panel"
                 onClick={() => setSel(d.year)}
-                className={`flex shrink-0 items-baseline gap-3 py-1 text-left font-serif text-3xl font-light tabular-nums transition-colors md:text-4xl ${
+                className={`flex shrink-0 items-baseline gap-3 py-1 text-left font-ui font-semibold text-3xl font-light tabular-nums transition-colors md:text-4xl ${
                   d.year === sel ? "text-ink" : "text-ink/35 hover:text-ink/70"
                 }`}
               >

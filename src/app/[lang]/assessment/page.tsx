@@ -65,7 +65,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
               </h2>
               {current ? (
                 <>
-                  <p className="mt-3 font-serif text-3xl font-light leading-[1.3] md:text-4xl">
+                  <p className="mt-3 font-ui font-semibold text-3xl font-light leading-[1.3] md:text-4xl">
                     {current.type === "apply" ? t.applyOpen : t.types[current.type]}{" "}
                     <span className="text-lg text-page/70">
                       ({t.round} {current.round})
@@ -93,7 +93,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
         <aside className="md:col-span-3">
           <div className="md:sticky md:top-28">
             <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{t.timelineTitle}</p>
-            <p className="mt-2 font-serif text-6xl font-light tabular-nums leading-none md:text-7xl">{year}</p>
+            <p className="mt-2 font-ui font-semibold text-6xl font-light tabular-nums leading-none md:text-7xl">{year}</p>
             <Link href={`/${lang}/calendar`} className="mt-6 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
               {t.docsLink} →
             </Link>

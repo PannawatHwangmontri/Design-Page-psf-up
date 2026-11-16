@@ -53,6 +53,12 @@ export const content = {
     // ปฏิทินบนหน้าแรก: ตารางสรุปปีล่าสุดจาก mock ส่วนภาพเป็นโปสเตอร์ปฏิทินประเมิน พ.ศ. 2568 จากเว็บกองบริการการศึกษา
     home: {
       quickTitle: "ทางลัด",
+      strip: [
+        { title: "ประกาศผลอย่างเป็นทางการ", desc: "รายชื่อผู้ผ่านเกณฑ์แยกตามปีและระดับ" },
+        { title: "ปฏิทินการประเมิน", desc: "กำหนดรับสมัคร ประเมิน และประกาศผล" },
+        { title: "ยื่นออนไลน์และติดตามสถานะ", desc: "ดูสถานะและอัปโหลดหลักฐานในที่เดียว" },
+        { title: "ทีมงานช่วยตอบคำถาม", desc: "ช่องทางติดต่อและคำถามที่พบบ่อย" },
+      ],
       quick: [
         { title: "ยื่นขอรับการประเมิน", desc: "แบบฟอร์มและขั้นตอนการยื่น", href: "/documents/forms" },
         { title: "ปฏิทินการประเมิน", desc: "กำหนดรับสมัคร ประเมิน และประกาศผล", href: "/calendar" },
@@ -661,6 +667,12 @@ export const content = {
     // Home calendar: summary table for the latest year (mock) next to the real B.E. 2568 poster from the Division of Educational Services site
     home: {
       quickTitle: "Quick links",
+      strip: [
+        { title: "Official results", desc: "Passers listed by year and level" },
+        { title: "Assessment calendar", desc: "Application, assessment and result dates" },
+        { title: "Apply and track online", desc: "Check status and upload evidence in one place" },
+        { title: "Staff can help", desc: "Contact channels and frequently asked questions" },
+      ],
       quick: [
         { title: "Apply for assessment", desc: "Forms and how to submit", href: "/documents/forms" },
         { title: "Assessment calendar", desc: "Application, assessment and result dates", href: "/calendar" },

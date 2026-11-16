@@ -27,7 +27,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
               <div className="md:col-span-4">
                 <div className="md:sticky md:top-28">
-                  <p className="font-serif text-7xl font-light tabular-nums">{forms.length}</p>
+                  <p className="font-ui font-semibold text-7xl font-light tabular-nums">{forms.length}</p>
                   <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{t.title}</p>
                   <p className="mt-8 text-ink-2">{c.pages.assessment.formDesc}</p>
                   <a
@@ -45,11 +45,11 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   return (
                     <li key={f.id} className="lift flex flex-col gap-6 rounded-xl border border-ink/10 bg-card p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
                       <div className="flex min-w-0 gap-6">
-                        <span aria-hidden="true" className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">
+                        <span aria-hidden="true" className="font-ui font-semibold text-4xl font-light tabular-nums text-accent-ink/60">
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <div className="min-w-0">
-                          <h2 className="font-serif text-2xl font-light leading-snug">{f.title[lang]}</h2>
+                          <h2 className="font-ui font-semibold text-2xl font-light leading-snug">{f.title[lang]}</h2>
                           {meta && <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{meta}</p>}
                         </div>
                       </div>

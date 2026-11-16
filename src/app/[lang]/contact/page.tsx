@@ -32,11 +32,11 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   <li key={k.label} className="lift rounded-xl border border-ink/10 bg-card p-6 md:p-8">
                     <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{k.label}</p>
                     {k.href ? (
-                      <a href={k.href} className="mt-4 block break-words font-serif text-2xl font-light leading-snug hover:text-accent-ink">
+                      <a href={k.href} className="mt-4 block break-words font-ui font-semibold text-2xl font-light leading-snug hover:text-accent-ink">
                         {k.value}
                       </a>
                     ) : (
-                      <p className="mt-4 font-serif text-2xl font-light leading-snug">{k.value}</p>
+                      <p className="mt-4 font-ui font-semibold text-2xl font-light leading-snug">{k.value}</p>
                     )}
                   </li>
                 ))}

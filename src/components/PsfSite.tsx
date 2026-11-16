@@ -24,7 +24,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const passedTotal = passers.length;
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
-  const [step, setStep] = useState(0); // PSF step shown in the process panel
   const latestYear = Math.max(...announcements.map((a) => a.year));
   const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
   const loc = lang === "th" ? "th-TH" : "en-GB";
@@ -53,32 +52,42 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   return (
     <main className="font-ui">
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
-      <section id="home" className="relative isolate flex h-svh max-h-[960px] min-h-[600px] flex-col justify-center overflow-hidden bg-forest text-page">
-        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/55" />
+      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-page text-ink">
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
-          <p className="rise font-mono text-xs tracking-[0.05em] text-page/70">{t.hero.eyebrow}</p>
+          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-ink/10 bg-card px-4 py-1.5 text-sm font-medium text-accent-ink"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-5xl leading-[1.25] md:text-7xl md:leading-[1.2]" />
-          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-page/80" />
+          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-ink-2" />
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
             <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
-            <a href="#announcements" className="text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
+            <a href="#announcements" className="font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
               {t.hero.cta2}
             </a>
           </div>
         </div>
         {announcements[0] && (
-          <div className="absolute inset-x-0 bottom-0 border-t border-page/20">
+          <div className="absolute inset-x-0 bottom-0 border-t border-ink/10 bg-card">
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 md:flex-row md:items-center md:gap-6 md:px-8">
-              <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-page/60">{t.hero.latest}</span>
+              <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-ink-3">{t.hero.latest}</span>
               <a href={`/${lang}/announcement/${announcements[0].id}`} className="line-clamp-1 text-sm hover:underline">
                 {announcements[0].title[lang]}
               </a>
             </div>
           </div>
         )}
+      </section>
+
+      {/* strip: four short claims under the hero, top rule and title per column */}
+      <section aria-label={t.home.quickTitle} className="border-y border-ink/10 bg-card">
+        <ul className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 md:px-8 lg:grid-cols-4">
+          {t.home.strip.map((s) => (
+            <li key={s.title}>
+              <p className="font-semibold text-ink">{s.title}</p>
+              <p className="mt-1 text-sm leading-6 text-ink-2">{s.desc}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* quick links: bento of rounded tiles. Photo tiles: apply, calendar, passers, announcements, contact (the process tile stays solid dark);
@@ -123,7 +132,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                       </span>
                     </span>
                     <span className="mt-10 block">
-                      <span className={`block font-serif font-light leading-snug ${cfg.big ? "text-4xl md:text-5xl" : "text-2xl"}`}>{q.title}</span>
+                      <span className={`block font-ui font-semibold leading-snug ${cfg.big ? "text-4xl md:text-5xl" : "text-2xl"}`}>{q.title}</span>
                       <span className={`mt-2 block max-w-md text-sm ${onDark ? "text-page/80" : "text-ink-2"}`}>{q.desc}</span>
                     </span>
                   </a>
@@ -135,14 +144,12 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
-      <section id="calendar" className="relative isolate scroll-mt-16 overflow-hidden bg-forest text-page">
-        <img src="/img/commons/ce-building-dusk.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+      <section id="calendar" className="relative isolate scroll-mt-16 overflow-hidden bg-page text-ink">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 data-reveal className="text-3xl font-medium">{t.home.calendarTitle}</h2>
-              <p className="mt-2 text-page/70">
+              <p className="mt-2 text-ink-2">
                 {t.home.calendarLead}
                 {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
               </p>
@@ -153,19 +160,19 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </div>
           <div className="mt-12 grid items-stretch gap-6 md:grid-cols-12 md:gap-8">
             <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-full min-h-56 w-full rounded-3xl border border-page/15 object-cover" />
+              <img data-reveal="image" src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-full min-h-56 w-full rounded-3xl border border-ink/10 object-cover" />
             </a>
             {cal && (
               <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
                 {[1, 2].map((r) => (
-                  <div key={r} className="rounded-3xl border border-page/15 bg-page/10 p-6 backdrop-blur-md md:p-8">
-                    <p className="font-serif text-3xl font-light">
+                  <div key={r} className="rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md md:p-8">
+                    <p className="font-ui font-semibold text-3xl font-light">
                       {t.pages.assessment.round} {r}
                     </p>
                     <dl className="mt-5 divide-y divide-page/15">
                       {(["apply", "assess", "result"] as const).map((k) => (
                         <div key={k} className="flex items-baseline justify-between gap-4 py-4">
-                          <dt className="text-page/60">{t.pages.assessment.types[k]}</dt>
+                          <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
                           <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
                         </div>
                       ))}
@@ -175,7 +182,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               </div>
             )}
           </div>
-          <p className="mt-10 text-xs text-page/50">{t.home.photoCredit}</p>
+          <p className="mt-10 text-xs text-ink-2">{t.home.photoCredit}</p>
         </div>
       </section>
 
@@ -268,17 +275,15 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* documentary band: one real number from the data over a photo */}
-      <section aria-label={t.passers.total} className="relative isolate overflow-hidden bg-forest text-page">
-        <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/60" />
+      <section aria-label={t.passers.total} className="relative isolate overflow-hidden bg-page text-ink">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-24 md:flex-row md:items-end md:justify-between md:px-8 md:py-32">
           <div>
-            <p className="font-mono text-xs tracking-[0.05em] text-page/70">{t.passers.total}</p>
-            <p className="mt-3 font-serif text-7xl font-light tabular-nums md:text-8xl">
+            <p className="font-mono text-xs tracking-[0.05em] text-ink-2">{t.passers.total}</p>
+            <p className="mt-3 font-ui font-semibold text-7xl font-light tabular-nums md:text-8xl">
               <CountUp value={passedTotal} /> <span className="text-3xl md:text-4xl">{t.passers.people}</span>
             </p>
           </div>
-          <a href={`/${lang}/publicity`} className="text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
+          <a href={`/${lang}/publicity`} className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
             {t.passers.title} →
           </a>
         </div>
@@ -309,51 +314,22 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section id="process" className="relative isolate scroll-mt-16 overflow-hidden bg-forest text-page">
-        <img src="/img/does/activity-meeting.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/75" />
+      {/* process: four steps in columns, each with a top rule, number and title */}
+      <section id="process" className="relative scroll-mt-16 bg-page">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <h2 data-reveal className="text-3xl font-medium">{t.process.title}</h2>
-          {/* pick a step on the left (hover, focus or tap); its detail shows in the soft glass panel on the right */}
-          <div className="mt-10 grid gap-8 md:mt-14 lg:grid-cols-12 lg:gap-12">
-            <ol className="lg:col-span-5">
-              {t.process.tiles.map((tile, i) => (
-                <li key={tile.href} className="border-b border-page/15 first:border-t">
-                  <button
-                    type="button"
-                    onMouseEnter={() => setStep(i)}
-                    onFocus={() => setStep(i)}
-                    onClick={() => setStep(i)}
-                    aria-pressed={step === i}
-                    className={`flex w-full items-baseline gap-5 py-5 text-left transition-colors duration-150 md:py-6 ${step === i ? "text-page" : "text-page/50 hover:text-page/80"}`}
-                  >
-                    <span className="font-mono text-xs tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="font-serif text-2xl font-light leading-snug md:text-3xl">{tile.title}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-
-            <div className="lg:col-span-7">
-              {t.process.tiles.map((tile, i) =>
-                step === i ? (
-                  <div key={tile.href} className="rise relative overflow-hidden rounded-[2rem] border border-page/15 bg-page/10 p-8 backdrop-blur-md md:p-12">
-                    <span aria-hidden="true" className="absolute -right-3 -top-8 font-serif text-[11rem] font-light leading-none tabular-nums text-page/10">
-                      {i + 1}
-                    </span>
-                    <p className="relative font-mono text-xs tabular-nums text-page/70">
-                      {String(i + 1).padStart(2, "0")} / {String(t.process.tiles.length).padStart(2, "0")}
-                    </p>
-                    <h3 className="relative mt-6 font-serif text-3xl font-light leading-snug md:text-4xl">{tile.title}</h3>
-                    <p className="relative mt-4 max-w-xl text-lg leading-8 text-page/80">{tile.desc}</p>
-                    <a href={`/${lang}${tile.href}`} className="relative mt-8 inline-flex h-11 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
-                      {tile.link} →
-                    </a>
-                  </div>
-                ) : null,
-              )}
-            </div>
-          </div>
+          <h2 data-reveal className="text-3xl">{t.process.title}</h2>
+          <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {t.process.tiles.map((tile, i) => (
+              <li key={tile.href} style={idx(i)} className="border-t-2 border-ink pt-6">
+                <p className="font-mono text-xs tabular-nums text-accent-ink">{String(i + 1).padStart(2, "0")}</p>
+                <h3 className="mt-3 text-xl">{tile.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-ink-2">{tile.desc}</p>
+                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-accent-ink underline underline-offset-4 hover:decoration-accent-ink">
+                  {tile.link}
+                </a>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

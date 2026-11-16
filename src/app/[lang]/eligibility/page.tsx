@@ -91,7 +91,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   <div className="mt-8 grid gap-4 md:grid-cols-3">
                     {t.components.groups.map((g, gi) => (
                       <div key={g.en} className="lift rounded-3xl border border-ink/10 bg-card p-6">
-                        <p className="font-serif text-5xl font-light tabular-nums text-accent-ink">{gi + 1}</p>
+                        <p className="font-ui font-semibold text-5xl font-light tabular-nums text-accent-ink">{gi + 1}</p>
                         <h3 className="mt-4 text-xl">{g.title}</h3>
                         <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{g.en}</p>
                         <ul className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
@@ -117,7 +117,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                     {t.levels.items.map((l, i) => (
                       <li key={l.code} className="grid gap-4 border-t border-ink/10 py-8 md:grid-cols-12 md:gap-8">
                         <div className="md:col-span-3">
-                          <p className="font-serif text-6xl font-light leading-none tabular-nums">{i + 1}</p>
+                          <p className="font-ui font-semibold text-6xl font-light leading-none tabular-nums">{i + 1}</p>
                           <p className="mt-3 font-mono text-xs tracking-[0.05em] text-ink-3">{l.code}</p>
                         </div>
                         <div className="md:col-span-9">

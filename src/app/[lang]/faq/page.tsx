@@ -25,7 +25,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
               <div className="md:col-span-4">
                 <div className="md:sticky md:top-28">
-                  <p className="font-serif text-7xl font-light tabular-nums">{t.items.length}</p>
+                  <p className="font-ui font-semibold text-7xl font-light tabular-nums">{t.items.length}</p>
                   <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{t.title}</p>
                   <span className="mt-6 inline-block rounded-full border border-ink/15 px-2 py-0.5 text-xs text-ink-3">{t.sample}</span>
                   <p className="mt-4 text-sm text-ink-3">{t.note}</p>
@@ -38,7 +38,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                     <details className="group rounded-xl border border-ink/10 bg-card px-6 py-5 md:px-8 md:py-6">
                       <summary className="flex cursor-pointer list-none items-start gap-5 [&::-webkit-details-marker]:hidden">
                         <span aria-hidden="true" className="mt-1.5 font-mono text-xs tabular-nums text-accent-ink">{String(i + 1).padStart(2, "0")}</span>
-                        <span className="flex-1 font-serif text-xl font-light leading-snug md:text-2xl">{it.q}</span>
+                        <span className="flex-1 font-ui font-semibold text-xl font-light leading-snug md:text-2xl">{it.q}</span>
                         <span aria-hidden="true" className="mt-1 shrink-0 text-2xl leading-none text-ink-3 transition-transform duration-150 group-open:rotate-45">
                           +
                         </span>

@@ -34,10 +34,10 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               <ol className="mt-10 grid gap-4 md:grid-cols-3">
                 {a.mission.map((m, i) => (
                   <li key={m} className="lift flex flex-col rounded-xl border border-ink/10 bg-card p-6 md:p-8">
-                    <span aria-hidden="true" className="font-serif text-6xl font-light tabular-nums text-accent-ink">
+                    <span aria-hidden="true" className="font-ui font-semibold text-6xl font-light tabular-nums text-accent-ink">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <p className="mt-8 font-serif text-2xl font-light leading-snug">{m}</p>
+                    <p className="mt-8 font-ui font-semibold text-2xl font-light leading-snug">{m}</p>
                   </li>
                 ))}
               </ol>
@@ -46,15 +46,15 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section className="bg-forest text-page">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
                 <p className="font-mono text-xs tracking-[0.05em] text-page/60">{a.visionTitle}</p>
-                <blockquote className="mt-6 max-w-4xl font-serif text-3xl font-light leading-[1.4] md:text-5xl md:leading-[1.35]">“{a.vision}”</blockquote>
+                <blockquote className="mt-6 max-w-4xl font-ui font-semibold text-3xl font-light leading-[1.4] md:text-5xl md:leading-[1.35]">“{a.vision}”</blockquote>
                 <dl className="mt-12 grid gap-8 border-t border-page/20 pt-8 md:grid-cols-2">
                   <div>
                     <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.philosophyLabel}</dt>
-                    <dd className="mt-3 font-serif text-2xl font-light leading-snug">{a.philosophy}</dd>
+                    <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.philosophy}</dd>
                   </div>
                   <div>
                     <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.pledgeLabel}</dt>
-                    <dd className="mt-3 font-serif text-2xl font-light leading-snug">{a.pledge}</dd>
+                    <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.pledge}</dd>
                   </div>
                 </dl>
               </div>
@@ -79,7 +79,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 <ul className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
                   {next.map((n) => (
                     <li key={n.href}>
-                      <a href={n.href} className="group flex items-center justify-between gap-6 py-6 font-serif text-2xl font-light hover:text-accent-ink md:text-3xl">
+                      <a href={n.href} className="group flex items-center justify-between gap-6 py-6 font-ui font-semibold text-2xl font-light hover:text-accent-ink md:text-3xl">
                         {n.label}
                         <span aria-hidden="true" className="text-ink-3 transition-transform duration-150 group-hover:translate-x-1 group-hover:text-accent-ink">
                           →

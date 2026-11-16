@@ -38,7 +38,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   {jump.map((j) => (
                     <li key={j.id}>
                       <a href={`#${j.id}`} className="group block px-0 py-5 sm:px-6 sm:first:pl-0">
-                        <span className="font-serif text-4xl font-light tabular-nums md:text-5xl">{j.n}</span>
+                        <span className="font-ui font-semibold text-4xl font-light tabular-nums md:text-5xl">{j.n}</span>
                         <span className="mt-1 block text-sm text-page/80 group-hover:underline">{j.label} ↓</span>
                       </a>
                     </li>
@@ -62,7 +62,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                           <time dateTime={n.date} className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">
                             {fullDate(n.date)}
                           </time>
-                          <h3 className="mt-3 font-serif text-xl font-light leading-snug group-hover:text-accent-ink">{n.title[lang]}</h3>
+                          <h3 className="mt-3 font-ui font-semibold text-xl font-light leading-snug group-hover:text-accent-ink">{n.title[lang]}</h3>
                           <p className="mt-2 line-clamp-3 text-sm text-ink-2">{n.excerpt[lang]}</p>
                         </div>
                       </a>

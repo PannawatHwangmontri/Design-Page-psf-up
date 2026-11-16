@@ -147,7 +147,7 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
             )}
             <div>
               <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{t.statusTitle}</p>
-              <p className="mt-3 font-serif text-4xl font-light leading-snug text-accent-ink">{statusText(status, t)}</p>
+              <p className="mt-3 font-ui font-semibold text-4xl font-light leading-snug text-accent-ink">{statusText(status, t)}</p>
             </div>
 
             <div>
@@ -274,8 +274,8 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
 
         <div className="space-y-8 md:col-span-8">
           <article className={card}>
-            <p className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">01</p>
-            <h2 className="mt-3 font-serif text-2xl font-light">{t.evidenceTitle}</h2>
+            <p className="font-ui font-semibold text-4xl font-light tabular-nums text-accent-ink/60">01</p>
+            <h2 className="mt-3 font-ui font-semibold text-2xl font-light">{t.evidenceTitle}</h2>
             <p className="mt-2 text-sm text-ink-3">{t.evidenceHint}</p>
             <ul className="mt-6 divide-y divide-ink/10">
               {DOC_TYPES.map((type) => {
@@ -307,14 +307,14 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
           </article>
 
           <article className={card}>
-            <p className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">02</p>
-            <h2 className="mt-3 font-serif text-2xl font-light">{t.formTitle}</h2>
+            <p className="font-ui font-semibold text-4xl font-light tabular-nums text-accent-ink/60">02</p>
+            <h2 className="mt-3 font-ui font-semibold text-2xl font-light">{t.formTitle}</h2>
             <ApplicationForm key={app?.updated ?? "new"} app={app} t={t} locked={locked} onResult={(r) => say(r, t.saved)} />
           </article>
 
           <article className={card}>
-            <p className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">03</p>
-            <h2 className="mt-3 font-serif text-2xl font-light">{t.formsTitle}</h2>
+            <p className="font-ui font-semibold text-4xl font-light tabular-nums text-accent-ink/60">03</p>
+            <h2 className="mt-3 font-ui font-semibold text-2xl font-light">{t.formsTitle}</h2>
             <ul className="mt-6 divide-y divide-ink/10">
               {site.forms.map((f) => (
                 <li key={f.id} className="flex items-center justify-between gap-4 py-4">

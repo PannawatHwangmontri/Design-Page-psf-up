@@ -2,21 +2,21 @@
 
 /* Tokens: see DESIGN.md. Warm neutral ramp, brand purple only as accent. */
 @theme {
-  --color-page: #fffefb;
-  --color-card: #f3f2ee;
-  --color-raised: #e7e5df;
-  --color-ink: #271503;
-  --color-ink-2: #5a4b3a;
-  --color-ink-3: #75685a;
-  --color-tint: #efe6f6;
-  --color-forest: #040c06;
-  --color-accent: #8d38c9;
-  --color-accent-hover: #7a2fb0;
-  --color-accent-ink: #7a2fb0;
-  --color-level-1: #8d38c9;
-  --color-level-2: #2f7d6d;
+  --color-page: #f4f7f6;
+  --color-card: #ffffff;
+  --color-raised: #e6ecea;
+  --color-ink: #1c2b39;
+  --color-ink-2: #4a5b68;
+  --color-ink-3: #7b8895;
+  --color-tint: #e3f2ef;
+  --color-forest: #0d3b36;
+  --color-accent: #0f7a6b;
+  --color-accent-hover: #0b6459;
+  --color-accent-ink: #0f6b5e;
+  --color-level-1: #0f7a6b;
+  --color-level-2: #2f5f9e;
   --color-level-3: #b7791f;
-  --font-sans: var(--font-sarabun);
+  --font-sans: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-ui: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
   --font-serif: var(--font-serif-th), Georgia, serif;
@@ -26,7 +26,7 @@
 body {
   background: var(--color-page);
   color: var(--color-ink);
-  font-family: var(--font-sarabun), sans-serif;
+  font-family: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   font-size: 15px;
   line-height: 1.6;
 }
@@ -47,14 +47,14 @@ label {
 /* Headings: light serif (Noto Serif Thai). Unlayered on purpose, so it wins over Tailwind's font-medium on headings. */
 h1,
 h2 {
-  font-family: var(--font-serif);
-  font-weight: 300;
-  letter-spacing: -0.01em;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 h3,
 h4 {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-ui);
+  font-weight: 600;
 }
 
 /* Section marker on the left page edge, only where the margin is wide enough */

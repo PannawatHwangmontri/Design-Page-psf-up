@@ -18,7 +18,7 @@ export function PasserCard({ p, lang, style }: { p: Passer; lang: Lang; style?: 
           <span aria-hidden="true" className={`h-2 w-2 rounded-full ${DOT[lv]}`} />
           {p.level[lang]} · {t.passers.year} {p.year[lang]}
         </p>
-        <h3 className="mt-3 line-clamp-2 font-serif text-xl font-light leading-snug">{p.name[lang]}</h3>
+        <h3 className="mt-3 line-clamp-2 font-ui font-semibold text-xl font-light leading-snug">{p.name[lang]}</h3>
         <p className="mt-1 line-clamp-1 text-sm text-ink-2">{p.unit[lang]}</p>
       </div>
     </li>

@@ -14,31 +14,31 @@ export function SiteFooter({ lang }: { lang: Lang }) {
     { label: t.nav.otherForms, href: `/${lang}/documents/forms` },
     { label: t.nav.calendar, href: `/${lang}/calendar` },
   ];
-  const heading = "font-mono text-xs tracking-[0.08em] text-page/60";
-  const link = "text-sm text-page/80 underline-offset-4 hover:text-page hover:underline";
+  const heading = "font-mono text-xs tracking-[0.08em] text-ink-2";
+  const link = "text-sm text-ink-2 underline-offset-4 hover:text-ink hover:underline";
 
   return (
-    <footer className="font-ui bg-forest text-page">
+    <footer className="font-ui border-t border-ink/10 bg-card text-ink">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-12 md:px-8">
         <div className="md:col-span-4">
           <span className="inline-block rounded-xl bg-card p-3">
             <img src="/brand/logo-up.png" alt={t.siteOrg} width={188} height={40} className="h-10 w-auto" />
           </span>
-          <p className="mt-6 font-serif text-2xl font-light">{t.siteName}</p>
-          <p className="mt-1 text-sm text-page/60">{t.siteOrg}</p>
+          <p className="mt-6 font-ui font-semibold text-2xl font-light">{t.siteName}</p>
+          <p className="mt-1 text-sm text-ink-2">{t.siteOrg}</p>
         </div>
 
         <div className="md:col-span-4">
           <p className={heading}>{t.footerContact}</p>
-          <ul className="mt-4 space-y-3 text-sm text-page/80">
+          <ul className="mt-4 space-y-3 text-sm text-ink-2">
             <li>{t.contact.address}</li>
             <li>
-              <a href={`mailto:${t.contact.email}`} className="underline decoration-page/30 underline-offset-4 hover:text-page hover:decoration-page">
+              <a href={`mailto:${t.contact.email}`} className="underline decoration-ink/30 underline-offset-4 hover:text-ink hover:decoration-ink">
                 {t.contact.email}
               </a>
             </li>
             <li>
-              <a href={`tel:${t.contact.phone.replace(/\s/g, "")}`} className="tabular-nums hover:text-page hover:underline">
+              <a href={`tel:${t.contact.phone.replace(/\s/g, "")}`} className="tabular-nums hover:text-ink hover:underline">
                 {t.contact.phone}
               </a>
             </li>
@@ -59,7 +59,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <div className="border-t border-page/15">
+      <div className="border-t border-ink/10">
         <nav aria-label={t.nav.help} className="mx-auto flex max-w-6xl flex-wrap gap-x-8 gap-y-3 px-4 py-6 md:px-8">
           {help.map((l) => (
             <Link key={l.href} href={l.href} className={link}>
@@ -67,7 +67,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
             </Link>
           ))}
         </nav>
-        <p className="mx-auto max-w-6xl px-4 pb-10 text-xs leading-relaxed text-page/60 md:px-8">{t.footer}</p>
+        <p className="mx-auto max-w-6xl px-4 pb-10 text-xs leading-relaxed text-ink-2 md:px-8">{t.footer}</p>
       </div>
     </footer>
   );
