@@ -507,3 +507,9 @@ button {
     animation: none;
   }
 }
+
+/* Safety net: clip sideways overflow at the root (clip, not hidden, so sticky navbars keep working). */
+html,
+body {
+  overflow-x: clip;
+}
