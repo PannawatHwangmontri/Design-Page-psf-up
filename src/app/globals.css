@@ -477,3 +477,33 @@ button {
     animation: none;
   }
 }
+
+/* Wave dividers (PsfSite.tsx Wave): the two wave lines drift at different speeds; the svg is twice the width of its box, so -50% loops seamlessly. */
+.wave-track {
+  animation: wave-drift 9s linear infinite;
+}
+.wave-track-slow {
+  animation: wave-drift-slow 14s linear infinite;
+}
+@keyframes wave-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes wave-drift-slow {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wave-track,
+  .wave-track-slow {
+    animation: none;
+  }
+}

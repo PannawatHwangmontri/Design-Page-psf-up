@@ -117,7 +117,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
 
       {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
-      <section id="calendar" className="relative isolate scroll-mt-16 overflow-hidden bg-page text-ink">
+      <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
+        <Wave fill="text-page" />
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-40">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -160,6 +161,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
       {/* news: one lead story with a photo, the next three beside it */}
       <section id="news" className="relative scroll-mt-16 bg-card">
+        <Wave fill="text-card" />
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
             <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
@@ -281,7 +283,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative overflow-hidden scroll-mt-16 bg-forest text-page">
+      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-page">
+        <Wave fill="text-forest" />
         {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
         <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-10 hidden size-[34rem] md:block">
           <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
@@ -313,6 +316,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       <section id="passers" className="relative scroll-mt-16 bg-card">
+        <Wave fill="text-card" />
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
             <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.passers.title}</h2>
@@ -372,5 +376,18 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </ul>
       </nav>
     </main>
+  );
+}
+
+// wavy edge between two sections: the top strip overlaps the section above, and the wave line drifts sideways forever.
+// The fill comes from the text-* class (currentColor), so it matches the section it sits on. Off with reduced motion.
+function Wave({ fill }: { fill: string }) {
+  return (
+    <div aria-hidden="true" className={`pointer-events-none absolute inset-x-0 -top-12 z-10 h-12 md:-top-16 md:h-16 ${fill}`}>
+      <svg className="wave-track absolute left-0 top-0 h-full w-[200%]" viewBox="0 0 2400 120" preserveAspectRatio="none">
+        <path fill="currentColor" fillOpacity="0.45" className="wave-track-slow" d="M0,70 C200,20 400,120 600,70 S1000,20 1200,70 S1600,120 1800,70 S2200,20 2400,70 L2400,120 L0,120 Z" />
+        <path fill="currentColor" d="M0,90 C200,50 400,110 600,90 S1000,50 1200,90 S1600,110 1800,90 S2200,50 2400,90 L2400,120 L0,120 Z" />
+      </svg>
+    </div>
   );
 }
