@@ -84,9 +84,14 @@ function Admin({ lang }: { lang: Lang }) {
           <h1 className="text-3xl font-medium">{ui.title}</h1>
           <p className="mt-2 text-ink-2">{ui.intro}</p>
         </div>
-        <button type="button" onClick={logout} className={btnLine}>
-          {ui.logout}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <Link href={`/${lang}/admin/applications`} className={btnLine}>
+            {site.content[lang].applicant.reviewLink}
+          </Link>
+          <button type="button" onClick={logout} className={btnLine}>
+            {ui.logout}
+          </button>
+        </div>
       </div>
 
       <div role="tablist" className="mt-8 flex flex-wrap gap-2 border-b border-ink/10 pb-4">
