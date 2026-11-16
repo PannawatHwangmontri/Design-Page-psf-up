@@ -94,7 +94,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/40 bg-page/20 px-5 py-2 text-base font-semibold text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-page" />
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
+          <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
             <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
@@ -104,7 +104,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </div>
         </div>
         {announcements[0] && (
-          <div className="absolute inset-x-0 bottom-0 border-t border-page/20 bg-[#1d1630]/85">
+          <div className="rise absolute inset-x-0 bottom-0 border-t border-page/20 bg-[#1d1630]/85" style={{ animationDelay: "1.9s" }}>
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 md:flex-row md:items-center md:gap-6 md:px-8">
               <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-page/80">{t.hero.latest}</span>
               <a href={`/${lang}/announcement/${announcements[0].id}`} className="line-clamp-1 text-sm hover:underline">

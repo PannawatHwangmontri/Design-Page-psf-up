@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sarabun, IBM_Plex_Mono, IBM_Plex_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
+import { Intro } from "@/components/Intro";
 import { Motion } from "@/components/Motion";
 
 const sarabun = Sarabun({
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="th" className={`${sarabun.variable} ${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <Intro />
         <Suspense fallback={null}>
           <Motion />
         </Suspense>
