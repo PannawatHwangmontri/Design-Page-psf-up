@@ -33,7 +33,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               <h2 className="text-3xl md:text-5xl">{a.missionTitle}</h2>
               <ol className="mt-10 grid gap-4 md:grid-cols-3">
                 {a.mission.map((m, i) => (
-                  <li key={m} className="flex flex-col rounded-xl border border-ink/10 bg-card p-6 md:p-8">
+                  <li key={m} className="lift flex flex-col rounded-xl border border-ink/10 bg-card p-6 md:p-8">
                     <span aria-hidden="true" className="font-serif text-6xl font-light tabular-nums text-accent-ink">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -64,7 +64,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               <h2 className="text-3xl md:text-5xl">{a.valuesTitle}</h2>
               <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {a.values.map((v, i) => (
-                  <li key={v.title} className="rounded-xl border border-ink/10 bg-card p-6">
+                  <li key={v.title} className="lift rounded-xl border border-ink/10 bg-card p-6">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ display: "inline-block", background: `var(--color-level-${(i % 3) + 1})` }} />
                     <h3 className="mt-4 text-xl font-semibold">{v.title}</h3>
                     <p className="mt-2 text-ink-2">{v.desc}</p>

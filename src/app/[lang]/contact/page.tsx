@@ -29,7 +29,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
               <ul className="grid gap-4 md:grid-cols-3">
                 {cards.map((k) => (
-                  <li key={k.label} className="rounded-xl border border-ink/10 bg-card p-6 md:p-8">
+                  <li key={k.label} className="lift rounded-xl border border-ink/10 bg-card p-6 md:p-8">
                     <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{k.label}</p>
                     {k.href ? (
                       <a href={k.href} className="mt-4 block break-words font-serif text-2xl font-light leading-snug hover:text-accent-ink">

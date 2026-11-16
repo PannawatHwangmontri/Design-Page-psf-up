@@ -11,7 +11,7 @@ export function PasserCard({ p, lang, style }: { p: Passer; lang: Lang; style?: 
   const t = useSite().content[lang];
   const lv = p.level.en.slice(-1);
   return (
-    <li style={style} className="overflow-hidden rounded-xl border border-ink/10 bg-card">
+    <li style={style} className="lift overflow-hidden rounded-xl border border-ink/10 bg-card">
       {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <Placeholder label={t.passers.photoAlt} className="aspect-[4/3]" />}
       <div className="p-6">
         <p className="flex items-center gap-2 font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">

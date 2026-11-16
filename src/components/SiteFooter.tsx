@@ -18,7 +18,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
   const link = "text-sm text-page/80 underline-offset-4 hover:text-page hover:underline";
 
   return (
-    <footer className="bg-forest text-page">
+    <footer className="font-ui bg-forest text-page">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-12 md:px-8">
         <div className="md:col-span-4">
           <span className="inline-block rounded-xl bg-card p-3">

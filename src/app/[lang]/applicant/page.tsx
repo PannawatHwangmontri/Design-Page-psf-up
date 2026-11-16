@@ -114,7 +114,7 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
   const say = (r: Result, ok: string) => setMsg(r === "ok" ? ok : resultText(r, t));
 
   return (
-    <main>
+    <main className="font-ui">
       <section className="bg-forest text-page">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 pb-14 pt-40 md:flex-row md:items-end md:justify-between md:px-8 md:pb-16">
           <div>

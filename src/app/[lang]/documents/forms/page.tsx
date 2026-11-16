@@ -43,7 +43,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 {forms.map((f, i) => {
                   const meta = [fileSize(f.file) && `${t.size} ${fileSize(f.file)}`, f.updated && `${t.updated} ${fmtDate(f.updated, lang)}`].filter(Boolean).join(" · ");
                   return (
-                    <li key={f.id} className="flex flex-col gap-6 rounded-xl border border-ink/10 bg-card p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+                    <li key={f.id} className="lift flex flex-col gap-6 rounded-xl border border-ink/10 bg-card p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
                       <div className="flex min-w-0 gap-6">
                         <span aria-hidden="true" className="font-serif text-4xl font-light tabular-nums text-accent-ink/60">
                           {String(i + 1).padStart(2, "0")}

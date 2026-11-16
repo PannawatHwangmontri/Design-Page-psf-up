@@ -33,7 +33,7 @@ function NewsList({ lang, site }: { lang: Lang; site: SiteData }) {
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((n) => (
           <li key={n.id}>
-            <Link href={`/${lang}/news/${n.id}`} className="group block h-full overflow-hidden rounded-xl border border-ink/10 bg-card transition-colors hover:border-accent/40">
+            <Link href={`/${lang}/news/${n.id}`} className="lift group block h-full overflow-hidden rounded-xl border border-ink/10 bg-card transition-colors hover:border-accent/40">
               {n.image ? (
                 <img src={n.image} alt={t.news.imageAlt} className="aspect-[16/10] w-full object-cover" />
               ) : (

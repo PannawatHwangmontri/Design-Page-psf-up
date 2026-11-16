@@ -94,7 +94,7 @@ function History({ lang }: { lang: Lang }) {
 
                   <ul id={`components-${sec.no}`} data-spy className="mt-10 grid scroll-mt-28 gap-4 lg:grid-cols-3">
                     {sec.components.map((c) => (
-                      <li key={c.code} className="rounded-xl border border-ink/10 bg-card p-6">
+                      <li key={c.code} className="lift rounded-xl border border-ink/10 bg-card p-6">
                         <p className="font-serif text-5xl font-light text-accent-ink">{c.code}</p>
                         <p className="mt-3 font-semibold">{c.name}</p>
                         <ul className="mt-5 space-y-3 border-t border-ink/10 pt-5">

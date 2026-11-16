@@ -56,7 +56,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {newsAll.map((n) => (
                     <li key={n.id}>
-                      <a href={`/${lang}/news/${n.id}`} className="group flex h-full flex-col overflow-hidden rounded-xl border border-ink/10 bg-card">
+                      <a href={`/${lang}/news/${n.id}`} className="lift group flex h-full flex-col overflow-hidden rounded-xl border border-ink/10 bg-card">
                         {n.image ? <img src={n.image} alt={c.news.imageAlt} className="aspect-[16/10] w-full object-cover" /> : <Placeholder label={c.news.imageAlt} className="aspect-[16/10]" />}
                         <div className="flex flex-1 flex-col p-6">
                           <time dateTime={n.date} className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">

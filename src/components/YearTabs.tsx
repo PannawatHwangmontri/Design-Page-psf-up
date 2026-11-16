@@ -18,7 +18,7 @@ export function YearTabs({ lang, data }: { lang: Lang; data: { year: number; peo
   const inLevel = (n: number) => (n === 0 ? cur.people : cur.people.filter((p) => p.level.en === `Level ${n}`));
   const shown = inLevel(lv);
   return (
-    <div className="grid gap-10 md:grid-cols-12 md:gap-12">
+    <div className="font-ui grid gap-10 md:grid-cols-12 md:gap-12">
       <div className="min-w-0 md:col-span-3">
         <div className="md:sticky md:top-28">
           <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{t.yearTab}</p>

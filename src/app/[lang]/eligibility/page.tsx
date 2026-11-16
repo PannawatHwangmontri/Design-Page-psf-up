@@ -90,7 +90,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                   <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-2">{t.components.intro}</p>
                   <div className="mt-8 grid gap-4 md:grid-cols-3">
                     {t.components.groups.map((g, gi) => (
-                      <div key={g.en} className="rounded-3xl border border-ink/10 bg-card p-6">
+                      <div key={g.en} className="lift rounded-3xl border border-ink/10 bg-card p-6">
                         <p className="font-serif text-5xl font-light tabular-nums text-accent-ink">{gi + 1}</p>
                         <h3 className="mt-4 text-xl">{g.title}</h3>
                         <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{g.en}</p>

@@ -51,7 +51,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   }, []);
 
   return (
-    <main>
+    <main className="font-ui">
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
       <section id="home" className="relative isolate flex h-svh max-h-[960px] min-h-[600px] flex-col justify-center overflow-hidden bg-forest text-page">
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
@@ -61,7 +61,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-5xl leading-[1.25] md:text-7xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg leading-8 text-page/80" />
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
-            <a href={`/${lang}/publicity`} onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
+            <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
             <a href="#announcements" className="text-page underline decoration-page/40 underline-offset-4 hover:decoration-page">
@@ -238,7 +238,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* announcements: a plain register, year on the left like a gazette */}
-      <section id="announcements" className="relative scroll-mt-16">
+      <section id="announcements" className="font-sans relative scroll-mt-16">
         <Side>{t.news.announcements}</Side>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
           <div className="md:col-span-4">
