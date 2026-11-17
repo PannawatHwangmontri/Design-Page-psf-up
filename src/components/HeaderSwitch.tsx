@@ -8,5 +8,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 // The lecturer portal (/[lang]/applicant...) gets its own header; every other page keeps the public menu.
 export function HeaderSwitch({ lang }: { lang: Lang }) {
   const pathname = usePathname();
-  return /^\/(th|en)\/applicant(\/|$)/.test(pathname) ? <ApplicantHeader lang={lang} /> : <SiteHeader lang={lang} />;
+  if (/^\/(th|en)\/applicant(\/|$)/.test(pathname)) return <ApplicantHeader lang={lang} />;
+  return <SiteHeader lang={lang} />;
 }

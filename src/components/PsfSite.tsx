@@ -17,36 +17,7 @@ const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 
 
 // vertical section marker on the left page edge (wide screens only, see .side-label)
 
-// line icons for the category bar, one array of paths per item (24 px grid, 1.6 stroke)
-const CAT_ICONS: string[][] = [
-  // apply: document with a check
-  ["M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z", "M14 3v5h5", "M9 14l2 2 4-4"],
-  // calendar
-  ["M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z", "M4 10h16", "M8 2v4", "M16 2v4", "M8 14h2", "M14 14h2", "M8 17h2"],
-  // passers: medal with ribbons
-  ["M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10z", "M9 13.2L7.5 21l4.5-2.4L16.5 21 15 13.2"],
-  // announcements: megaphone
-  ["M3 10v4a1 1 0 0 0 1 1h2l6 4V5L6 9H4a1 1 0 0 0-1 1z", "M16 9a4 4 0 0 1 0 6", "M19 6a8 8 0 0 1 0 12"],
-  // process: three linked steps
-  ["M4 5h5v5H4z", "M15 14h5v5h-5z", "M9 7.5h3a3 3 0 0 1 3 3v3"],
-  // eligibility: clipboard with a check
-  ["M6 5h12a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z", "M9 3h6v4H9z", "M9 13l2 2 4-4"],
-];
-
 export default function PsfSite({ lang }: { lang: Lang }) {
-  // mobile category bar: shown at the bottom, hidden while scrolling down, back when scrolling up
-  const [barShown, setBarShown] = useState(true);
-  useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (Math.abs(y - last) < 6) return;
-      setBarShown(y < last || y < 80);
-      last = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   const { content, announcements, news, passers, assessmentCalendars } = useSite();
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
@@ -352,24 +323,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </ul>
         </div>
       </section>
-      <nav aria-label={t.home.quickTitle} className={`fixed inset-x-3 bottom-3 z-40 rounded-[22px] border border-ink/10 bg-card/95 p-2 shadow-none backdrop-blur-md transition-transform duration-300 md:inset-x-auto md:bottom-6 md:left-1/2 md:w-[46rem] md:-translate-x-1/2 md:p-3 ${barShown ? "translate-y-0" : "translate-y-[150%]"}`}>
-        <ul className="flex gap-1 overflow-x-auto md:grid md:grid-cols-6 md:gap-2 md:overflow-visible">
-          {t.home.quick.slice(0, 6).map((q, i) => (
-            <li key={q.href} className="w-[30vw] shrink-0 md:w-auto">
-              <a href={`/${lang}${q.href}`} className="flex flex-col items-center gap-1.5 rounded-xl px-1 py-2 text-center text-[11px] font-medium leading-tight text-ink hover:bg-raised md:text-sm">
-                <span className="flex size-11 items-center justify-center rounded-full bg-tint">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="size-5 text-accent" aria-hidden="true">
-                    {CAT_ICONS[i % CAT_ICONS.length].map((d) => (
-                      <path key={d} d={d} />
-                    ))}
-                  </svg>
-                </span>
-                <span className="flex h-[2.4em] items-center justify-center">{q.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
     </main>
   );
 }

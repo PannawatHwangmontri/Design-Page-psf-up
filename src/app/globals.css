@@ -2,14 +2,15 @@
 
 /* Tokens: see DESIGN.md. Warm neutral ramp, brand purple only as accent. */
 @theme {
-  --color-page: #f6f5f9;
-  --color-card: #ffffff;
-  --color-raised: #ebe8f2;
-  --color-ink: #17131f;
-  --color-ink-2: #4d4759;
-  --color-ink-3: #7c7689;
-  --color-tint: #efe9fb;
-  --color-forest: #1d1630;
+  /* values match COLORS.md (keep the two in sync) */
+  --color-page: #fffefb;
+  --color-card: #f3f2ee;
+  --color-raised: #e7e5df;
+  --color-ink: #271503;
+  --color-ink-2: #5a4b3a;
+  --color-ink-3: #75685a;
+  --color-tint: #efe6f6;
+  --color-forest: #040c06;
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
@@ -566,6 +567,54 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .menu-stagger > li {
+    animation: none;
+  }
+}
+
+/* Jelly pop: search field and each result overshoot and wobble in (SiteSearch.tsx) */
+@keyframes jelly-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.08, 0.94);
+  }
+  75% {
+    transform: scale(0.97, 1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.jelly-pop {
+  transform-origin: right center;
+  animation: jelly-pop 480ms var(--ease-ui) both;
+}
+.jelly-item {
+  transform-origin: top center;
+  animation: jelly-pop 420ms var(--ease-ui) both;
+}
+/* close: the field shrinks back into its icon (SiteSearch.tsx waits 220 ms before unmounting) */
+@keyframes jelly-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+.jelly-out {
+  transform-origin: right center;
+  animation: jelly-out 220ms var(--ease-ui) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jelly-pop,
+  .jelly-item,
+  .jelly-out {
     animation: none;
   }
 }

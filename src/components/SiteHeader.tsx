@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
+import { SiteSearch } from "@/components/SiteSearch";
 
 function Icon({ children, size = 16 }: { children: React.ReactNode; size?: number }) {
   return (
@@ -128,6 +129,10 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               </ul>
             </nav>
 
+            {/* from 1280px only: at 1024px the brand name and nav have no room for one more control */}
+            <div className="hidden xl:block">
+              <SiteSearch lang={lang} />
+            </div>
             {/* shown only where the bar has room: login from 1024px, the apply button from 1280px (both are also at the end of the mobile menu) */}
             <Link href={`${base}/login`} className="hidden shrink-0 whitespace-nowrap text-sm text-ink-2 hover:text-accent-ink lg:block">
               {t.nav.login}
@@ -167,6 +172,9 @@ export function SiteHeader({ lang }: { lang: Lang }) {
           {menu && (
             <nav id="mobile-menu" aria-label="main mobile" className="max-h-[70vh] overflow-y-auto border-t border-ink/10 px-1 py-2 md:hidden">
               <ul className="menu-stagger">{mobileList(nav)}</ul>
+              <div className="px-3 pt-3">
+                <SiteSearch lang={lang} wide />
+              </div>
               <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
                 <Link href={`${base}/documents/forms`} onClick={() => setMenu(false)} className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-hover">
                   {t.nav.apply}
