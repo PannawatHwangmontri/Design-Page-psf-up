@@ -10,6 +10,39 @@ import { useEffect } from "react";
 export function Motion() {
   const path = usePathname();
 
+  // reveal groups on every page: each [data-reveal] / [data-stagger] / [data-lines] plays once when it scrolls into view.
+  // Attached only after the first load (+200 ms) so no attribute is written while React is still hydrating the page.
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let io: IntersectionObserver | undefined;
+    const start = () => {
+      const els = document.querySelectorAll<HTMLElement>("[data-stagger],[data-lines],[data-reveal]");
+      if (reduced) {
+        els.forEach((el) => (el.dataset.in = ""));
+        return;
+      }
+      io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            (e.target as HTMLElement).dataset.in = "";
+            io?.unobserve(e.target);
+          }),
+        { threshold: 0.1 },
+      );
+      els.forEach((el) => {
+        if (!el.dataset.in) io?.observe(el);
+      });
+    };
+    const onLoad = () => window.setTimeout(start, 200);
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad, { once: true });
+    return () => {
+      window.removeEventListener("load", onLoad);
+      io?.disconnect();
+    };
+  }, [path]);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 

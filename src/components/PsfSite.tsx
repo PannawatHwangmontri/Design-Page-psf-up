@@ -1,6 +1,7 @@
 "use client";
 
 import { ApplyCountdown } from "@/components/ApplyCountdown";
+import { Wave } from "@/components/Wave";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
@@ -32,20 +33,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const pic = (src: string | undefined, alt: string, cls: string) =>
     src ? <img src={src} alt={alt} className={`${cls} object-cover`} /> : <Placeholder label={alt} className={cls} />;
 
-  // play each [data-stagger] / [data-lines] / [data-reveal] group once, when it scrolls into view
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          (e.target as HTMLElement).dataset.in = "";
-          io.unobserve(e.target);
-        }),
-      { threshold: 0.1 },
-    );
-    document.querySelectorAll("[data-stagger],[data-lines],[data-reveal]").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
 
   return (
     <main className="font-ui">
@@ -392,15 +379,3 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   );
 }
 
-// wavy edge between two sections: the top strip overlaps the section above, and the wave line drifts sideways forever.
-// The fill comes from the text-* class (currentColor), so it matches the section it sits on. Off with reduced motion.
-function Wave({ fill }: { fill: string }) {
-  return (
-    <div aria-hidden="true" className={`pointer-events-none absolute inset-x-0 -top-12 z-10 h-12 overflow-hidden md:-top-16 md:h-16 ${fill}`}>
-      <svg className="wave-track absolute left-0 top-0 h-full w-[200%]" viewBox="0 0 2400 120" preserveAspectRatio="none">
-        <path fill="currentColor" fillOpacity="0.45" className="wave-track-slow" d="M0,70 C200,20 400,120 600,70 S1000,20 1200,70 S1600,120 1800,70 S2200,20 2400,70 L2400,120 L0,120 Z" />
-        <path fill="currentColor" d="M0,90 C200,50 400,110 600,90 S1000,50 1200,90 S1600,110 1800,90 S2200,50 2400,90 L2400,120 L0,120 Z" />
-      </svg>
-    </div>
-  );
-}

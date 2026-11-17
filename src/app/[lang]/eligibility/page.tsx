@@ -25,7 +25,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const head = (i: number, title: string, tag: React.ReactNode) => (
           <header className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
             <span className="font-mono text-xs tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>
-            <h2 className="text-3xl md:text-4xl">{title}</h2>
+            <h2 data-reveal className="text-3xl md:text-4xl">{title}</h2>
             <span className="self-center">{tag}</span>
           </header>
         );
@@ -88,7 +88,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                 <section id="components" className={sec}>
                   {head(1, t.components.title, real)}
                   <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-2">{t.components.intro}</p>
-                  <div className="mt-8 grid gap-4 md:grid-cols-3">
+                  <div data-stagger className="mt-8 grid gap-4 md:grid-cols-3">
                     {t.components.groups.map((g, gi) => (
                       <div key={g.en} className="lift rounded-3xl border border-ink/10 bg-card p-6">
                         <p className="font-ui font-semibold text-5xl font-light tabular-nums text-accent-ink">{gi + 1}</p>

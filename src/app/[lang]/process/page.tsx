@@ -42,7 +42,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div className="lift rounded-xl border border-ink/10 bg-card p-6 md:p-8">
-                      <h2 className="text-2xl md:text-3xl">{s.title}</h2>
+                      <h2 data-reveal className="text-2xl md:text-3xl">{s.title}</h2>
                       <p className="mt-3 text-lg leading-8 text-ink-2">{s.desc}</p>
                       <Link href={`/${lang}${s.href}`} className="mt-5 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
                         {s.link} →

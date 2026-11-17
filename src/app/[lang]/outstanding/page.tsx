@@ -44,12 +44,12 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
 
               <div className="mt-12 space-y-12">
               <section id="project" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingProject}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingProject}</h2>
                 <p className="mt-4 max-w-3xl leading-8 text-ink-2 md:mt-0">{o.projectBody}</p>
               </section>
 
               <section id="compare" className={sec}>
-                <h2 className={h2}>{o.compare.title}</h2>
+                <h2 data-reveal className={h2}>{o.compare.title}</h2>
                 <div className="mt-4 overflow-x-auto md:mt-0">
                   <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
                     <thead>
@@ -77,7 +77,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="announcement" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingAnnouncement}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingAnnouncement}</h2>
                 <div className="mt-4 md:mt-0">
                   <p className="text-ink-2">{o.announcementBody}</p>
                   <ul className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
@@ -97,7 +97,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="process" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingProcess}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingProcess}</h2>
                 <ol className="mt-4 space-y-4 md:mt-0">
                   {o.steps.map((s, i) => (
                     <li key={s} className="flex gap-4 leading-7 text-ink-2">
@@ -109,7 +109,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="apply" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingApply}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingApply}</h2>
                 <div className="mt-4 md:mt-0">
                   <p className="text-ink-2">{o.applyBody}</p>
                   {/* TODO: ไฟล์ใบสมัครจริง (ตอนนี้ลิงก์ชั่วคราว) */}

@@ -49,7 +49,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <div className="min-w-0">
-                          <h2 className="font-ui font-semibold text-2xl font-light leading-snug">{f.title[lang]}</h2>
+                          <h2 data-reveal className="font-ui font-semibold text-2xl font-light leading-snug">{f.title[lang]}</h2>
                           {meta && <p className="mt-2 font-mono text-xs tracking-[0.05em] text-ink-3">{meta}</p>}
                         </div>
                       </div>

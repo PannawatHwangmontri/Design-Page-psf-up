@@ -30,7 +30,7 @@ function NewsList({ lang, site }: { lang: Lang; site: SiteData }) {
 
   return (
     <PageFrame title={t.pages.news.title} intro={t.pages.news.intro}>
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul data-stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((n) => (
           <li key={n.id}>
             <Link href={`/${lang}/news/${n.id}`} className="lift group block h-full overflow-hidden rounded-xl border border-ink/10 bg-card transition-colors hover:border-accent/40">
@@ -43,7 +43,7 @@ function NewsList({ lang, site }: { lang: Lang; site: SiteData }) {
                 <time dateTime={n.date} className="text-xs tabular-nums text-ink-3">
                   {fmtDate(n.date, lang)}
                 </time>
-                <h2 className="mt-2 line-clamp-2 text-lg font-medium group-hover:text-accent-ink">{n.title[lang]}</h2>
+                <h2 data-reveal className="mt-2 line-clamp-2 text-lg font-medium group-hover:text-accent-ink">{n.title[lang]}</h2>
                 <p className="mt-2 line-clamp-3 text-sm text-ink-2">{n.excerpt[lang]}</p>
               </div>
             </Link>

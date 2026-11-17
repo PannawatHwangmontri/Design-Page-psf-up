@@ -78,7 +78,7 @@ function History({ lang }: { lang: Lang }) {
           {h.sections.map((sec) => (
             <section key={sec.no} id={`sec-${sec.no}`} data-spy className="scroll-mt-28 border-t border-ink/10 pt-12 first:border-t-0 first:pt-0 [&:not(:first-child)]:mt-16">
               <p className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">{sec.no}</p>
-              <h2 className="mt-2 text-3xl leading-[1.3] md:text-4xl">{sec.heading}</h2>
+              <h2 data-reveal className="mt-2 text-3xl leading-[1.3] md:text-4xl">{sec.heading}</h2>
 
               {"paragraphs" in sec ? (
                 <div className="mt-8 max-w-3xl space-y-5 text-lg leading-8 text-ink-2">

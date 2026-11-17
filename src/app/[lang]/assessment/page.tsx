@@ -60,7 +60,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
           <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{t.intro}</p>
           {today && (
             <section aria-labelledby="now" className="mt-12 max-w-3xl rounded-xl border border-page/20 bg-page/10 p-6 md:p-8">
-              <h2 id="now" className="font-mono text-xs tracking-[0.05em] text-page/70">
+              <h2 data-reveal id="now" className="font-mono text-xs tracking-[0.05em] text-page/70">
                 {t.nowTitle}
               </h2>
               {current ? (
@@ -102,7 +102,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
 
         <div className="md:col-span-9">
           <section aria-labelledby="timeline">
-            <h2 id="timeline" className="sr-only">
+            <h2 data-reveal id="timeline" className="sr-only">
               {t.timelineTitle} {year}
             </h2>
             <ol className="border-t border-ink/10">
@@ -128,7 +128,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
           </section>
 
           <section aria-labelledby="form" className="mt-16 rounded-xl border border-ink/10 bg-card p-6 md:p-8">
-            <h2 id="form" className="text-2xl">
+            <h2 data-reveal id="form" className="text-2xl">
               {t.formTitle}
             </h2>
             <p className="mt-2 max-w-2xl text-ink-2">{t.formDesc}</p>
