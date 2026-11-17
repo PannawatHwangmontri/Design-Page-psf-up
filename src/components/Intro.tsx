@@ -8,8 +8,8 @@ export function Intro() {
   const [phase, setPhase] = useState<"in" | "out" | "done">("in");
 
   useEffect(() => {
-    const leave = window.setTimeout(() => setPhase("out"), 700);
-    const done = window.setTimeout(() => setPhase("done"), 1400);
+    const leave = window.setTimeout(() => setPhase("out"), 350);
+    const done = window.setTimeout(() => setPhase("done"), 750);
     return () => {
       window.clearTimeout(leave);
       window.clearTimeout(done);
@@ -20,7 +20,7 @@ export function Intro() {
   return (
     <div
       aria-hidden="true"
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-forest transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-forest transition-transform duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
         phase === "out" ? "-translate-y-full" : "translate-y-0"
       }`}
     >

@@ -513,3 +513,59 @@ html,
 body {
   overflow-x: clip;
 }
+
+/* Menu items rise in one after another, 100 ms apart, each time a menu opens (mobile list and desktop dropdowns). */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.menu-stagger > li {
+  animation: menu-in 420ms var(--ease-ui) both;
+}
+.menu-stagger > li:nth-child(1) {
+  animation-delay: 0ms;
+}
+.menu-stagger > li:nth-child(2) {
+  animation-delay: 100ms;
+}
+.menu-stagger > li:nth-child(3) {
+  animation-delay: 200ms;
+}
+.menu-stagger > li:nth-child(4) {
+  animation-delay: 300ms;
+}
+.menu-stagger > li:nth-child(5) {
+  animation-delay: 400ms;
+}
+.menu-stagger > li:nth-child(6) {
+  animation-delay: 500ms;
+}
+.menu-stagger > li:nth-child(7) {
+  animation-delay: 600ms;
+}
+.menu-stagger > li:nth-child(8) {
+  animation-delay: 700ms;
+}
+.menu-stagger > li:nth-child(9) {
+  animation-delay: 800ms;
+}
+.menu-stagger > li:nth-child(10) {
+  animation-delay: 900ms;
+}
+.menu-stagger > li:nth-child(11) {
+  animation-delay: 1000ms;
+}
+.menu-stagger > li:nth-child(12) {
+  animation-delay: 1100ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-stagger > li {
+    animation: none;
+  }
+}

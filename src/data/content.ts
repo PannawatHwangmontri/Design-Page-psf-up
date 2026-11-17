@@ -8,7 +8,7 @@ export const content = {
     logo: "โลโก้",
     menu: "เมนู",
     // TODO: ข้อมูลติดต่อจริงของหน่วยงาน (ตอนนี้เป็นข้อมูลสมมติ)
-    contact: { address: "19 หมู่ 2 ต.แม่กา อ.เมือง จ.พะเยา 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
+    contact: { address: "19 หมู่ 2 ต.แม่กา อ.เมือง จ.พะเยา 56000", email: "psf-demo@example.com", phone: "0 0000 0000" },
     nav: {
       home: "หน้าแรก",
       skip: "ข้ามไปยังเนื้อหา",
@@ -624,7 +624,7 @@ export const content = {
     siteOrg: "University of Phayao",
     logo: "Logo",
     menu: "Menu",
-    contact: { address: "19 Moo 2, Mae Ka, Mueang, Phayao 56000", email: "psf@up.example.ac.th", phone: "0 5446 6666" },
+    contact: { address: "19 Moo 2, Mae Ka, Mueang, Phayao 56000", email: "psf-demo@example.com", phone: "0 0000 0000" },
     nav: {
       home: "Home",
       skip: "Skip to content",

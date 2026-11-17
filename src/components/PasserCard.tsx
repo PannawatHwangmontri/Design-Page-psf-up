@@ -20,7 +20,7 @@ export function PasserCard({ p, lang, style }: { p: Passer; lang: Lang; style?: 
           {p.level[lang]} · {t.passers.year} {p.year[lang]}
         </p>
         <h3 className="mt-3 line-clamp-2 font-ui font-semibold text-xl font-light leading-snug">{p.name[lang]}</h3>
-        <p className="mt-1 line-clamp-1 text-sm text-ink-2">{p.unit[lang]}</p>
+        <p className="mt-1 text-sm text-ink-2">{p.unit[lang]}</p>
       </div>
     </li>
   );
@@ -37,7 +37,7 @@ export function PasserTile({ p, lang, style }: { p: Passer; lang: Lang; style?: 
         {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className={`flex aspect-[4/3] items-center justify-center font-ui text-5xl font-semibold ${AVATAR[lv]}`}>{p.name[lang].trim().charAt(0)}</span>}
         <div className="p-4">
           <p className="line-clamp-2 font-medium">{p.name[lang]}</p>
-          <p className="mt-1 line-clamp-1 text-sm text-ink-2">{p.unit[lang]}</p>
+          <p className="mt-1 text-sm text-ink-2">{p.unit[lang]}</p>
           <p className="mt-3 flex items-center gap-2 text-sm tabular-nums text-ink-2">
             <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${LEVEL_DOT[lv]}`} />
             {p.level[lang]} · {t.passers.year} {p.year[lang]}

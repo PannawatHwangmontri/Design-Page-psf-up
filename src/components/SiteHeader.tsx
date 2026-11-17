@@ -66,8 +66,8 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             <Link href={base} className="flex min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
-                <span className="hidden truncate text-sm font-medium text-ink sm:block sm:text-base">{t.siteName}</span>
-                <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 sm:block">{t.siteOrg}</span>
+                <span className="hidden whitespace-nowrap text-sm font-medium text-ink sm:block xl:text-base">{t.siteName}</span>
+                <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 xl:block">{t.siteOrg}</span>
               </span>
             </Link>
 
@@ -86,10 +86,10 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                         type="button"
                         aria-expanded={open === item.key}
                         onClick={() => setOpen(item.key)}
-                        className={`${link} relative flex items-center gap-1 ${open === item.key ? "text-accent-ink" : ""}`}
+                        className={`${link} relative flex items-center gap-1 ${open === item.key ? "bg-accent text-white hover:text-white" : ""}`}
                       >
                         {t.nav[item.key]}
-                        {caret("down")}
+                        <span className={`inline-flex transition-transform duration-200 ${open === item.key ? "rotate-180" : ""}`}>{caret("down")}</span>
                       </button>
                     ) : (
                       <Link
@@ -101,7 +101,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                       </Link>
                     )}
                     {item.children && (
-                      <ul className={`absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-page p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
+                      <ul className={`menu-stagger absolute top-full z-20 min-w-64 rounded-xl border border-ink/10 bg-page p-1 ${open === item.key ? "block" : "hidden"} ${i === nav.length - 1 ? "right-0" : "left-0"}`}>
                         {item.children.map((c) => (
                           <li key={`${c.key}-${c.href}`} className="group/sub relative">
                             <Link href={href(c.href)} className={panelItem}>
@@ -156,14 +156,17 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               aria-expanded={menu}
               aria-controls="mobile-menu"
               onClick={() => setMenu(!menu)}
-              className="flex h-10 shrink-0 items-center rounded-full border border-ink/10 px-3 text-sm font-medium text-ink-2 hover:bg-raised sm:px-4 md:hidden"
+              aria-label={t.menu}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-2 hover:bg-raised md:hidden"
             >
-              {t.menu}
+              <Icon size={18}>
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </Icon>
             </button>
           </div>
           {menu && (
             <nav id="mobile-menu" aria-label="main mobile" className="max-h-[70vh] overflow-y-auto border-t border-ink/10 px-1 py-2 md:hidden">
-              <ul>{mobileList(nav)}</ul>
+              <ul className="menu-stagger">{mobileList(nav)}</ul>
               <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
                 <Link href={`${base}/documents/forms`} onClick={() => setMenu(false)} className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-hover">
                   {t.nav.apply}

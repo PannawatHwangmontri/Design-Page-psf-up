@@ -84,11 +84,14 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
         {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
         <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
-        <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 -z-10 hidden size-[46rem] -translate-x-1/2 -translate-y-1/2 md:block">
-          <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
-          <span className="pulse-ring inset-0" style={{ animationDelay: "1s" }} />
-          <span className="pulse-ring inset-0" style={{ animationDelay: "2s" }} />
-          <span className="pulse-ring inset-0" style={{ animationDelay: "3s" }} />
+        {/* clip box: the rings scale past their own box, so they are clipped here, not left to the section */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden overflow-clip md:block">
+          <div className="absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2">
+            <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
+            <span className="pulse-ring inset-0" style={{ animationDelay: "1s" }} />
+            <span className="pulse-ring inset-0" style={{ animationDelay: "2s" }} />
+            <span className="pulse-ring inset-0" style={{ animationDelay: "3s" }} />
+          </div>
         </div>
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/40 bg-page/20 px-5 py-2 text-base font-semibold text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
@@ -286,10 +289,12 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-page">
         <Wave fill="text-forest" />
         {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
-        <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-10 hidden size-[34rem] md:block">
-          <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
-          <span className="pulse-ring inset-0" style={{ animationDelay: "1.2s" }} />
-          <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden overflow-clip md:block">
+          <div className="absolute -right-40 top-10 size-[34rem]">
+            <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
+            <span className="pulse-ring inset-0" style={{ animationDelay: "1.2s" }} />
+            <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
+          </div>
         </div>
         <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-page p-5 md:block">
           <span className="block h-2 w-16 rounded-full bg-accent" />
