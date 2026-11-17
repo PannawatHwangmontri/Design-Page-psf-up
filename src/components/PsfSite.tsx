@@ -1,5 +1,6 @@
 "use client";
 
+import { ApplyCountdown } from "@/components/ApplyCountdown";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
@@ -65,7 +66,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </div>
         </div>
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
-          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-page/40 bg-page/20 px-5 py-2 text-base font-semibold text-page"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-page" />{t.hero.eyebrow}</p>
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-page" />
           <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
@@ -96,6 +96,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               {t.home.calendarMore} →
             </a>
           </div>
+          <ApplyCountdown lang={lang} />
           <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
             <a href={`/${lang}/calendar`} className="block md:col-span-5">
               <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
@@ -333,6 +334,58 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 <PasserTile key={p.id} p={p} lang={lang} style={idx(i)} />
               ))}
           </ul>
+        </div>
+      </section>
+      {/* help strip: first three FAQ questions (native details, no script) and who can apply, both from content.ts */}
+      <section id="help" className="relative scroll-mt-16 bg-page text-ink">
+        <Wave fill="text-page" />
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-[1.4fr_1fr] md:gap-12 md:px-8 md:py-24">
+          <div>
+            <h2 data-reveal className="text-3xl leading-tight tracking-tight md:text-4xl">{t.pages.faq.title}</h2>
+            <div className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
+              {t.pages.faq.items.slice(0, 3).map((f) => (
+                <details key={f.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-ink">
+                    {f.q}
+                    <span aria-hidden="true" className="text-xl leading-none text-accent-ink transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-ink-2">{f.a}</p>
+                </details>
+              ))}
+            </div>
+            <a href={`/${lang}/faq`} className={`${linkCls} mt-5 inline-block text-sm`}>
+              {t.news.viewAll} →
+            </a>
+          </div>
+          <aside className="rounded-2xl border border-ink/10 bg-tint p-6">
+            <h2 className="text-xl font-medium">{t.pages.eligibility.who.title}</h2>
+            <ul className="mt-4 space-y-2">
+              {t.pages.eligibility.who.items.map((it) => (
+                <li key={it} className="flex items-center gap-3 text-ink">
+                  <span aria-hidden="true" className="flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] text-white">✓</span>
+                  {it}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-ink-2">{t.pages.eligibility.who.note}</p>
+            <a href={`/${lang}/eligibility`} className={`${linkCls} mt-5 inline-block text-sm`}>
+              {t.pages.eligibility.title} →
+            </a>
+          </aside>
+        </div>
+      </section>
+      {/* photo band before the footer: Kwan Phayao at sunset (no people), CC BY-SA credit shown on the band */}
+      <section className="relative isolate h-64 overflow-hidden md:h-80">
+        <img src="/img/commons/kwan-phayao-sunset.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 bg-black/55" />
+        <div className="mx-auto flex h-full max-w-6xl flex-col justify-end gap-4 px-4 pb-8 md:px-8">
+          <p className="text-2xl font-medium text-page md:text-4xl">{t.home.bandTitle}</p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <a href={`/${lang}/calendar`} className="inline-flex h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-white hover:bg-accent-hover">
+              {t.home.bandCta}
+            </a>
+            <p className="font-mono text-[11px] text-page/80">{t.home.bandCredit}</p>
+          </div>
         </div>
       </section>
     </main>
