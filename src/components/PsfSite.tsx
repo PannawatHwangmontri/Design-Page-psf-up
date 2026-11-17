@@ -83,7 +83,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
       <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
         <Wave fill="text-page" />
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-40">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
@@ -291,6 +291,18 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             </a>
           </div>
           <p className="mt-2 text-ink-2">{t.passers.desc}</p>
+
+          {/* headline counts: total and per level, from the same data as the tabs below */}
+          <dl className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {[0, 1, 2, 3].map((n) => (
+              <div key={n} className="rounded-2xl bg-tint p-5">
+                <dt className="text-sm text-ink-2">{n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}</dt>
+                <dd className="mt-2 font-ui text-4xl font-semibold tabular-nums text-accent-ink">
+                  {n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length}
+                </dd>
+              </div>
+            ))}
+          </dl>
 
           {/* level filter: underline tabs, each with its count taken from the data */}
           <div role="tablist" aria-label={t.passers.title} className="no-scrollbar -mx-4 mt-8 flex gap-6 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
