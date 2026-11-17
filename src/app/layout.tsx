@@ -22,7 +22,7 @@ const serifTh = Noto_Serif_Thai({
 const plexSansTh = IBM_Plex_Sans_Thai({
   variable: "--font-plex-sans-th",
   subsets: ["thai", "latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 // ใช้เฉพาะป้ายใน bento (ตัวอังกฤษ/ตัวเลข) ฟอนต์นี้ไม่มีตัวอักษรไทย

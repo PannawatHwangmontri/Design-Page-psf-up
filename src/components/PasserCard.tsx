@@ -13,14 +13,14 @@ export function PasserCard({ p, lang, style }: { p: Passer; lang: Lang; style?: 
   const lv = p.level.en.slice(-1);
   return (
     <li style={style} className="lift overflow-hidden rounded-xl border border-ink/10 bg-card">
-      {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className={`flex aspect-[4/3] items-center justify-center font-ui text-5xl font-semibold ${AVATAR[lv]}`}>{p.name[lang].trim().charAt(0)}</span>}
+      {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className={`flex aspect-[4/3] items-center justify-center font-ui text-5xl font-semibold ${AVATAR[lv]}`}><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></svg></span>}
       <div className="p-6">
         <p className="flex items-center gap-2 font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">
           <span aria-hidden="true" className={`h-2 w-2 rounded-full ${DOT[lv]}`} />
           {p.level[lang]} · {t.passers.year} {p.year[lang]}
         </p>
         <h3 className="mt-3 line-clamp-2 font-ui font-semibold text-xl font-light leading-snug">{p.name[lang]}</h3>
-        <p className="mt-1 text-sm text-ink-2">{p.unit[lang]}</p>
+        <p className="mt-1 text-base text-ink-2">{p.unit[lang]}</p>
       </div>
     </li>
   );
@@ -34,10 +34,10 @@ export function PasserTile({ p, lang, style }: { p: Passer; lang: Lang; style?: 
   return (
     <li style={style}>
       <a href={`/${lang}/publicity`} className="block overflow-hidden rounded-xl border border-ink/10 bg-page transition-colors hover:border-accent/40">
-        {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className={`flex aspect-[4/3] items-center justify-center font-ui text-5xl font-semibold ${AVATAR[lv]}`}>{p.name[lang].trim().charAt(0)}</span>}
+        {p.photo ? <img src={p.photo} alt={p.name[lang]} className="aspect-[4/3] w-full object-cover" /> : <span aria-hidden="true" className={`flex aspect-[4/3] items-center justify-center font-ui text-5xl font-semibold ${AVATAR[lv]}`}><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></svg></span>}
         <div className="p-4">
           <p className="line-clamp-2 font-medium">{p.name[lang]}</p>
-          <p className="mt-1 text-sm text-ink-2">{p.unit[lang]}</p>
+          <p className="mt-1 text-base text-ink-2">{p.unit[lang]}</p>
           <p className="mt-3 flex items-center gap-2 text-sm tabular-nums text-ink-2">
             <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${LEVEL_DOT[lv]}`} />
             {p.level[lang]} · {t.passers.year} {p.year[lang]}

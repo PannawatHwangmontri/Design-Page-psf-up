@@ -14,8 +14,8 @@ export function SiteFooter({ lang }: { lang: Lang }) {
     { label: t.nav.otherForms, href: `/${lang}/documents/forms` },
     { label: t.nav.calendar, href: `/${lang}/calendar` },
   ];
-  const heading = "font-mono text-xs tracking-[0.08em] text-page/60";
-  const link = "text-sm text-page/80 underline-offset-4 hover:text-page hover:underline";
+  const heading = "font-mono text-[13px] tracking-[0.08em] text-page/75";
+  const link = "inline-flex min-h-11 items-center text-base text-page underline-offset-4 hover:text-page hover:underline focus-visible:underline";
 
   return (
     <footer className="font-ui bg-forest text-page">
@@ -25,7 +25,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
             <img src="/brand/logo-up.png" alt={t.siteOrg} width={188} height={40} className="h-10 w-auto" />
           </span>
           <p className="mt-6 font-ui font-semibold text-2xl font-light">{t.siteName}</p>
-          <p className="mt-1 text-sm text-page/60">{t.siteOrg}</p>
+          <p className="mt-1 text-sm text-page/75">{t.siteOrg}</p>
         </div>
 
         <div className="md:col-span-4">
@@ -33,12 +33,12 @@ export function SiteFooter({ lang }: { lang: Lang }) {
           <ul className="mt-4 space-y-3 text-sm text-page/80">
             <li>{t.contact.address}</li>
             <li>
-              <a href={`mailto:${t.contact.email}`} className="underline decoration-page/30 underline-offset-4 hover:text-page hover:decoration-page">
+              <a href={`mailto:${t.contact.email}`} className="inline-flex min-h-11 items-center underline decoration-page/30 underline-offset-4 hover:text-page hover:decoration-page">
                 {t.contact.email}
               </a>
             </li>
             <li>
-              <a href={`tel:${t.contact.phone.replace(/\s/g, "")}`} className="tabular-nums hover:text-page hover:underline">
+              <a href={`tel:${t.contact.phone.replace(/\s/g, "")}`} className="inline-flex min-h-11 items-center tabular-nums hover:text-page hover:underline">
                 {t.contact.phone}
               </a>
             </li>
@@ -67,7 +67,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
             </Link>
           ))}
         </nav>
-        <p className="mx-auto max-w-6xl px-4 pb-10 text-xs leading-relaxed text-page/60 md:px-8">{t.footer}</p>
+        <p className="mx-auto max-w-6xl px-4 pb-10 text-[13px] leading-relaxed text-page/75 md:px-8">{t.footer}</p>
       </div>
     </footer>
   );

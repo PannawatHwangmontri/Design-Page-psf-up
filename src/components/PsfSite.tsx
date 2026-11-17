@@ -1,267 +1,223 @@
 "use client";
 
-import { ApplyCountdown } from "@/components/ApplyCountdown";
-import { Wave } from "@/components/Wave";
-import { useEffect, useState, useSyncExternalStore } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
-import { PasserTile } from "./PasserCard";
+import { fmtDate } from "@/lib/lang";
+import { roundStatus } from "@/lib/rounds";
+import { Hero } from "@/components/Hero";
+import { RoundsPanel } from "@/components/RoundsPanel";
 import { Placeholder } from "./Placeholder";
-import { TextEffect } from "./TextEffect";
-import { ripple } from "./ripple";
 
-const PAGE = 4; // announcements shown on the home page (the rest are on /announcement)
-// stagger index for [data-stagger] children (see .stagger in globals.css)
-const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
+// Home order and background rhythm: hero (forest, photo) → rounds (tint) → quick links (page) → news + announcements (page)
+// → PSF levels (card) → steps (forest) → passers (page) → eligibility + FAQ (card) → closing (forest, photo).
+// Every section uses SECTION spacing and a WRAP container. Section heads share one pattern: tag, accent bar, h2, link.
+const PAGE = 5; // announcements on the home page; the rest are on /announcement
+const WRAP = "mx-auto max-w-6xl px-5 md:px-10";
+const SECTION = "py-16 md:py-24";
+const H2 = "text-3xl font-bold leading-[1.2] tracking-tight md:text-4xl";
+const LINK = "inline-flex min-h-11 items-center text-base font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
+const LINK_DARK = "inline-flex min-h-11 items-center text-base font-medium text-page underline decoration-page/40 underline-offset-4 hover:decoration-page";
+const QUICK_ORDER = [0, 1, 5, 3]; // apply, calendar, eligibility, manuals
+const LEVEL_TONE = ["var(--color-level-1)", "var(--color-level-2)", "var(--color-level-3)"];
 
-const hairline = "border border-ink/10";
-const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
+// line icons, 24px, stroke 1.5, one set for the quick links
+const ICON_PATHS: Record<string, string[]> = {
+  "/documents/forms": ["M7 3h7l5 5v13H7z", "M14 3v5h5", "M10 13h6M10 17h4"],
+  "/calendar": ["M3 5h18v16H3z", "M3 10h18M8 3v4M16 3v4"],
+  "/eligibility": ["M9 6h11M9 12h11M9 18h11", "M3 6l1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"],
+  "/documents/manuals": ["M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z", "M4 16a4 4 0 0 1 4-4h12"],
+};
 
-// vertical section marker on the left page edge (wide screens only, see .side-label)
+function Icon({ href }: { href: string }) {
+  return (
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+      {(ICON_PATHS[href] ?? []).map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  );
+}
+
+function SectionHead({ tag, title, href, linkLabel, dark = false }: { tag: string; title: string; href?: string; linkLabel?: string; dark?: boolean }) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p className={`text-sm font-medium ${dark ? "text-page/85" : "text-ink-2"}`}>{tag}</p>
+        <span aria-hidden="true" className={`mt-3 block h-[3px] w-8 ${dark ? "bg-[#c79bef]" : "bg-accent"}`} />
+        <h2 className={`mt-4 ${H2}`}>{title}</h2>
+      </div>
+      {href && linkLabel && (
+        <a href={href} className={dark ? LINK_DARK : LINK}>
+          {linkLabel} →
+        </a>
+      )}
+    </div>
+  );
+}
 
 export default function PsfSite({ lang }: { lang: Lang }) {
   const { content, announcements, news, passers, assessmentCalendars } = useSite();
   const t = content[lang];
-  const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
   const latestYear = Math.max(...announcements.map((a) => a.year));
-  const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
+  const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
+  const count = (n: number) => (n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length);
+  const levelName = (n: number) => passers.find((p) => p.level.en === `Level ${n}`)?.level[lang] ?? "";
+  const passersShown = [...passers].sort((x, y) => Number(y.year.en) - Number(x.year.en) || x.id - y.id).slice(0, 3);
   const loc = lang === "th" ? "th-TH" : "en-GB";
-  const day = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "short" });
-  const fullDate = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
-  const range = (e?: { start: string; end?: string }) => (!e ? "–" : e.end ? `${day(e.start)} – ${day(e.end)}` : day(e.start));
-  const [lead, ...rest] = [...news].sort((a, b) => b.date.localeCompare(a.date));
-  const pic = (src: string | undefined, alt: string, cls: string) =>
-    src ? <img src={src} alt={alt} className={`${cls} object-cover`} /> : <Placeholder label={alt} className={cls} />;
+  const dateLong = (d: string) => new Date(`${d}T00:00`).toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
+  const kind = (title: string) => {
+    if (title.includes("หลักเกณฑ์") || title.includes("Criteria")) return { label: t.home.kindCriteria, cls: "bg-tint text-accent-ink" };
+    if (title.includes("ผลการ") || title.includes("Result")) return { label: t.home.kindResult, cls: "bg-accent text-white" };
+    return { label: t.home.kindNotice, cls: "bg-raised text-ink-2" };
+  };
 
+  // closing call: same round status as the hero
+  const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const round = roundStatus(cal ? cal.events : [], today.getTime());
 
   return (
-    <main className="font-ui">
-      {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
-      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-page">
-        <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/30" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
-        {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
-        <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
-        {/* clip box: the rings scale past their own box, so they are clipped here, not left to the section */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden overflow-clip md:block">
-          <div className="absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2">
-            <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "1s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "2s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "3s" }} />
-          </div>
-        </div>
-        <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
-          <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
-          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-page" />
-          <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
-            <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
-              {t.hero.cta}
-            </a>
-            <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-page/70 px-6 text-sm font-medium text-page hover:bg-page/10">
-              {t.hero.cta2}
-            </a>
+    <main id="main-content" className="bg-page text-ink">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-page">
+        {t.nav.skip}
+      </a>
+
+      <Hero lang={lang} />
+
+      {/* rounds: the table on the tint, the open round in a page-coloured column */}
+      <section id="calendar" className={`scroll-mt-16 bg-tint ${SECTION}`}>
+        <div className={WRAP}>
+          <SectionHead tag={t.home.tagRounds} title={t.home.calendarTitle} href={`/${lang}/calendar`} linkLabel={t.home.allCalendar} />
+          <div className="mt-10">
+            <RoundsPanel lang={lang} />
           </div>
         </div>
       </section>
 
-
-      {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
-      <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
-        <Wave fill="text-page" />
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
-              <p className="mt-2 text-ink-2">
-                {t.home.calendarLead}
-                {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
-              </p>
-            </div>
-            <a href={`/${lang}/assessment`} className="inline-flex h-11 shrink-0 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
-              {t.home.calendarMore} →
-            </a>
-          </div>
-          <ApplyCountdown lang={lang} />
-          <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
-            <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
-            </a>
-            {cal && (
-              <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
-                {[1, 2].map((r) => (
-                  <div key={r} className="overflow-hidden rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
-                    <p className="-mx-6 -mt-6 mb-5 bg-gradient-to-r from-accent to-[#c2378f] px-6 py-4 font-ui font-semibold text-2xl text-white">
-                      {t.pages.assessment.round} {r}
-                    </p>
-                    <dl className="mt-3 divide-y divide-page/15">
-                      {(["apply", "assess", "result"] as const).map((k) => (
-                        <div key={k} className="flex items-baseline justify-between gap-4 py-3">
-                          <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
-                          <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* quick links: four rows with line icons, hairline columns on desktop */}
+      <section className={`bg-page ${SECTION}`}>
+        <div className={WRAP}>
+          <SectionHead tag={t.home.tagStart} title={t.home.quickTitle} />
+          <ul className="mt-10 grid md:grid-cols-2 lg:grid-cols-4">
+            {QUICK_ORDER.map((i, n) => {
+              const q = t.home.quick[i];
+              return (
+                <li key={q.href} className={`border-t border-ink/10 lg:border-t-0 ${n ? "lg:border-l lg:pl-8" : ""}`}>
+                  <a href={`/${lang}${q.href}`} className="group flex min-h-14 items-start gap-4 px-4 py-5 transition-colors hover:bg-card lg:flex-col lg:gap-5 lg:py-6">
+                    <span className="text-ink-2 transition-colors group-hover:text-accent-ink">
+                      <Icon href={q.href} />
+                    </span>
+                    <span className="flex-1">
+                      <span className="block text-lg font-bold">{q.title}</span>
+                      <span className="mt-1 block text-base leading-7 text-ink-2">{q.desc}</span>
+                    </span>
+                    <span aria-hidden="true" className="shrink-0 text-xl text-accent-ink lg:hidden">
+                      →
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
-      {/* news: one lead story with a photo, the next three beside it */}
-      <section id="news" className="relative scroll-mt-16 bg-card">
-        <Wave fill="text-card" />
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
-            <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
-              {t.news.viewAll} →
-            </a>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {[
-              { href: "#news", label: t.news.title },
-              { href: "#announcements", label: t.news.announcements },
-              { href: "#calendar", label: t.home.calendarTitle },
-              { href: "#passers", label: t.passers.title },
-            ].map((c) => (
-              <a key={c.href} href={c.href} className="rounded-full border border-ink/10 bg-page px-4 py-1.5 text-sm font-medium text-ink hover:bg-raised">
-                {c.label}
+      {/* news and announcements: news left, a hairline, announcements right with type badges */}
+      <section id="news" className={`bg-page ${SECTION}`}>
+        <div className={`${WRAP} grid gap-12 md:grid-cols-12`}>
+          <div className="md:col-span-7">
+            <SectionHead tag={t.home.tagNews} title={t.news.title} href={`/${lang}/news`} linkLabel={t.news.viewAll} />
+            {sorted[0] && (
+              <a href={`/${lang}/news/${sorted[0].id}`} className="group mt-10 block">
+                {sorted[0].image ? (
+                  <img src={sorted[0].image} alt={sorted[0].title[lang]} loading="lazy" className="aspect-[16/9] w-full rounded-2xl object-cover md:aspect-[16/10]" />
+                ) : (
+                  <Placeholder label={t.news.imageAlt} className="aspect-[16/9] w-full rounded-2xl md:aspect-[16/10]" />
+                )}
+                <time dateTime={sorted[0].date} className="mt-5 block text-sm tabular-nums text-ink-2">
+                  {fmtDate(sorted[0].date, lang)}
+                </time>
+                <h3 className="mt-2 line-clamp-3 text-xl font-bold leading-snug group-hover:text-accent-ink">{sorted[0].title[lang]}</h3>
               </a>
-            ))}
-          </div>
-          {lead && (
-            <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-12">
-              <article data-reveal className="md:col-span-7">
-                <a href={`/${lang}/news/${lead.id}`} className="group block">
-                  {pic(lead.image, t.news.imageAlt, "aspect-[16/10] w-full rounded-xl")}
-                  <time dateTime={lead.date} className="mt-4 block text-sm tabular-nums text-ink-3">
-                    {fullDate(lead.date)}
-                  </time>
-                  <h3 className="mt-1 line-clamp-3 text-2xl font-medium group-hover:text-accent-ink">{lead.title[lang]}</h3>
-                  <p className="mt-2 line-clamp-3 text-ink-2">{lead.excerpt[lang]}</p>
-                </a>
-              </article>
-              <ul data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-5 md:self-start">
-                {rest.slice(0, 3).map((n, i) => (
-                  <li key={n.id} style={idx(i)}>
-                    <a href={`/${lang}/news/${n.id}`} className="group flex gap-4 py-5">
-                      {pic(n.image, t.news.imageAlt, "h-20 w-28 shrink-0 rounded-lg")}
-                      <div className="min-w-0">
-                        <time dateTime={n.date} className="text-sm tabular-nums text-ink-3">
-                          {fullDate(n.date)}
-                        </time>
-                        <h3 className="mt-1 line-clamp-2 font-medium group-hover:text-accent-ink">{n.title[lang]}</h3>
-                      </div>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {/* more stories: the next four after the lead and the three beside it (the full list is on /news) */}
-          {rest.length > 3 && (
-            <ul data-stagger className="mt-12 grid grid-cols-2 gap-4 border-t border-ink/10 pt-10 sm:gap-6 lg:grid-cols-4">
-              {rest.slice(3, 7).map((n, i) => (
-                <li key={n.id} style={idx(i)}>
-                  <a href={`/${lang}/news/${n.id}`} className="group block">
-                    {pic(n.image, t.news.imageAlt, "aspect-[4/3] w-full rounded-xl")}
-                    <time dateTime={n.date} className="mt-3 block text-sm tabular-nums text-ink-3">
-                      {fullDate(n.date)}
+            )}
+            <ul className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
+              {sorted.slice(1, 4).map((n) => (
+                <li key={n.id}>
+                  <a href={`/${lang}/news/${n.id}`} className="group grid gap-1 py-4 md:grid-cols-[8rem_1fr] md:gap-5">
+                    <time dateTime={n.date} className="text-sm tabular-nums text-ink-2">
+                      {fmtDate(n.date, lang)}
                     </time>
-                    <h3 className="mt-1 line-clamp-2 font-medium group-hover:text-accent-ink">{n.title[lang]}</h3>
+                    <span className="line-clamp-2 text-base font-bold group-hover:text-accent-ink">{n.title[lang]}</span>
                   </a>
                 </li>
               ))}
             </ul>
-          )}
-        </div>
-      </section>
-
-      {/* announcements: a plain register, year on the left like a gazette */}
-      <section id="announcements" className="font-sans relative scroll-mt-16">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
-          <div className="md:col-span-4">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.announcements}</h2>
-            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-sm`}>
-              {t.news.viewAll} →
-            </a>
           </div>
-          <ul data-lines className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
-            {announcements.slice(0, PAGE).map((a, i) => (
-              <li key={a.id} style={idx(i)} className="overflow-hidden">
-                <div className="line flex gap-6 py-5">
-                  <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
-                    {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                    {a.year === latestYear && <span className="mt-2 block text-accent-ink">{t.news.isNew}</span>}
-                  </span>
-                  <p className="min-w-0 line-clamp-2 font-medium" title={a.title[lang]}>
-                    <a href={`/${lang}/announcement/${a.id}`} className="hover:text-accent-ink">
-                      {a.title[lang]}
+          <div className="md:col-span-5 md:border-l md:border-ink/10 md:pl-10">
+            <SectionHead tag={t.home.tagNews} title={t.news.announcements} href={`/${lang}/announcement`} linkLabel={t.news.viewAll} />
+            <ul data-lines className="mt-10 divide-y divide-ink/10 border-y border-ink/10">
+              {announcements.slice(0, PAGE).map((a) => {
+                const k = kind(a.title[lang]);
+                return (
+                  <li key={a.id} className="overflow-hidden">
+                    <a href={`/${lang}/announcement/${a.id}`} className="line group grid gap-2 py-4">
+                      <span className="flex flex-wrap items-center gap-2 text-sm text-ink-2">
+                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[13px] font-medium ${k.cls}`}>{k.label}</span>
+                        <span className="tabular-nums">{lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}</span>
+                        {a.year === latestYear && <span className="font-medium text-accent-ink">{t.news.isNew}</span>}
+                      </span>
+                      <span className="line-clamp-2 text-base font-bold group-hover:text-accent-ink">{a.title[lang]}</span>
                     </a>
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </section>
 
-      {/* PSF: three levels as a ledger, then the four steps */}
-      <section id="levels" className="relative scroll-mt-16 bg-card">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
-          <div className="md:col-span-4">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.levels.title}</h2>
-            <p className="mt-3 text-ink-2">{t.levels.desc}</p>
-          </div>
-          <ol data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
+      {/* PSF levels: three equal cards, a large level numeral as a faint watermark, the level colour as the top rule */}
+      <section id="levels" className={`bg-card ${SECTION}`}>
+        <div className={WRAP}>
+          <SectionHead tag={t.home.tagPsf} title={t.levels.title} />
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-2">{t.levels.desc}</p>
+          <ol data-stagger className="mt-10 grid gap-6 md:grid-cols-3">
             {t.levels.items.map((l, n) => (
-              <li key={l.name} style={idx(n)} className="grid grid-cols-[3rem_1fr] gap-4 py-6 md:grid-cols-[4rem_12rem_1fr]">
-                <span aria-hidden="true" className="text-4xl tabular-nums text-ink/20">
+              <li key={l.name} className="relative flex flex-col overflow-hidden rounded-2xl bg-page p-6" style={{ borderTop: `4px solid ${LEVEL_TONE[n]}` }}>
+                <span aria-hidden="true" className="pointer-events-none absolute right-4 top-2 text-7xl font-bold leading-none tabular-nums text-ink/10">
                   {n + 1}
                 </span>
-                <h3 className="flex items-center gap-2 text-xl font-medium md:self-center">
-                  <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: `var(--color-level-${n + 1})` }} />
-                  {l.name}
-                </h3>
-                <p className="col-span-2 text-ink-2 md:col-span-1 md:self-center">{l.desc}</p>
+                <h3 className="relative mt-4 text-xl font-bold">{l.name}</h3>
+                <p className="relative mt-3 text-base leading-7 text-ink">{l.desc}</p>
+                {/* TODO: "เหมาะกับ" line per level; the text is not in content.ts yet, ask the owner */}
               </li>
             ))}
           </ol>
+          <div className="mt-8">
+            <a href={`/${lang}/eligibility`} className={LINK}>
+              {t.home.levelsMore} →
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-page">
-        <Wave fill="text-forest" />
-        {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden overflow-clip md:block">
-          <div className="absolute -right-40 top-10 size-[34rem]">
-            <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "1.2s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
-          </div>
-        </div>
-        <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-page p-5 md:block">
-          <span className="block h-2 w-16 rounded-full bg-accent" />
-          <span className="mt-4 block h-2 w-28 rounded-full bg-raised" />
-          <span className="mt-2 block h-2 w-20 rounded-full bg-raised" />
-          <span className="mt-5 block h-8 rounded-full bg-accent/15" />
-        </div>
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <TextEffect as="h2" text={t.process.title} className="text-4xl leading-tight tracking-tight text-page md:text-5xl" />
-          <span aria-hidden="true" className="line-grow mt-5 block h-px w-28 bg-page/70" />
-          <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      {/* steps: one forest band, four steps in a row, the connector line behind the numbers (vertical on mobile) */}
+      <section id="process" className={`bg-forest text-page ${SECTION}`}>
+        <div className={WRAP}>
+          <SectionHead tag={t.home.tagSteps} title={t.process.title} dark />
+          <ol className="relative mt-12 grid gap-10 md:grid-cols-4 md:gap-8">
+            <span aria-hidden="true" className="absolute bottom-4 left-[0.45rem] top-4 w-px bg-page/25 md:hidden" />
+            <span aria-hidden="true" className="absolute left-0 right-0 top-9 hidden h-px bg-page/25 md:block" />
             {t.process.tiles.map((tile, i) => (
-              <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-page/15 bg-page/5 p-6">
-                <p className="font-mono text-xs tabular-nums text-page/60">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-3 text-xl">{tile.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-page/75">{tile.desc}</p>
-                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-page underline underline-offset-4 hover:decoration-page">
-                  {tile.link}
+              <li key={tile.href} className="relative pl-8 md:pl-0">
+                <span className="relative block bg-forest pr-3 text-6xl font-bold leading-none tabular-nums text-[#c79bef] md:inline-block">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-5 text-lg font-bold">{tile.title}</h3>
+                <p className="mt-2 text-base leading-7 text-page/90">{tile.desc}</p>
+                <a href={`/${lang}${tile.href}`} className={`${LINK_DARK} mt-2`}>
+                  {tile.link} →
                 </a>
               </li>
             ))}
@@ -269,111 +225,119 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section id="passers" className="relative scroll-mt-16 bg-card">
-        <Wave fill="text-card" />
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.passers.title}</h2>
-            <a href={`/${lang}/publicity`} className={`${linkCls} shrink-0 text-sm`}>
-              {t.news.viewAll} →
+      {/* passers: big totals as the graphic, three rows, one link to the full list */}
+      <section id="passers" className={`bg-page ${SECTION}`}>
+        <div className={WRAP}>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="flex items-center gap-3 text-sm font-medium text-ink-2">
+                {t.passers.title}
+                <span className="inline-flex rounded-full bg-tint px-2.5 py-0.5 text-[13px] font-medium text-accent-ink">{t.pages.faq.sample}</span>
+              </p>
+              <span aria-hidden="true" className="mt-3 block h-[3px] w-8 bg-accent" />
+              <h2 className={`mt-4 ${H2}`}>{t.passers.total}</h2>
+            </div>
+            <a href={`/${lang}/publicity`} className={LINK}>
+              {t.home.seeList} →
             </a>
           </div>
-          <p className="mt-2 text-ink-2">{t.passers.desc}</p>
-
-          {/* headline counts: total and per level, from the same data as the tabs below */}
-          <dl className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {[0, 1, 2, 3].map((n) => (
-              <div key={n} className="rounded-2xl bg-tint p-5">
-                <dt className="text-sm text-ink-2">{n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}</dt>
-                <dd className="mt-2 font-ui text-4xl font-semibold tabular-nums text-accent-ink">
-                  {n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* level filter: underline tabs, each with its count taken from the data */}
-          <div role="tablist" aria-label={t.passers.title} className="no-scrollbar -mx-4 mt-8 flex gap-6 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
-            {[0, 1, 2, 3].map((n) => (
-              <button
-                key={n}
-                type="button"
-                role="tab"
-                aria-selected={lvl === n}
-                onClick={() => setLvl(n)}
-                className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors ${
-                  lvl === n ? "border-accent font-medium text-accent-ink" : "border-transparent text-ink-2 hover:text-ink"
-                }`}
-              >
-                {n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}{" "}
-                <span className="tabular-nums text-ink-3">{n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* newest first, the first 4 of the selected level */}
-          <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {passers
-              .filter((p) => lvl === 0 || p.level.en === `Level ${lvl}`)
-              .sort((x, y) => Number(y.year.en) - Number(x.year.en) || x.id - y.id)
-              .slice(0, 4)
-              .map((p, i) => (
-                <PasserTile key={p.id} p={p} lang={lang} style={idx(i)} />
+          <div className="mt-10 flex flex-wrap items-end gap-x-14 gap-y-6">
+            <p>
+              <span className="text-7xl font-bold leading-none tabular-nums text-accent-ink md:text-8xl">{count(0)}</span>
+              <span className="ml-3 text-lg text-ink-2">{t.passers.people}</span>
+            </p>
+            <ul className="flex flex-wrap gap-x-10 gap-y-4">
+              {[1, 2, 3].map((n) => (
+                <li key={n} className="flex items-center gap-3">
+                  <span aria-hidden="true" className="size-3 rounded-full" style={{ background: LEVEL_TONE[n - 1] }} />
+                  <span className="text-base text-ink-2">{levelName(n)}</span>
+                  <span className="text-3xl font-bold tabular-nums">{count(n)}</span>
+                </li>
               ))}
-          </ul>
+            </ul>
+          </div>
+          {passers.length === 0 ? (
+            <p className="mt-10 text-base text-ink-2">{t.home.noData}</p>
+          ) : (
+            <ul className="mt-10 divide-y divide-ink/10 border-y border-ink/10">
+              {passersShown.map((p) => (
+                <li key={p.id} className="grid min-h-14 grid-cols-[2.5rem_1fr] items-center gap-x-4 py-4 md:grid-cols-[2.5rem_1fr_16rem_12rem] md:gap-x-6">
+                  <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-full bg-raised text-ink-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
+                    </svg>
+                  </span>
+                  <span className="text-base font-bold">{p.name[lang]}</span>
+                  <span className="col-start-2 text-base text-ink-2 md:col-start-auto">{p.unit[lang]}</span>
+                  <span className="col-start-2 flex items-center gap-2 text-sm tabular-nums text-ink-2 md:col-start-auto">
+                    <span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: LEVEL_TONE[Number(p.level.en.replace("Level ", "")) - 1] }} />
+                    {p.level[lang]} · {p.year[lang]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
-      {/* help strip: first three FAQ questions (native details, no script) and who can apply, both from content.ts */}
-      <section id="help" className="relative scroll-mt-16 bg-page text-ink">
-        <Wave fill="text-page" />
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-[1.4fr_1fr] md:gap-12 md:px-8 md:py-24">
+
+      {/* eligibility and FAQ side by side on the card colour */}
+      <section id="help" className={`bg-card ${SECTION}`}>
+        <div className={`${WRAP} grid gap-12 md:grid-cols-2 md:gap-16`}>
           <div>
-            <h2 data-reveal className="text-3xl leading-tight tracking-tight md:text-4xl">{t.pages.faq.title}</h2>
-            <div className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
-              {t.pages.faq.items.slice(0, 3).map((f) => (
-                <details key={f.q} className="group py-4">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-ink">
-                    {f.q}
-                    <span aria-hidden="true" className="text-xl leading-none text-accent-ink transition-transform group-open:rotate-45">+</span>
-                  </summary>
-                  <p className="mt-3 text-ink-2">{f.a}</p>
-                </details>
-              ))}
-            </div>
-            <a href={`/${lang}/faq`} className={`${linkCls} mt-5 inline-block text-sm`}>
-              {t.news.viewAll} →
-            </a>
-          </div>
-          <aside className="rounded-2xl border border-ink/10 bg-tint p-6">
-            <h2 className="text-xl font-medium">{t.pages.eligibility.who.title}</h2>
-            <ul className="mt-4 space-y-2">
+            <SectionHead tag={t.home.tagHelp} title={t.pages.eligibility.who.title} href={`/${lang}/eligibility`} linkLabel={t.pages.eligibility.title} />
+            <ul className="mt-10 divide-y divide-ink/10 border-y border-ink/10">
               {t.pages.eligibility.who.items.map((it) => (
-                <li key={it} className="flex items-center gap-3 text-ink">
-                  <span aria-hidden="true" className="flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] text-white">✓</span>
+                <li key={it} className="flex min-h-11 items-center py-3 text-base">
                   {it}
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm text-ink-2">{t.pages.eligibility.who.note}</p>
-            <a href={`/${lang}/eligibility`} className={`${linkCls} mt-5 inline-block text-sm`}>
-              {t.pages.eligibility.title} →
-            </a>
-          </aside>
-        </div>
-      </section>
-      {/* photo band before the footer: Kwan Phayao at sunset (no people), CC BY-SA credit shown on the band */}
-      <section className="relative isolate h-64 overflow-hidden md:h-80">
-        <img src="/img/commons/kwan-phayao-sunset.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-black/55" />
-        <div className="mx-auto flex h-full max-w-6xl flex-col justify-end gap-4 px-4 pb-8 md:px-8">
-          <p className="text-2xl font-medium text-page md:text-4xl">{t.home.bandTitle}</p>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <a href={`/${lang}/calendar`} className="inline-flex h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-white hover:bg-accent-hover">
-              {t.home.bandCta}
-            </a>
-            <p className="font-mono text-[11px] text-page/80">{t.home.bandCredit}</p>
+            <p className="mt-5 text-base leading-7 text-ink-2">{t.pages.eligibility.who.note}</p>
+          </div>
+          <div>
+            <SectionHead tag={t.home.tagHelp} title={t.pages.faq.title} href={`/${lang}/faq`} linkLabel={t.home.allFaq} />
+            <div className="mt-10 divide-y divide-ink/10 border-y border-ink/10">
+              {t.pages.faq.items.slice(0, 3).map((f) => (
+                <details key={f.q} className="group py-4">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded text-base font-bold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">
+                    {f.q}
+                    <span aria-hidden="true" className="text-xl leading-none text-ink-2 transition-transform group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-2 text-base leading-7 text-ink">{f.a}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </div>
+      </section>
+
+      {/* closing: one forest band with the campus photo under a dark scrim, the credit at the corner */}
+      <section className="relative isolate overflow-hidden bg-forest text-page">
+        <img src="/img/commons/kwan-phayao-sunset.webp" alt="" loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-forest via-forest/85 to-forest/55" />
+        <div className={`${WRAP} ${SECTION}`}>
+          <p className="text-sm font-medium text-page/85">{t.home.tagApply}</p>
+          <span aria-hidden="true" className="mt-3 block h-[3px] w-8 bg-[#c79bef]" />
+          <h2 className={`mt-4 ${H2}`}>{t.nav.apply}</h2>
+          <p className="mt-4 text-lg text-page/90">
+            {round.kind === "open" ? t.home.heroCloses.replace("{date}", dateLong(round.date)) : round.kind === "next" ? t.home.heroOpens.replace("{date}", dateLong(round.date)) : t.home.closeNone}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={`/${lang}/documents/forms`} className="inline-flex h-12 items-center rounded-full bg-accent px-7 text-base font-semibold text-white transition-colors hover:bg-accent-hover">
+              {t.home.applyNow}
+            </a>
+            <a href={`/${lang}/calendar`} className="inline-flex h-12 items-center rounded-full border border-page/50 px-7 text-base font-medium text-page transition-colors hover:bg-page/10">
+              {t.home.allCalendar}
+            </a>
+          </div>
+          <a href="#home" className={`${LINK_DARK} mt-16`}>
+            ↑ {t.home.backTop}
+          </a>
+        </div>
+        <p className="absolute bottom-3 right-4 text-[13px] text-page/80">{t.home.closeCredit}</p>
       </section>
     </main>
   );

@@ -24,7 +24,7 @@ export function ApplicantHeader({ lang }: { lang: Lang }) {
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0">
                 <span className="block whitespace-nowrap text-base font-medium text-ink">{t.applicant.title}</span>
-                <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 sm:block">{t.siteName}</span>
+                <span className="hidden font-mono text-xs tracking-[0.05em] text-ink-3 sm:block">{t.siteName}</span>
               </span>
             </Link>
 

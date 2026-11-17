@@ -12,15 +12,9 @@ export const nav: NavItem[] = [
     children: [
       { key: "publicityNews", href: "/publicity" },
       { key: "calendar", href: "/calendar" },
-      {
-        key: "outstanding",
-        href: "/outstanding",
-        children: [
-          { key: "submitReview", href: "/outstanding#apply" },
-          { key: "outstandingAnnouncement", href: "/outstanding#announcement" },
-          { key: "certify", href: "/outstanding#process" },
-        ],
-      },
+      { key: "submitReview", href: "/outstanding#apply" },
+      { key: "outstandingAnnouncement", href: "/outstanding#announcement" },
+      { key: "certify", href: "/outstanding#process" },
     ],
   },
   {

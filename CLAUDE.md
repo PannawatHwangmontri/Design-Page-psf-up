@@ -59,7 +59,7 @@
 
 - ภาษาของไฟล์ .md และการสื่อสารกับผู้ใช้: ไทย
 - ข้อความบนเว็บต้องมีทั้งไทยและอังกฤษ ห้ามฝังข้อความในคอมโพเนนต์ตรง ๆ ให้แยกเป็นไฟล์แปลภาษา
-- สไตล์การออกแบบ: ทางการ / วิชาการ แนวบรรณาธิการ ดูรายละเอียดใน DESIGN.md
+- สไตล์การออกแบบ (design/Design04, อ้างอิง Design1 video): ตัวอักษรหนาใหญ่ IBM Plex Sans Thai, กล่อง bento ขอบมน 28px, สลับบล็อกมืด/สว่าง, การ์ดลอยเอียง, สีม่วง มพ. เป็นสีหลัก ดูรายละเอียดใน DESIGN.md (ส่วน Design04)
 - ห้ามเดาข้อมูลที่ผู้ใช้ไม่ได้ระบุ (ชื่อทางการ ค่าสี เนื้อหาจริง) ให้ถามผู้ใช้ก่อน หรือใส่ TODO
 - ข้อมูลผู้ยื่นผ่านเป็น mock ห้ามใช้ชื่อบุคคลจริง
 - กฎสำหรับ AI agent ทั่วไป ดูใน AGENTS.md
@@ -68,7 +68,7 @@
 ## Git และ branch
 
 - commit และ push เฉพาะเมื่อผู้ใช้สั่ง ห้าม commit เองเมื่อไม่ได้สั่ง
-- ดีไซน์แต่ละแบบเก็บแยก branch ชื่อ `design/<ชื่อสไตล์>`: `design/editorial-serif` (แบบปัจจุบัน), `design/lavender-broadsheet`, `design/warm-cream-purple` ส่วน `main` คือฐานก่อนปรับดีไซน์
+- ดีไซน์แต่ละแบบเก็บแยก branch ชื่อ `design/<ชื่อสไตล์>`: `design/Design04` (แบบปัจจุบัน, redesign ตามวิดีโอ Design1), `design/editorial-serif`, `design/lavender-broadsheet`, `design/warm-cream-purple` ส่วน `main` คือฐานก่อนปรับดีไซน์
 - ก่อนสลับ branch ถ้ามีงานค้างให้ commit หรือ stash ก่อน
 - repo บน GitHub: PannawatHwangmontri/Design-Page-psf-up (ยังไม่ได้ตรวจว่าเป็น public หรือ private)
 

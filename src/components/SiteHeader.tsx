@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
@@ -22,7 +22,7 @@ const caret = (dir: "down" | "right") => (
   </Icon>
 );
 
-const link = "block whitespace-nowrap rounded-full px-3 py-2 text-sm text-ink-2 hover:text-accent-ink";
+const link = "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-3 text-sm text-ink-2 hover:text-accent-ink";
 // display:none (not visibility) so closed panels add no horizontal scroll width
 const panel = "absolute z-20 hidden min-w-64 rounded-xl border border-ink/10 bg-card p-1";
 const panelItem = "flex items-center justify-between gap-4 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-accent/10 hover:text-accent-ink";
@@ -39,6 +39,19 @@ export function SiteHeader({ lang }: { lang: Lang }) {
   const movePill = (e: { currentTarget: HTMLElement }) =>
     setPill({ left: e.currentTarget.offsetLeft, width: e.currentTarget.offsetWidth });
   const [menu, setMenu] = useState(false);
+  // mobile only: the bar slides away while the page scrolls down and returns when it scrolls up
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 8) return;
+      setHidden(y > last && y > 120);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   // one top-level dropdown open at a time; leaving the nav or pressing Esc closes it
   const [open, setOpen] = useState<string | null>(null);
 
@@ -62,13 +75,13 @@ export function SiteHeader({ lang }: { lang: Lang }) {
     // zero-height sticky wrapper: the capsule floats over the page (and over the hero image) without pushing content down
     <div className="font-ui sticky top-0 z-30 h-0">
       <div className="mx-auto max-w-7xl px-4 pt-3 md:px-8">
-        <header className="rounded-[30px] border border-ink/10 bg-page/95 px-4 shadow-[0_10px_30px_-12px_rgba(29,22,48,0.35)] backdrop-blur-md md:px-6">
+        <header className={`rounded-[30px] border border-ink/10 bg-page/95 px-4 shadow-[0_10px_30px_-12px_rgba(29,22,48,0.35)] backdrop-blur-md transition-transform duration-300 md:px-6 ${hidden ? "max-md:-translate-y-[150%]" : ""}`}>
           <div className="flex h-14 items-center gap-2 pl-2 pr-2 sm:gap-3 sm:pl-5 sm:pr-3 lg:gap-4 xl:gap-5">
             <Link href={base} className="flex min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
-                <span className="hidden whitespace-nowrap text-sm font-medium text-ink sm:block xl:text-base">{t.siteName}</span>
-                <span className="hidden font-mono text-[11px] tracking-[0.05em] text-ink-3 xl:block">{t.siteOrg}</span>
+                <span className="hidden whitespace-nowrap text-sm font-medium text-ink sm:block">{t.siteName}</span>
+                <span className="hidden font-mono text-xs tracking-[0.05em] text-ink-3 xl:block">{t.siteOrg}</span>
               </span>
             </Link>
 
@@ -134,26 +147,28 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               <SiteSearch lang={lang} />
             </div>
             {/* shown only where the bar has room: login from 1024px, the apply button from 1280px (both are also at the end of the mobile menu) */}
-            <Link href={`${base}/login`} className="hidden shrink-0 whitespace-nowrap text-sm text-ink-2 hover:text-accent-ink lg:block">
+            <Link href={`${base}/login`} className="hidden min-h-11 shrink-0 items-center whitespace-nowrap text-sm text-ink-2 hover:text-accent-ink lg:flex">
               {t.nav.login}
             </Link>
-            <Link href={`${base}/documents/forms`} className="hidden h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover xl:inline-flex">
+            <Link href={`${base}/documents/forms`} className="hidden h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover xl:inline-flex">
               {t.nav.apply}
             </Link>
-            <div className="ml-auto flex items-center gap-1 font-mono text-xs tracking-[0.05em] md:ml-0">
+            <div className="ml-auto flex items-center gap-2 font-mono text-xs tracking-[0.05em] md:ml-0">
               {(["th", "en"] as const).map((l) => (
                 <Link
                   key={l}
                   href={swap(l)}
                   aria-current={lang === l ? "true" : undefined}
-                  className={`flex h-8 items-center rounded-full px-2 hover:text-accent-ink ${lang === l ? "bg-ink/5 font-medium text-ink" : "text-ink-3"}`}
+                  aria-label={l === "th" ? t.nav.langTh : t.nav.langEn}
+                  title={l === "th" ? t.nav.langTh : t.nav.langEn}
+                  className={`flex size-11 items-center justify-center rounded-full px-0 hover:text-accent-ink ${lang === l ? "bg-ink/5 font-medium text-ink" : "text-ink-3"}`}
                 >
                   {l.toUpperCase()}
                 </Link>
               ))}
             </div>
 
-            <Link href={`${base}/documents/forms`} className="inline-flex h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-3 text-xs font-medium text-white md:hidden">
+            <Link href={`${base}/documents/forms`} className="inline-flex h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-accent px-4 text-xs font-medium text-white md:hidden">
               {t.nav.applyShort}
             </Link>
             <button
@@ -162,7 +177,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               aria-controls="mobile-menu"
               onClick={() => setMenu(!menu)}
               aria-label={t.menu}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-2 hover:bg-raised md:hidden"
+              className="flex size-11 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-2 hover:bg-raised md:hidden"
             >
               <Icon size={18}>
                 <path d="M4 7h16M4 12h16M4 17h16" />

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Tokens: see DESIGN.md. Warm neutral ramp, brand purple only as accent. */
+/* Tokens (forest = #1c1535, see COLORS.md): see DESIGN.md. rev2 Warm neutral ramp, brand purple only as accent. */
 @theme {
   /* values match COLORS.md (keep the two in sync) */
   --color-page: #fffefb;
@@ -10,7 +10,7 @@
   --color-ink-2: #5a4b3a;
   --color-ink-3: #75685a;
   --color-tint: #efe6f6;
-  --color-forest: #040c06;
+  --color-forest: #1c1535;
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
@@ -49,13 +49,13 @@ label {
 h1,
 h2 {
   font-family: var(--font-ui);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 h3,
 h4 {
   font-family: var(--font-ui);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* Section marker on the left page edge, only where the margin is wide enough */
@@ -144,287 +144,10 @@ button {
   }
 }
 
-/* Lift: home quick-link tiles rise 10px on hover with a large soft shadow while the other tiles dim, so the pointed tile stands out.
-   transform and box-shadow share one 0.5s spring (overshoots, so the tile bobs as it settles). Off with reduced motion. */
-.lift {
-  transition:
-    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 300ms var(--ease-ui),
-    background-color 150ms var(--ease-ui);
-}
-.lift:hover,
-.lift:focus-visible {
-  transform: translateY(-10px);
-  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
-  z-index: 10;
-}
-.lift-group:has(.lift:hover, .lift:focus-visible) .lift:not(:hover, :focus-visible) {
-  opacity: 0.55;
-}
-@media (prefers-reduced-motion: reduce) {
-  .lift {
-    transition: none;
-  }
-  .lift:hover,
-  .lift:focus-visible {
-    transform: none;
-    box-shadow: none;
-  }
-}
-
-/* Reveal: headings and blocks marked [data-reveal] fade and rise once when they scroll into view (same observer as
-   [data-stagger]). [data-reveal="image"] wipes in from the top while it settles from a slight zoom. */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  [data-reveal]:not([data-in]) {
-    opacity: 0;
-  }
-  [data-reveal][data-in] {
-    animation: reveal 500ms var(--ease-ui) backwards;
-  }
-  [data-reveal="image"]:not([data-in]) {
-    opacity: 1;
-    clip-path: inset(0 0 100% 0);
-  }
-  [data-reveal="image"][data-in] {
-    animation: reveal-image 700ms var(--ease-ui) backwards;
-  }
-  /* hero photo: a slow settle from a slight zoom, once on load */
-  .hero-zoom {
-    animation: hero-zoom 14s var(--ease-ui) both;
-  }
-}
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(56px) scale(0.94);
-  }
-}
-@keyframes reveal-image {
-  from {
-    clip-path: inset(0 0 100% 0);
-    transform: scale(1.08);
-  }
-  to {
-    clip-path: inset(0);
-    transform: none;
-  }
-}
-@keyframes hero-zoom {
-  from {
-    transform: scale(1.12);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-/* Page swap: a list that changes page or year (remounted by key) fades in and rises a few px. Rows are staggered by --i. */
-.page-swap {
-  animation: page-swap 400ms var(--ease-ui) backwards;
-  animation-delay: calc(var(--i, 0) * 50ms);
-}
-@keyframes page-swap {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-/* Lines: each row of a [data-lines] list slides up out of an overflow-hidden mask, 200ms apart, once in view.
-   Same observer as [data-stagger]. The row moves 100% of its own height so it is fully masked at the start. */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  [data-lines]:not([data-in]) .line {
-    opacity: 0;
-  }
-  [data-lines][data-in] .line {
-    animation: line-up 400ms var(--ease-ui) backwards;
-    animation-delay: calc(var(--i, 0) * 200ms);
-  }
-}
-@keyframes line-up {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* TextEffect: per-character reveal, see src/components/TextEffect.tsx. Delay = --d + index * --s. */
-.text-char {
-  display: inline-block;
-}
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .text-effect-pending {
-    opacity: 0;
-  }
-  .text-char {
-    animation: text-char 200ms var(--ease-ui) backwards;
-    animation-delay: calc(var(--d, 0ms) + var(--i, 0) * var(--s, 50ms));
-  }
-}
-@keyframes text-char {
-  from {
-    opacity: 0;
-    transform: perspective(400px) translateY(10px) rotateX(90deg);
-  }
-  to {
-    opacity: 1;
-    transform: perspective(400px) translateY(0) rotateX(0);
-  }
-}
-
-/* Nav pill: background slides to the hovered/focused link with a light spring (bounce ~0.2, ~300ms) */
-.nav-pill {
-  transition:
-    left 300ms linear(0, 0.45 12%, 0.9 25%, 1.04 38%, 1.02 55%, 1),
-    width 300ms linear(0, 0.45 12%, 0.9 25%, 1.04 38%, 1.02 55%, 1),
-    opacity 150ms var(--ease-ui);
-}
-@media (prefers-reduced-motion: reduce) {
-  .nav-pill {
-    transition: opacity 150ms var(--ease-ui);
-  }
-}
-
-/* Ripple: circle spawned by src/components/ripple.ts, colored by the host's text color */
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: currentColor;
-  pointer-events: none;
-  animation: ripple 600ms ease-out forwards;
-}
-@keyframes ripple {
-  from {
-    transform: scale(0);
-    opacity: 0.2;
-  }
-  to {
-    transform: scale(2.6);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rise,
-  .page-swap {
-    animation: none;
-  }
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* News card <-> dialog morph (see morph() in PsfSite.tsx) */
-::view-transition-group(news-morph) {
-  animation-duration: 300ms;
-  animation-timing-function: var(--ease-ui);
-}
-::view-transition-old(news-morph),
-::view-transition-new(news-morph) {
-  height: 100%;
-  mix-blend-mode: normal;
-}
-
-/* Marquee strip under the hero (PsfSite.tsx) */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-.marquee-track {
-  animation: marquee 32s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
-
-/* Experimental: cards, tiles, panels and images use one radius (15px 30px 15px 31px). Pills (rounded-full), tags (rounded-lg) and inputs keep their own. */
-.rounded-xl,
-.rounded-2xl,
-.rounded-3xl,
-.rounded-\[2rem\],
-.rounded-\[30px\] {
-  border-radius: 22px;
-}
-
-/* Magnetic buttons (Motion.tsx): the transition lives in CSS so React-rendered markup is never changed by script. */
-[data-magnetic] {
-  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-magnetic] {
-    transition: none;
-  }
-}
-
-/* Motion pack (home): concentric pulse rings, tilted floating card, growing rule under a heading. Off with reduced motion. */
-.pulse-ring {
-  position: absolute;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  animation: pulse-ring 3.6s var(--ease-ui) infinite;
-}
-@keyframes pulse-ring {
-  from {
-    transform: scale(0.35);
-    opacity: 0.9;
-  }
-  to {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-.tilt-float {
-  animation: tilt-float 6s ease-in-out infinite;
-}
-@keyframes tilt-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-6deg);
-  }
-  50% {
-    transform: translateY(-14px) rotate(-3deg);
-  }
-}
-.line-grow {
-  transform-origin: left;
-  animation: line-grow 1s var(--ease-ui) both;
-}
-@keyframes line-grow {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pulse-ring,
-  .tilt-float,
-  .line-grow {
-    animation: none;
-  }
-}
-
-/* Louder entrance: sections and cards bounce up with a small overshoot. */
 [data-reveal]:not([data-in]),
 [data-stagger]:not([data-in]) > * {
   transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.lift:hover {
-  transform: translateY(-14px) scale(1.02);
-}
-
 /* Hero parallax: Motion.tsx sets --hero-shift on <html> while scrolling. */
 #home img.hero-zoom {
   translate: 0 var(--hero-shift, 0px);
@@ -617,4 +340,34 @@ body {
   .jelly-out {
     animation: none;
   }
+}
+
+/* Home hero photo: a slow zoom and drift so the university photo moves gently (off with reduced motion) */
+@keyframes hero-drift {
+  from {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.14) translate3d(-2%, -1.5%, 0);
+  }
+}
+.hero-drift {
+  animation: hero-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-drift {
+    animation: none;
+  }
+}
+
+
+
+/* Intro cover: hides itself after 1.2s even if JS never runs, so the page is never left covered. */
+@keyframes intro-timeout {
+  to { visibility: hidden; pointer-events: none; }
+}
+.intro-cover { animation: intro-timeout 0.01s linear 1.2s forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .intro-cover { display: none; }
 }

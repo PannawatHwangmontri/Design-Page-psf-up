@@ -147,7 +147,7 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
             )}
             <div>
               <p className="font-mono text-xs tracking-[0.05em] text-ink-3">{t.statusTitle}</p>
-              <p className="mt-3 font-ui font-semibold text-4xl font-light leading-snug text-accent-ink">{statusText(status, t)}</p>
+              <p className="mt-3 inline-flex rounded-full bg-tint px-4 py-1.5 font-ui text-lg font-bold text-accent-ink">{statusText(status, t)}</p>
             </div>
 
             <div>

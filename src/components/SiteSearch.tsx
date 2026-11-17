@@ -62,7 +62,7 @@ export function SiteSearch({ lang, wide = false }: { lang: Lang; wide?: boolean 
 
   return (
     // the box stays 36px wide; the open field overlays the bar so the nav never reflows
-    <div ref={wrap} className={wide ? "relative h-9 w-full" : "relative h-9 w-9 shrink-0"}>
+    <div ref={wrap} className={wide ? "relative h-9 w-full" : "relative size-11 shrink-0"}>
       {open ? (
         <div
           className={`${closing ? "jelly-out" : "jelly-pop"} absolute top-0 z-40 flex h-9 items-center gap-2 rounded-full border border-ink/10 bg-card px-3 ${wide ? "inset-x-0" : "right-0 w-56 lg:w-64"}`}
@@ -91,7 +91,7 @@ export function SiteSearch({ lang, wide = false }: { lang: Lang; wide?: boolean 
           className={
             wide
               ? "flex h-9 w-full items-center gap-2 rounded-full border border-ink/10 px-3 text-sm text-ink-3 hover:bg-raised"
-              : "flex h-9 w-9 items-center justify-center rounded-full text-ink-2 hover:bg-raised hover:text-accent-ink"
+              : "flex size-11 items-center justify-center rounded-full text-ink-2 hover:bg-raised hover:text-accent-ink"
           }
         >
           <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">

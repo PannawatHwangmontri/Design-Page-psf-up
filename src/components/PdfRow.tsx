@@ -17,7 +17,7 @@ export function PdfRow({ lang, item }: { lang: Lang; item: Manual }) {
           <span className="w-24 shrink-0 pt-0.5 font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">
             {t.yearLabel} {year}
           </span>
-          <p className="font-ui font-semibold text-xl font-light leading-snug">{item.title[lang]}</p>
+          <p className="font-ui font-semibold text-xl font-light leading-snug">{item.title[lang]}<span className="ml-3 inline-flex rounded-full bg-tint px-2.5 py-0.5 align-middle text-[13px] font-medium text-accent-ink">PDF</span></p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
           <button

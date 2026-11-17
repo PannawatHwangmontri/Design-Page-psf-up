@@ -34,7 +34,7 @@ export function Motion() {
         if (!el.dataset.in) io?.observe(el);
       });
     };
-    const onLoad = () => window.setTimeout(start, 200);
+    const onLoad = () => window.setTimeout(start, 800);
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
     return () => {

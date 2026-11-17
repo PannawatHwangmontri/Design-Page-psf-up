@@ -20,7 +20,7 @@ export function Intro() {
   return (
     <div
       aria-hidden="true"
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-forest transition-transform duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      className={`intro-cover fixed inset-0 z-[100] flex items-center justify-center bg-forest transition-transform duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
         phase === "out" ? "-translate-y-full" : "translate-y-0"
       }`}
     >
