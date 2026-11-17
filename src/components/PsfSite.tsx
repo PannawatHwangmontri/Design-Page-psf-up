@@ -106,16 +106,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             </a>
           </div>
         </div>
-        {announcements[0] && (
-          <div className="rise absolute inset-x-0 bottom-0 border-t border-page/20 bg-[#1d1630]/85" style={{ animationDelay: "1.9s" }}>
-            <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 md:flex-row md:items-center md:gap-6 md:px-8">
-              <span className="shrink-0 font-mono text-xs tracking-[0.05em] text-page/80">{t.hero.latest}</span>
-              <a href={`/${lang}/announcement/${announcements[0].id}`} className="line-clamp-1 text-sm hover:underline">
-                {announcements[0].title[lang]}
-              </a>
-            </div>
-          </div>
-        )}
       </section>
 
 
