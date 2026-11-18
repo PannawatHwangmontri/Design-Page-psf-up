@@ -15,6 +15,8 @@ const PAGE = 4; // announcements shown on the home page (the rest are on /announ
 const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline = "border border-ink/10";
+// level shape next to the level name: circle, diamond, triangle (readable without colour)
+const LEVEL_SHAPE: Record<number, string> = { 1: "rounded-full", 2: "rotate-45 rounded-[2px]", 3: "[clip-path:polygon(50%_0%,100%_100%,0%_100%)]" };
 const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 
 // vertical section marker on the left page edge (wide screens only, see .side-label)
@@ -31,9 +33,14 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const range = (e?: { start: string; end?: string }) => (!e ? "–" : e.end ? `${day(e.start)} – ${day(e.end)}` : day(e.start));
   const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
   const [top, setTop] = useState(0); // index in sorted of the lead story; side items are picked to change it
+  const [page, setPage] = useState(0); // side list shows 3 stories per page, newest first
   const cur = sorted.length ? top % sorted.length : 0;
   const lead = sorted[cur];
-  const rest = [...sorted.slice(cur + 1), ...sorted.slice(0, cur)];
+  // side list = every story except the lead, in date order (no wrap-around)
+  const list = sorted.filter((_, k) => k !== cur);
+  const pages = Math.max(1, Math.ceil(list.length / 3));
+  const p = Math.min(page, pages - 1); // clamp when the lead changes and the list gets shorter
+  const shown = list.slice(p * 3, p * 3 + 3);
   const pic = (src: string | undefined, alt: string, cls: string) =>
     src ? <img src={src} alt={alt} className={`${cls} photo-dim object-cover`} /> : <Placeholder label={alt} className={cls} />;
 
@@ -41,10 +48,10 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   return (
     <main className="font-ui">
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
-      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-on-dark">
+      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-block-dark text-on-dark">
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/30" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim-soft" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-block-dark/80 via-block-dark/30 to-transparent" />
         {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
         <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
         {/* clip box: the rings scale past their own box, so they are clipped here, not left to the section */}
@@ -60,7 +67,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-on-dark" />
           <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
-            <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
+            <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-on-dark px-6 py-2.5 font-medium text-block-dark hover:opacity-90">
               {t.hero.cta}
             </a>
             <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-on-dark/70 px-6 text-sm font-medium text-on-dark hover:bg-on-dark/10">
@@ -105,10 +112,18 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   <p className="mt-2 line-clamp-3 text-ink-2">{lead.excerpt[lang]}</p>
                 </a>
               </article>
-              <ul data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-5 md:self-start">
-                {rest.slice(0, 3).map((n, i) => (
+              <div className="md:col-span-5 md:self-start">
+              <ul data-stagger className="divide-y divide-ink/10 border-y border-ink/10">
+                {shown.map((n, i) => (
                   <li key={n.id} style={idx(i)}>
-                    <button type="button" onClick={() => setTop((cur + 1 + i) % sorted.length)} className="group flex w-full gap-4 py-5 text-left">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTop(sorted.findIndex((x) => x.id === n.id));
+                        setPage(p);
+                      }}
+                      className="group flex w-full gap-4 py-5 text-left"
+                    >
                       {pic(n.image, t.news.imageAlt, "h-20 w-28 shrink-0 rounded-lg")}
                       <div className="min-w-0">
                         <time dateTime={n.date} className="text-sm tabular-nums text-ink-3">
@@ -120,23 +135,32 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   </li>
                 ))}
               </ul>
+              {pages > 1 && (
+                <div className="mt-6 flex gap-3">
+                  {p > 0 && (
+                    <button
+                      type="button"
+                      aria-label={t.news.back}
+                      onClick={() => setPage(p - 1)}
+                      className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised"
+                    >
+                      ← {t.news.back}
+                    </button>
+                  )}
+                  {p < pages - 1 && (
+                    <button
+                      type="button"
+                      aria-label={t.news.more}
+                      onClick={() => setPage(p + 1)}
+                      className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised"
+                    >
+                      {t.news.more} →
+                    </button>
+                  )}
+                </div>
+              )}
+              </div>
             </div>
-          )}
-          {/* more stories: the next four after the lead and the three beside it (the full list is on /news) */}
-          {rest.length > 3 && (
-            <ul data-stagger className="mt-12 grid grid-cols-2 gap-4 border-t border-ink/10 pt-10 sm:gap-6 lg:grid-cols-4">
-              {rest.slice(3, 7).map((n, i) => (
-                <li key={n.id} style={idx(i)}>
-                  <a href={`/${lang}/news/${n.id}`} className="group block">
-                    {pic(n.image, t.news.imageAlt, "aspect-[4/3] w-full rounded-xl")}
-                    <time dateTime={n.date} className="mt-3 block text-sm tabular-nums text-ink-3">
-                      {fullDate(n.date)}
-                    </time>
-                    <h3 className="mt-1 line-clamp-2 font-medium group-hover:text-accent-ink">{n.title[lang]}</h3>
-                  </a>
-                </li>
-              ))}
-            </ul>
           )}
         </div>
       </section>
@@ -194,8 +218,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             {cal && (
               <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
                 {[1, 2].map((r) => (
-                  <div key={r} className="overflow-hidden rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
-                    <p className="-mx-6 -mt-6 mb-5 bg-gradient-to-r from-accent to-[#c2378f] px-6 py-4 font-ui font-semibold text-2xl text-white">
+                  <div key={r} className="overflow-hidden rounded-3xl border border-accent/30 bg-card p-6 backdrop-blur-md">
+                    <p className="-mx-6 -mt-6 mb-5 bg-tint px-6 py-4 font-ui font-semibold text-2xl text-accent-ink">
                       {t.pages.assessment.round} {r}
                     </p>
                     <dl className="mt-3 divide-y divide-page/15">
@@ -228,7 +252,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   {n + 1}
                 </span>
                 <h3 className="flex items-center gap-2 text-xl font-medium md:self-center">
-                  <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: `var(--color-level-${n + 1})` }} />
+                  <span aria-hidden="true" className={`h-2 w-2 ${LEVEL_SHAPE[n + 1]}`} style={{ background: `var(--color-level-${n + 1})` }} />
                   {l.name}
                 </h3>
                 <p className="col-span-2 text-ink-2 md:col-span-1 md:self-center">{l.desc}</p>
@@ -239,8 +263,8 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-on-dark">
-        <Wave fill="text-forest" />
+      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-block-dark text-on-dark">
+        <Wave fill="text-block-dark" />
         {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden overflow-clip md:block">
           <div className="absolute -right-40 top-10 size-[34rem]">
@@ -287,7 +311,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           {/* headline counts: total and per level, from the same data as the tabs below */}
           <dl className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
             {[0, 1, 2, 3].map((n) => (
-              <div key={n} className="rounded-2xl bg-tint p-5">
+              <div key={n} className="rounded-2xl border border-ink/10 bg-tint p-5">
                 <dt className="text-sm text-ink-2">{n === 0 ? t.passers.all : passers.find((p) => p.level.en === `Level ${n}`)?.level[lang]}</dt>
                 <dd className="mt-2 font-ui text-4xl font-semibold tabular-nums text-accent-ink">
                   {n === 0 ? passers.length : passers.filter((p) => p.level.en === `Level ${n}`).length}
@@ -363,20 +387,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               {t.pages.eligibility.title} →
             </a>
           </aside>
-        </div>
-      </section>
-      {/* photo band before the footer: Kwan Phayao at sunset (no people), CC BY-SA credit shown on the band */}
-      <section className="relative isolate h-64 overflow-hidden md:h-80">
-        <img src="/img/commons/kwan-phayao-sunset.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-black/55" />
-        <div className="mx-auto flex h-full max-w-6xl flex-col justify-end gap-4 px-4 pb-8 md:px-8">
-          <p className="text-2xl font-medium text-on-dark md:text-4xl">{t.home.bandTitle}</p>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <a href={`/${lang}/calendar`} className="inline-flex h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-white hover:bg-accent-hover">
-              {t.home.bandCta}
-            </a>
-            <p className="credit-chip font-mono text-[11px] text-on-dark/80">{t.home.bandCredit}</p>
-          </div>
         </div>
       </section>
     </main>

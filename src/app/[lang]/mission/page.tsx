@@ -17,9 +17,9 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-signing.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <p className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                   {t.nav.about} / {t.nav.mission}
@@ -43,7 +43,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </ol>
             </section>
 
-            <section className="bg-forest text-on-dark">
+            <section className="bg-block-dark text-on-dark">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
                 <p className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.visionTitle}</p>
                 <blockquote className="mt-6 max-w-4xl font-ui font-semibold text-3xl font-light leading-[1.4] md:text-5xl md:leading-[1.35]">“{a.vision}”</blockquote>

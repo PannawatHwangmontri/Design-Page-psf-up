@@ -15,9 +15,9 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const yr = (y: number) => (lang === "th" ? y : y - 543);
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-meeting.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/65" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <p className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                   {t.nav.publicity} / {t.nav.calendar}

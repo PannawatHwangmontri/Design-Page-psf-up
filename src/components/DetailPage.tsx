@@ -45,9 +45,9 @@ export function DetailPage({
 // dark photo band at the top of the inner pages (the floating menu sits over it, hence pt-44)
 function Band({ children }: { children: React.ReactNode }) {
   return (
-    <section className="relative isolate overflow-hidden bg-forest text-on-dark">
+    <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
       <img src="/img/does/activity-workshop.webp" alt="" className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
       <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">{children}</div>
     </section>
   );

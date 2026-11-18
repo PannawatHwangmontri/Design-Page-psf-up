@@ -8,19 +8,26 @@
   --color-raised: #e7e5df;
   --color-ink: #271503;
   --color-ink-2: #5a4b3a;
-  --color-ink-3: #75685a;
-  --color-tint: #efe6f6;
-  --color-forest: #040c06;
+  --color-ink-3: #6b5f51;
+  --color-tint: #e9dcf4;
+  --color-block-dark: #1c1535;
   /* text and borders on the dark blocks (bg-forest); constant in both themes */
   --color-on-dark: #fffefb;
+  /* accent as text or icon on block-dark */
+  --color-accent-on-dark: #c79bef;
+  /* image overlays: two levels */
+  --color-scrim: rgb(0 0 0 / 0.7);
+  --color-scrim-soft: rgb(0 0 0 / 0.3);
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
   --color-level-1: #8d38c9;
   --color-level-2: #2f7d6d;
+  /* level-2 as text on its tint (>=5:1) */
+  --color-level-2-ink: #1a5e4f;
   --color-level-3: #b7791f;
   /* level-3 as text on its 15% tint: darker than the dot colour so the avatar letter reaches 3:1 */
-  --color-level-3-ink: #9a6418;
+  --color-level-3-ink: #8a5710;
   --font-sans: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-ui: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
@@ -40,9 +47,10 @@
   --color-accent: #9c4fdc;
   --color-accent-hover: #ab64e6;
   --color-accent-ink: #c9a0f0;
-  --color-forest: #2a1f4d;
+  --color-block-dark: #2a1f4d;
   --color-level-1: #9c4fdc;
   --color-level-2: #4fb39d;
+  --color-level-2-ink: #4fb39d;
   --color-level-3: #e0a84a;
   --color-level-3-ink: #e0a84a;
 }
@@ -58,9 +66,10 @@
     --color-accent: #9c4fdc;
     --color-accent-hover: #ab64e6;
     --color-accent-ink: #c9a0f0;
-    --color-forest: #2a1f4d;
+    --color-block-dark: #2a1f4d;
     --color-level-1: #9c4fdc;
     --color-level-2: #4fb39d;
+    --color-level-2-ink: #4fb39d;
     --color-level-3: #e0a84a;
     --color-level-3-ink: #e0a84a;
   }

@@ -40,9 +40,9 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const sec = "scroll-mt-28 border-t border-ink/10 pt-10";
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-workshop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <Breadcrumb lang={lang} items={[{ label: c.nav.about }, { label: c.nav.eligibility }]} />
                 <h1 className="mt-5 max-w-3xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{t.title}</h1>

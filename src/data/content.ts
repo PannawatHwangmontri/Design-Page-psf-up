@@ -136,7 +136,7 @@ export const content = {
       links: { title: "อ่านต่อ", history: "ดูความเป็นมาของมาตรฐาน", process: "ดูขั้นตอน PSF", apply: "ยื่นขอรับการประเมิน" },
       note: "วิสัยทัศน์ ปรัชญา ปณิธาน และคำขวัญคัดจากเว็บกองบริการการศึกษา มหาวิทยาลัยพะเยา (does.up.ac.th) คำอธิบายใต้ค่านิยมและพันธกิจเป็นข้อความตัวอย่างเพื่อการสาธิต",
     },
-    news: { title: "ข่าว / กิจกรรม", tag: "ข่าว", isNew: "ใหม่", viewAll: "ดูทั้งหมด", announcements: "ประชาสัมพันธ์", older: "ประชาสัมพันธ์เก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", close: "ปิด", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
+    news: { title: "ข่าว / กิจกรรม", tag: "ข่าว", isNew: "ใหม่", viewAll: "ดูทั้งหมด", more: "ดูเพิ่มเติม", back: "ย้อนกลับ", announcements: "ประชาสัมพันธ์", older: "ประชาสัมพันธ์เก่ากว่า", newer: "ใหม่กว่า", readMore: "อ่านรายละเอียดเพิ่มเติม", close: "ปิด", imageAlt: "ภาพข่าว (ตัวอย่าง)" },
     passers: {
       title: "ประชาสัมพันธ์ผู้ยื่นผ่านเกณฑ์ PSF",
       total: "ผู้ผ่านเกณฑ์ทั้งหมด",
@@ -762,7 +762,7 @@ export const content = {
       links: { title: "Keep reading", history: "Read the background of the standards", process: "See the PSF process", apply: "Apply for assessment" },
       note: "The vision, philosophy, pledge and slogan are taken from the Division of Educational Services, University of Phayao (does.up.ac.th); the English is an unofficial translation. The text under the values and the mission is sample text for demonstration.",
     },
-    news: { title: "News / Events", tag: "News", isNew: "New", viewAll: "View all", announcements: "Public Relations", older: "Older", newer: "Newer", readMore: "Read more", close: "Close", imageAlt: "News image (sample)" },
+    news: { title: "News / Events", tag: "News", isNew: "New", viewAll: "View all", more: "See more", back: "Back", announcements: "Public Relations", older: "Older", newer: "Newer", readMore: "Read more", close: "Close", imageAlt: "News image (sample)" },
     passers: {
       title: "PR: Applicants Who Met the PSF Criteria",
       total: "Total who met the criteria",
