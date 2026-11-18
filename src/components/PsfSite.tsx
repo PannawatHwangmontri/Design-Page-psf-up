@@ -27,6 +27,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
   const posterRef = useRef<HTMLDialogElement>(null); // full-size calendar poster
+  const [annPage, setAnnPage] = useState(0); // announcements: PAGE per page, newest first
   const latestYear = Math.max(...announcements.map((a) => a.year));
   const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
   const loc = lang === "th" ? "th-TH" : "en-GB";
@@ -34,6 +35,9 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
   const [top, setTop] = useState(0); // index in sorted of the lead story; side items are picked to change it
   const [page, setPage] = useState(0); // side list shows 3 stories per page, newest first
+  const annPages = Math.max(1, Math.ceil(announcements.length / PAGE));
+  const annP = Math.min(annPage, annPages - 1);
+  const annShown = announcements.slice(annP * PAGE, annP * PAGE + PAGE);
   const cur = sorted.length ? top % sorted.length : 0;
   const lead = sorted[cur];
   // side list = every story except the lead, in date order (no wrap-around)
@@ -210,7 +214,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               {t.news.viewAll} →
             </a>
             <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
-              {announcements.slice(0, PAGE).map((a, i) => (
+              {annShown.map((a, i) => (
                 <li key={a.id} style={idx(i)} className="overflow-hidden">
                   <a href={`/${lang}/announcement/${a.id}`} className="line group flex min-h-14 gap-6 py-5 hover:text-accent-ink">
                     <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
@@ -224,6 +228,20 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 </li>
               ))}
             </ul>
+            {annPages > 1 && (
+              <div className="mt-6 flex gap-3">
+                {annP > 0 && (
+                  <button type="button" aria-label={t.news.back} onClick={() => setAnnPage(annP - 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    ← {t.news.back}
+                  </button>
+                )}
+                {annP < annPages - 1 && (
+                  <button type="button" aria-label={t.news.more} onClick={() => setAnnPage(annP + 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    {t.news.more} →
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -274,12 +292,15 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <span aria-hidden="true" className="line-grow mt-5 block h-px w-28 bg-on-dark/70" />
           <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
-              <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-on-dark/15 bg-on-dark/5 p-6">
-                <p className="font-mono text-xs tabular-nums text-on-dark/60">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-3 text-xl">{tile.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-on-dark/75">{tile.desc}</p>
-                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-on-dark underline underline-offset-4 hover:decoration-on-dark">
-                  {tile.link}
+              <li key={tile.href} style={idx(i)} className="group/tile">
+                <a
+                  href={`/${lang}${tile.href}`}
+                  className="group process-tile flex h-full flex-col rounded-[22px] border border-on-dark/15 bg-on-dark/5 p-6 text-on-dark group-hover/tile:-translate-y-6 group-hover/tile:border-on-dark group-hover/tile:bg-on-dark group-hover/tile:text-block-dark focus-visible:-translate-y-6 focus-visible:border-on-dark focus-visible:bg-on-dark focus-visible:text-block-dark motion-reduce:group-hover/tile:translate-y-0"
+                >
+                  <p className="font-mono text-xs tabular-nums text-on-dark/60 transition-colors duration-[1000ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] group-hover/tile:text-block-dark/70 group-focus-visible:text-block-dark/70">{String(i + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-3 text-xl">{tile.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-on-dark/75 transition-colors duration-[1000ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] group-hover/tile:text-block-dark/80 group-focus-visible:text-block-dark/80">{tile.desc}</p>
+                  <span className="mt-auto inline-block pt-4 text-sm font-medium underline underline-offset-4">{tile.link}</span>
                 </a>
               </li>
             ))}
