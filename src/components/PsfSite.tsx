@@ -58,20 +58,11 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-block-dark/80 via-block-dark/30 to-transparent" />
         {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
         <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
-        {/* clip box: the rings scale past their own box, so they are clipped here, not left to the section */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden overflow-clip md:block">
-          <div className="absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2">
-            <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "1s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "2s" }} />
-            <span className="pulse-ring inset-0" style={{ animationDelay: "3s" }} />
-          </div>
-        </div>
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-on-dark" />
           <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
-            <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-on-dark px-6 py-2.5 font-medium text-block-dark hover:opacity-90">
+            <a href={`/${lang}/documents/forms`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-on-dark px-6 py-2.5 font-medium text-block-dark hover:opacity-90">
               {t.hero.cta}
             </a>
             <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-on-dark/70 px-6 text-sm font-medium text-on-dark hover:bg-on-dark/10">
@@ -82,12 +73,89 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
 
+      {/* announcements (left) and assessment calendar (right) in one section; the calendar comes first in the DOM so mobile reads it first */}
+      <section id="announcements" className="relative scroll-mt-16 bg-page text-ink">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[minmax(0,1.15fr)_1px_minmax(0,1fr)] md:gap-x-12 md:px-8 md:py-24">
+          <div id="calendar" className="scroll-mt-16 md:order-last">
+            <TextEffect as="h2" text={t.home.calendarTitle} className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl" />
+            <span aria-hidden="true" className="line-grow mt-4 block h-px w-28 bg-accent" />
+            <p data-reveal className="mt-2 text-ink-3">
+              {t.home.calendarLead}
+              {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
+            </p>
+            <div data-reveal>
+              <ApplyCountdown lang={lang} />
+            </div>
+            <figure data-reveal className="mt-6">
+              <button type="button" onClick={() => posterRef.current?.showModal()} aria-label={t.home.posterOpen} className="block w-full rounded-2xl text-left">
+                <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} width={762} height={486} className="h-auto w-full rounded-2xl object-contain" />
+              </button>
+              <figcaption data-reveal className="mt-2 text-sm text-ink-3">{t.home.posterCaption.replace("{year}", String(calendarPoster.year))}</figcaption>
+              <dialog ref={posterRef} className="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-scrim">
+                <div
+                  className="relative flex h-full w-full items-center justify-center p-4"
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) posterRef.current?.close();
+                  }}
+                >
+                  <button type="button" onClick={() => posterRef.current?.close()} className="absolute right-4 top-4 inline-flex h-11 items-center rounded-full bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    {t.news.close}
+                  </button>
+                  <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} className="max-h-full max-w-full rounded-2xl object-contain" />
+                </div>
+              </dialog>
+            </figure>
+            <a data-reveal href={`/${lang}/calendar`} className={`${linkCls} mt-6 inline-block text-base`}>
+              {t.home.calendarAll} →
+            </a>
+          </div>
+
+          <div aria-hidden="true" className="hidden bg-ink/30 md:order-none md:block" />
+
+          <div className="border-t border-ink/20 pt-12 md:order-first md:border-0 md:pt-0">
+            <h2 data-reveal className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl">{t.news.announcements}</h2>
+            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-base`}>
+              {t.news.viewAll} →
+            </a>
+            <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
+              {annShown.map((a, i) => (
+                <li key={a.id} style={idx(i)} className="overflow-hidden">
+                  <a href={`/${lang}/announcement/${a.id}`} className="line group flex min-h-14 gap-6 py-5 hover:text-accent-ink">
+                    <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
+                      {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
+                      {a.year === latestYear && <span className="mt-2 inline-block rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-white">{t.news.isNew}</span>}
+                    </span>
+                    <span className="min-w-0 line-clamp-2 font-medium text-ink" title={a.title[lang]}>
+                      {a.title[lang]}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {annPages > 1 && (
+              <div className="mt-6 flex gap-3">
+                {annP > 0 && (
+                  <button type="button" aria-label={t.news.back} onClick={() => setAnnPage(annP - 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    ← {t.news.back}
+                  </button>
+                )}
+                {annP < annPages - 1 && (
+                  <button type="button" aria-label={t.news.more} onClick={() => setAnnPage(annP + 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    {t.news.more} →
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* news: one lead story with a photo, the next three beside it */}
       <section id="news" className="relative scroll-mt-16 bg-card">
         <Wave fill="text-card" />
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
+            <h2 data-reveal suppressHydrationWarning className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
             <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
@@ -166,83 +234,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               </div>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* announcements (left) and assessment calendar (right) in one section; the calendar comes first in the DOM so mobile reads it first */}
-      <section id="announcements" className="relative scroll-mt-16 bg-page text-ink">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[minmax(0,1.15fr)_1px_minmax(0,1fr)] md:gap-x-12 md:px-8 md:py-24">
-          <div id="calendar" className="scroll-mt-16 md:order-last">
-            <TextEffect as="h2" text={t.home.calendarTitle} className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl" />
-            <span aria-hidden="true" className="line-grow mt-4 block h-px w-28 bg-accent" />
-            <p data-reveal className="mt-2 text-ink-3">
-              {t.home.calendarLead}
-              {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
-            </p>
-            <div data-reveal>
-              <ApplyCountdown lang={lang} />
-            </div>
-            <figure data-reveal className="mt-6">
-              <button type="button" onClick={() => posterRef.current?.showModal()} aria-label={t.home.posterOpen} className="block w-full rounded-2xl text-left">
-                <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} width={762} height={486} className="h-auto w-full rounded-2xl object-contain" />
-              </button>
-              <figcaption data-reveal className="mt-2 text-sm text-ink-3">{t.home.posterCaption.replace("{year}", String(calendarPoster.year))}</figcaption>
-              <dialog ref={posterRef} className="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-scrim">
-                <div
-                  className="relative flex h-full w-full items-center justify-center p-4"
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) posterRef.current?.close();
-                  }}
-                >
-                  <button type="button" onClick={() => posterRef.current?.close()} className="absolute right-4 top-4 inline-flex h-11 items-center rounded-full bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
-                    {t.news.close}
-                  </button>
-                  <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} className="max-h-full max-w-full rounded-2xl object-contain" />
-                </div>
-              </dialog>
-            </figure>
-            <a data-reveal href={`/${lang}/calendar`} className={`${linkCls} mt-6 inline-block text-base`}>
-              {t.home.calendarAll} →
-            </a>
-          </div>
-
-          <div aria-hidden="true" className="hidden bg-ink/30 md:order-none md:block" />
-
-          <div className="border-t border-ink/20 pt-12 md:order-first md:border-0 md:pt-0">
-            <h2 data-reveal className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl">{t.news.announcements}</h2>
-            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-base`}>
-              {t.news.viewAll} →
-            </a>
-            <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
-              {annShown.map((a, i) => (
-                <li key={a.id} style={idx(i)} className="overflow-hidden">
-                  <a href={`/${lang}/announcement/${a.id}`} className="line group flex min-h-14 gap-6 py-5 hover:text-accent-ink">
-                    <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
-                      {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                      {a.year === latestYear && <span className="mt-2 block text-accent-ink">{t.news.isNew}</span>}
-                    </span>
-                    <span className="min-w-0 line-clamp-2 font-medium text-ink" title={a.title[lang]}>
-                      {a.title[lang]}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            {annPages > 1 && (
-              <div className="mt-6 flex gap-3">
-                {annP > 0 && (
-                  <button type="button" aria-label={t.news.back} onClick={() => setAnnPage(annP - 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
-                    ← {t.news.back}
-                  </button>
-                )}
-                {annP < annPages - 1 && (
-                  <button type="button" aria-label={t.news.more} onClick={() => setAnnPage(annP + 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
-                    {t.news.more} →
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </section>
 
