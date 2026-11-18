@@ -11,7 +11,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const t = content[lang];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
               <img src="/img/does/activity-workshop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
               <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">

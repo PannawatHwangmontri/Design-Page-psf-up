@@ -7,6 +7,7 @@ import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
 import { nav, type NavItem } from "@/data/nav";
 import { SiteSearch } from "@/components/SiteSearch";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 function Icon({ children, size = 16 }: { children: React.ReactNode; size?: number }) {
   return (
@@ -141,6 +142,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               {t.nav.apply}
             </Link>
             <div className="ml-auto flex items-center gap-1 font-mono text-xs tracking-[0.05em] md:ml-0">
+              <ThemeToggle lang={lang} />
               {(["th", "en"] as const).map((l) => (
                 <Link
                   key={l}

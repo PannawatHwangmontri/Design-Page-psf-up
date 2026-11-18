@@ -34,12 +34,12 @@ function History({ lang }: { lang: Lang }) {
 
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-forest text-page">
+      <section className="relative isolate overflow-hidden bg-forest text-on-dark">
         <img src="/img/does/activity-up-backdrop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
         <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
           <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{h.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{h.intro}</p>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-on-dark/80">{h.intro}</p>
         </div>
       </section>
 

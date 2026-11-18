@@ -23,13 +23,13 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
               <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
               <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{o.title}</h1>
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-page/80">{o.intro}</p>
-                <span className="mt-6 inline-block rounded-full border border-page/30 px-3 py-1 text-xs text-page/80">{t.pages.faq.sample}</span>
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-on-dark/80">{o.intro}</p>
+                <span className="mt-6 inline-block rounded-full border border-on-dark/30 px-3 py-1 text-xs text-on-dark/80">{t.pages.faq.sample}</span>
               </div>
             </section>
 

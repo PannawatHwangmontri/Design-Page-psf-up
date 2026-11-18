@@ -35,13 +35,13 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const lead = sorted[cur];
   const rest = [...sorted.slice(cur + 1), ...sorted.slice(0, cur)];
   const pic = (src: string | undefined, alt: string, cls: string) =>
-    src ? <img src={src} alt={alt} className={`${cls} object-cover`} /> : <Placeholder label={alt} className={cls} />;
+    src ? <img src={src} alt={alt} className={`${cls} photo-dim object-cover`} /> : <Placeholder label={alt} className={cls} />;
 
 
   return (
     <main className="font-ui">
       {/* hero: full-viewport documentary photo under a dark scrim, centered serif headline, one pill CTA */}
-      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-page">
+      <section id="home" className="relative isolate flex min-h-[640px] flex-col justify-center overflow-hidden bg-forest text-on-dark">
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/30" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#2a1450]/80 via-[#2a1450]/30 to-transparent" />
@@ -58,62 +58,18 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
-          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-page" />
+          <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-on-dark" />
           <div className="rise mt-10 flex flex-wrap items-center justify-center gap-6" style={{ animationDelay: "1.5s" }}>
             <a href={`/${lang}/publicity`} data-magnetic onClick={ripple} className="relative inline-flex items-center overflow-hidden rounded-full bg-accent px-6 py-2.5 font-medium text-white hover:bg-accent-hover">
               {t.hero.cta}
             </a>
-            <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-page/70 px-6 text-sm font-medium text-page hover:bg-page/10">
+            <a href="#announcements" className="inline-flex h-11 items-center rounded-full border border-on-dark/70 px-6 text-sm font-medium text-on-dark hover:bg-on-dark/10">
               {t.hero.cta2}
             </a>
           </div>
         </div>
       </section>
 
-
-      {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
-      <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
-        <Wave fill="text-page" />
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
-              <p className="mt-2 text-ink-2">
-                {t.home.calendarLead}
-                {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
-              </p>
-            </div>
-            <a href={`/${lang}/assessment`} className="inline-flex h-11 shrink-0 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
-              {t.home.calendarMore} →
-            </a>
-          </div>
-          <ApplyCountdown lang={lang} />
-          <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
-            <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
-            </a>
-            {cal && (
-              <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
-                {[1, 2].map((r) => (
-                  <div key={r} className="overflow-hidden rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
-                    <p className="-mx-6 -mt-6 mb-5 bg-gradient-to-r from-accent to-[#c2378f] px-6 py-4 font-ui font-semibold text-2xl text-white">
-                      {t.pages.assessment.round} {r}
-                    </p>
-                    <dl className="mt-3 divide-y divide-page/15">
-                      {(["apply", "assess", "result"] as const).map((k) => (
-                        <div key={k} className="flex items-baseline justify-between gap-4 py-3">
-                          <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
-                          <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* news: one lead story with a photo, the next three beside it */}
       <section id="news" className="relative scroll-mt-16 bg-card">
@@ -214,6 +170,50 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
+      {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
+      <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
+        <Wave fill="text-page" />
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-24">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
+              <p className="mt-2 text-ink-2">
+                {t.home.calendarLead}
+                {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
+              </p>
+            </div>
+            <a href={`/${lang}/assessment`} className="inline-flex h-11 shrink-0 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
+              {t.home.calendarMore} →
+            </a>
+          </div>
+          <ApplyCountdown lang={lang} />
+          <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
+            <a href={`/${lang}/calendar`} className="block md:col-span-5">
+              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
+            </a>
+            {cal && (
+              <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
+                {[1, 2].map((r) => (
+                  <div key={r} className="overflow-hidden rounded-3xl border border-ink/10 bg-card p-6 backdrop-blur-md">
+                    <p className="-mx-6 -mt-6 mb-5 bg-gradient-to-r from-accent to-[#c2378f] px-6 py-4 font-ui font-semibold text-2xl text-white">
+                      {t.pages.assessment.round} {r}
+                    </p>
+                    <dl className="mt-3 divide-y divide-page/15">
+                      {(["apply", "assess", "result"] as const).map((k) => (
+                        <div key={k} className="flex items-baseline justify-between gap-4 py-3">
+                          <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
+                          <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* PSF: three levels as a ledger, then the four steps */}
       <section id="levels" className="relative scroll-mt-16 bg-card">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
@@ -224,7 +224,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           <ol data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
             {t.levels.items.map((l, n) => (
               <li key={l.name} style={idx(n)} className="grid grid-cols-[3rem_1fr] gap-4 py-6 md:grid-cols-[4rem_12rem_1fr]">
-                <span aria-hidden="true" className="text-4xl tabular-nums text-ink/20">
+                <span aria-hidden="true" className="num-faint text-4xl tabular-nums text-ink/20">
                   {n + 1}
                 </span>
                 <h3 className="flex items-center gap-2 text-xl font-medium md:self-center">
@@ -239,7 +239,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
       {/* process: four steps in columns, each with a top rule, number and title */}
-      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-page">
+      <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-forest text-on-dark">
         <Wave fill="text-forest" />
         {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden overflow-clip md:block">
@@ -249,22 +249,22 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
           </div>
         </div>
-        <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-page p-5 md:block">
+        <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-on-dark p-5 md:block">
           <span className="block h-2 w-16 rounded-full bg-accent" />
           <span className="mt-4 block h-2 w-28 rounded-full bg-raised" />
           <span className="mt-2 block h-2 w-20 rounded-full bg-raised" />
           <span className="mt-5 block h-8 rounded-full bg-accent/15" />
         </div>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-          <TextEffect as="h2" text={t.process.title} className="text-4xl leading-tight tracking-tight text-page md:text-5xl" />
-          <span aria-hidden="true" className="line-grow mt-5 block h-px w-28 bg-page/70" />
+          <TextEffect as="h2" text={t.process.title} className="text-4xl leading-tight tracking-tight text-on-dark md:text-5xl" />
+          <span aria-hidden="true" className="line-grow mt-5 block h-px w-28 bg-on-dark/70" />
           <ol data-stagger className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {t.process.tiles.map((tile, i) => (
-              <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-page/15 bg-page/5 p-6">
-                <p className="font-mono text-xs tabular-nums text-page/60">{String(i + 1).padStart(2, "0")}</p>
+              <li key={tile.href} style={idx(i)} className="rounded-[22px] border border-on-dark/15 bg-on-dark/5 p-6">
+                <p className="font-mono text-xs tabular-nums text-on-dark/60">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="mt-3 text-xl">{tile.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-page/75">{tile.desc}</p>
-                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-page underline underline-offset-4 hover:decoration-page">
+                <p className="mt-3 text-sm leading-6 text-on-dark/75">{tile.desc}</p>
+                <a href={`/${lang}${tile.href}`} className="mt-4 inline-block text-sm font-medium text-on-dark underline underline-offset-4 hover:decoration-on-dark">
                   {tile.link}
                 </a>
               </li>
@@ -370,12 +370,12 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <img src="/img/commons/kwan-phayao-sunset.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
         <div className="absolute inset-0 -z-10 bg-black/55" />
         <div className="mx-auto flex h-full max-w-6xl flex-col justify-end gap-4 px-4 pb-8 md:px-8">
-          <p className="text-2xl font-medium text-page md:text-4xl">{t.home.bandTitle}</p>
+          <p className="text-2xl font-medium text-on-dark md:text-4xl">{t.home.bandTitle}</p>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <a href={`/${lang}/calendar`} className="inline-flex h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-white hover:bg-accent-hover">
               {t.home.bandCta}
             </a>
-            <p className="font-mono text-[11px] text-page/80">{t.home.bandCredit}</p>
+            <p className="credit-chip font-mono text-[11px] text-on-dark/80">{t.home.bandCredit}</p>
           </div>
         </div>
       </section>

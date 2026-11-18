@@ -7,6 +7,7 @@ export const content = {
     siteOrg: "มหาวิทยาลัยพะเยา",
     logo: "โลโก้",
     menu: "เมนู",
+    theme: { toDark: "สลับเป็นโหมดมืด", toLight: "สลับเป็นโหมดสว่าง" },
     // TODO: ข้อมูลติดต่อจริงของหน่วยงาน (ตอนนี้เป็นข้อมูลสมมติ)
     contact: { address: "19 หมู่ 2 ต.แม่กา อ.เมือง จ.พะเยา 56000", email: "psf-demo@example.com", phone: "0 0000 0000" },
     nav: {
@@ -634,6 +635,7 @@ export const content = {
     siteOrg: "University of Phayao",
     logo: "Logo",
     menu: "Menu",
+    theme: { toDark: "Switch to dark mode", toLight: "Switch to light mode" },
     contact: { address: "19 Moo 2, Mae Ka, Mueang, Phayao 56000", email: "psf-demo@example.com", phone: "0 0000 0000" },
     nav: {
       home: "Home",

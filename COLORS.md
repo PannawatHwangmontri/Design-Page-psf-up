@@ -93,3 +93,33 @@
 1. แก้ค่า hex ที่ `src/app/globals.css` ในบล็อก `@theme`
 2. ตรวจ contrast ใหม่ตามตารางข้อ 4
 3. อัปเดต `DESIGN.md` และไฟล์นี้ให้ตรงกัน
+
+## โหมดมืด (dark mode)
+
+ค่าเหล่านี้อยู่ใน `src/app/globals.css` ทั้งสองส่วน (`:root[data-theme="dark"]` และ `prefers-color-scheme: dark`) ให้ตรงกันเสมอ
+
+| token | โหมดสว่าง | โหมดมืด |
+|---|---|---|
+| page | #fffefb | #17131f |
+| card | #f3f2ee | #1f1a2a |
+| raised | #e7e5df | #2a2437 |
+| ink | #271503 | #f5f3fa |
+| ink-2 | #5a4b3a | #cfc9db |
+| ink-3 | #75685a | #a59fb3 |
+| tint | #efe6f6 | #2d2342 |
+| accent | #8d38c9 | #9c4fdc |
+| accent-hover | #7a2fb0 | #ab64e6 |
+| accent-ink | #7a2fb0 | #c9a0f0 |
+| forest | #040c06 | #2a1f4d |
+| level-1 | #8d38c9 | #9c4fdc |
+| level-2 | #2f7d6d | #4fb39d |
+| level-3 | #b7791f | #e0a84a |
+| level-3-ink (อวาตาร์ตัวอักษรระดับ 3) | #9a6418 | #e0a84a |
+| on-dark (ทั้งสองธีม) | #fffefb | #fffefb |
+
+หมายเหตุ dark mode รอบนี้:
+- `text-on-dark`, `border-on-dark`, `bg-on-dark/xx` ใช้แทน `text-page` ฯลฯ บนบล็อก `bg-forest` (ค่าเท่ากับ page ในโหมดสว่าง จึงไม่เปลี่ยนหน้าตา light)
+- `.photo-dim` ลดความสว่างรูปข่าวและผู้ผ่านเกณฑ์ 10% ใน dark เท่านั้น
+- `.num-faint` ตัวเลขตกแต่ง 1–3 ใน section PSF ใช้สีทึบ 50% ใน dark เท่านั้น (light ยังเป็น `text-ink/20` เดิม)
+- `.credit-chip` ให้พื้นดำโปร่งและตัวอักษร 12px ใน dark เท่านั้น (เครดิตภาพในแถบปิดท้าย)
+

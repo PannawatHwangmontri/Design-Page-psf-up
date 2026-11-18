@@ -11,17 +11,83 @@
   --color-ink-3: #75685a;
   --color-tint: #efe6f6;
   --color-forest: #040c06;
+  /* text and borders on the dark blocks (bg-forest); constant in both themes */
+  --color-on-dark: #fffefb;
   --color-accent: #8d38c9;
   --color-accent-hover: #7a2fb0;
   --color-accent-ink: #7a2fb0;
   --color-level-1: #8d38c9;
   --color-level-2: #2f7d6d;
   --color-level-3: #b7791f;
+  /* level-3 as text on its 15% tint: darker than the dot colour so the avatar letter reaches 3:1 */
+  --color-level-3-ink: #9a6418;
   --font-sans: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-ui: var(--font-plex-sans-th), var(--font-sarabun), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
   --font-serif: var(--font-serif-th), Georgia, serif;
   --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark mode: same token names, new values (values also in COLORS.md). Explicit choice wins; otherwise follow the device. */
+:root[data-theme="dark"] {
+  --color-page: #17131f;
+  --color-card: #1f1a2a;
+  --color-raised: #2a2437;
+  --color-ink: #f5f3fa;
+  --color-ink-2: #cfc9db;
+  --color-ink-3: #a59fb3;
+  --color-tint: #2d2342;
+  --color-accent: #9c4fdc;
+  --color-accent-hover: #ab64e6;
+  --color-accent-ink: #c9a0f0;
+  --color-forest: #2a1f4d;
+  --color-level-1: #9c4fdc;
+  --color-level-2: #4fb39d;
+  --color-level-3: #e0a84a;
+  --color-level-3-ink: #e0a84a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-page: #17131f;
+    --color-card: #1f1a2a;
+    --color-raised: #2a2437;
+    --color-ink: #f5f3fa;
+    --color-ink-2: #cfc9db;
+    --color-ink-3: #a59fb3;
+    --color-tint: #2d2342;
+    --color-accent: #9c4fdc;
+    --color-accent-hover: #ab64e6;
+    --color-accent-ink: #c9a0f0;
+    --color-forest: #2a1f4d;
+    --color-level-1: #9c4fdc;
+    --color-level-2: #4fb39d;
+    --color-level-3: #e0a84a;
+    --color-level-3-ink: #e0a84a;
+  }
+}
+
+/* Dark only: news and passer photos sit a little darker; the credit chip on the closing photo band gets a backing and 12px text. Light has no rule here. */
+:root[data-theme="dark"] .photo-dim {
+  filter: brightness(0.9);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .photo-dim {
+    filter: brightness(0.9);
+  }
+}
+:root[data-theme="dark"] .credit-chip {
+  background: rgb(0 0 0 / 0.45);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .credit-chip {
+    background: rgb(0 0 0 / 0.45);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
 }
 
 body {
@@ -636,5 +702,15 @@ body {
   .jelly-item,
   .jelly-out {
     animation: none;
+  }
+}
+
+/* Dark only: the large decorative step numbers (aria-hidden) get a readable tint; light keeps text-ink/20 */
+:root[data-theme="dark"] .num-faint {
+  color: rgb(245 243 250 / 0.5);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .num-faint {
+    color: rgb(245 243 250 / 0.5);
   }
 }

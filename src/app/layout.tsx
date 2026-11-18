@@ -39,9 +39,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" className={`${sarabun.variable} ${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
+    <html lang="th" suppressHydrationWarning className={`${sarabun.variable} ${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
+      <head>
+        {/* sets the saved light/dark choice before first paint (see ThemeToggle.tsx) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var m=localStorage.getItem("psf-theme");if(m==="light"||m==="dark")document.documentElement.dataset.theme=m}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
-        <Intro />
+        <Suspense fallback={null}>
+          <Intro />
+        </Suspense>
         <Suspense fallback={null}>
           <Motion />
         </Suspense>

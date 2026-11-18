@@ -17,15 +17,15 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-forest text-on-dark">
               <img src="/img/does/activity-signing.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
               <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/70">
+                <p className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                   {t.nav.about} / {t.nav.mission}
                 </p>
                 <h1 className="mt-5 max-w-4xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{t.nav.mission}</h1>
-                <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{a.intro}</p>
+                <p className="mt-6 max-w-3xl text-lg leading-8 text-on-dark/80">{a.intro}</p>
               </div>
             </section>
 
@@ -43,17 +43,17 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </ol>
             </section>
 
-            <section className="bg-forest text-page">
+            <section className="bg-forest text-on-dark">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/60">{a.visionTitle}</p>
+                <p className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.visionTitle}</p>
                 <blockquote className="mt-6 max-w-4xl font-ui font-semibold text-3xl font-light leading-[1.4] md:text-5xl md:leading-[1.35]">“{a.vision}”</blockquote>
-                <dl className="mt-12 grid gap-8 border-t border-page/20 pt-8 md:grid-cols-2">
+                <dl className="mt-12 grid gap-8 border-t border-on-dark/20 pt-8 md:grid-cols-2">
                   <div>
-                    <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.philosophyLabel}</dt>
+                    <dt className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.philosophyLabel}</dt>
                     <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.philosophy}</dd>
                   </div>
                   <div>
-                    <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.pledgeLabel}</dt>
+                    <dt className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.pledgeLabel}</dt>
                     <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.pledge}</dd>
                   </div>
                 </dl>

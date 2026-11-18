@@ -35,7 +35,7 @@ function NewsList({ lang, site }: { lang: Lang; site: SiteData }) {
           <li key={n.id}>
             <Link href={`/${lang}/news/${n.id}`} className="lift group block h-full overflow-hidden rounded-xl border border-ink/10 bg-card transition-colors hover:border-accent/40">
               {n.image ? (
-                <img src={n.image} alt={t.news.imageAlt} className="aspect-[16/10] w-full object-cover" />
+                <img src={n.image} alt={t.news.imageAlt} className="photo-dim aspect-[16/10] w-full object-cover" />
               ) : (
                 <Placeholder label={t.news.imageAlt} className="aspect-[16/10] bg-gradient-to-br from-tint to-raised" />
               )}

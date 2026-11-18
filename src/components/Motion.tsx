@@ -34,11 +34,23 @@ export function Motion() {
         if (!el.dataset.in) io?.observe(el);
       });
     };
-    const onLoad = () => window.setTimeout(start, 200);
+    // Streamed (Suspense) parts of the page can still be hydrating after the load event,
+    // so wait for an idle moment before writing [data-in]; otherwise React sees an attribute it did not render.
+    let idle: number | undefined;
+    let timer: number | undefined;
+    const later = () => {
+      timer = window.setTimeout(start, 200);
+    };
+    const onLoad = () => {
+      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(later, { timeout: 2000 });
+      else timer = window.setTimeout(later, 500);
+    };
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
     return () => {
       window.removeEventListener("load", onLoad);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      window.clearTimeout(timer);
       io?.disconnect();
     };
   }, [path]);
