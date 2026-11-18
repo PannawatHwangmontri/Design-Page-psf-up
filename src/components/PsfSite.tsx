@@ -2,9 +2,10 @@
 
 import { ApplyCountdown } from "@/components/ApplyCountdown";
 import { Wave } from "@/components/Wave";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Lang } from "@/data/content";
 import { useSite } from "@/lib/site";
+import { calendarPoster } from "@/data/mock";
 import { PasserTile } from "./PasserCard";
 import { Placeholder } from "./Placeholder";
 import { TextEffect } from "./TextEffect";
@@ -25,12 +26,11 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const { content, announcements, news, passers, assessmentCalendars } = useSite();
   const t = content[lang];
   const [lvl, setLvl] = useState(0); // passers filter: 0 = all, 1-3 = PSF level
+  const posterRef = useRef<HTMLDialogElement>(null); // full-size calendar poster
   const latestYear = Math.max(...announcements.map((a) => a.year));
   const cal = [...assessmentCalendars].sort((a, b) => b.year - a.year)[0];
   const loc = lang === "th" ? "th-TH" : "en-GB";
-  const day = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "short" });
   const fullDate = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
-  const range = (e?: { start: string; end?: string }) => (!e ? "–" : e.end ? `${day(e.start)} – ${day(e.end)}` : day(e.start));
   const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
   const [top, setTop] = useState(0); // index in sorted of the lead story; side items are picked to change it
   const [page, setPage] = useState(0); // side list shows 3 stories per page, newest first
@@ -165,75 +165,65 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      {/* announcements: a plain register, year on the left like a gazette */}
-      <section id="announcements" className="font-sans relative scroll-mt-16">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-24">
-          <div className="md:col-span-4">
-            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.announcements}</h2>
-            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-sm`}>
+      {/* announcements (left) and assessment calendar (right) in one section; the calendar comes first in the DOM so mobile reads it first */}
+      <section id="announcements" className="relative scroll-mt-16 bg-page text-ink">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[minmax(0,1.15fr)_1px_minmax(0,1fr)] md:gap-x-12 md:px-8 md:py-24">
+          <div id="calendar" className="scroll-mt-16 md:order-last">
+            <TextEffect as="h2" text={t.home.calendarTitle} className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl" />
+            <span aria-hidden="true" className="line-grow mt-4 block h-px w-28 bg-accent" />
+            <p data-reveal className="mt-2 text-ink-3">
+              {t.home.calendarLead}
+              {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
+            </p>
+            <div data-reveal>
+              <ApplyCountdown lang={lang} />
+            </div>
+            <figure data-reveal className="mt-6">
+              <button type="button" onClick={() => posterRef.current?.showModal()} aria-label={t.home.posterOpen} className="block w-full rounded-2xl text-left">
+                <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} width={762} height={486} className="h-auto w-full rounded-2xl object-contain" />
+              </button>
+              <figcaption data-reveal className="mt-2 text-sm text-ink-3">{t.home.posterCaption.replace("{year}", String(calendarPoster.year))}</figcaption>
+              <dialog ref={posterRef} className="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-scrim">
+                <div
+                  className="relative flex h-full w-full items-center justify-center p-4"
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) posterRef.current?.close();
+                  }}
+                >
+                  <button type="button" onClick={() => posterRef.current?.close()} className="absolute right-4 top-4 inline-flex h-11 items-center rounded-full bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                    {t.news.close}
+                  </button>
+                  <img src={calendarPoster.src} alt={t.home.calendarPosterAlt} className="max-h-full max-w-full rounded-2xl object-contain" />
+                </div>
+              </dialog>
+            </figure>
+            <a data-reveal href={`/${lang}/calendar`} className={`${linkCls} mt-6 inline-block text-base`}>
+              {t.home.calendarAll} →
+            </a>
+          </div>
+
+          <div aria-hidden="true" className="hidden bg-ink/30 md:order-none md:block" />
+
+          <div className="border-t border-ink/20 pt-12 md:order-first md:border-0 md:pt-0">
+            <h2 data-reveal className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl">{t.news.announcements}</h2>
+            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-base`}>
               {t.news.viewAll} →
             </a>
-          </div>
-          <ul data-lines className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
-            {announcements.slice(0, PAGE).map((a, i) => (
-              <li key={a.id} style={idx(i)} className="overflow-hidden">
-                <div className="line flex gap-6 py-5">
-                  <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
-                    {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
-                    {a.year === latestYear && <span className="mt-2 block text-accent-ink">{t.news.isNew}</span>}
-                  </span>
-                  <p className="min-w-0 line-clamp-2 font-medium" title={a.title[lang]}>
-                    <a href={`/${lang}/announcement/${a.id}`} className="hover:text-accent-ink">
+            <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
+              {announcements.slice(0, PAGE).map((a, i) => (
+                <li key={a.id} style={idx(i)} className="overflow-hidden">
+                  <a href={`/${lang}/announcement/${a.id}`} className="line group flex min-h-14 gap-6 py-5 hover:text-accent-ink">
+                    <span className="w-24 shrink-0 pt-0.5 text-sm tabular-nums text-ink-3">
+                      {lang === "th" ? `พ.ศ. ${a.year}` : `B.E. ${a.year}`}
+                      {a.year === latestYear && <span className="mt-2 block text-accent-ink">{t.news.isNew}</span>}
+                    </span>
+                    <span className="min-w-0 line-clamp-2 font-medium text-ink" title={a.title[lang]}>
                       {a.title[lang]}
-                    </a>
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* calendar: its own dark photo band (the quick links above and the news below are light), poster beside two glass cards, one per round */}
-      <section id="calendar" className="relative isolate scroll-mt-16 overflow-x-clip bg-page text-ink">
-        <Wave fill="text-page" />
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 md:px-8 md:pb-24 md:pt-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.home.calendarTitle}</h2>
-              <p className="mt-2 text-ink-2">
-                {t.home.calendarLead}
-                {cal && <span className="tabular-nums"> · {t.home.yearLabel} {cal.year}</span>}
-              </p>
-            </div>
-            <a href={`/${lang}/assessment`} className="inline-flex h-11 shrink-0 items-center rounded-full bg-page px-6 text-sm font-medium text-ink hover:bg-card">
-              {t.home.calendarMore} →
-            </a>
-          </div>
-          <ApplyCountdown lang={lang} />
-          <div className="mt-10 grid items-start gap-6 md:grid-cols-12 md:gap-8">
-            <a href={`/${lang}/calendar`} className="block md:col-span-5">
-              <img src="/img/does/calendar-poster-2568.webp" alt={t.home.calendarPosterAlt} className="h-auto w-full rounded-3xl border border-ink/10 bg-card object-contain" />
-            </a>
-            {cal && (
-              <div data-reveal className="grid gap-6 md:col-span-7 md:gap-8">
-                {[1, 2].map((r) => (
-                  <div key={r} className="overflow-hidden rounded-3xl border border-accent/30 bg-card p-6 backdrop-blur-md">
-                    <p className="-mx-6 -mt-6 mb-5 bg-tint px-6 py-4 font-ui font-semibold text-2xl text-accent-ink">
-                      {t.pages.assessment.round} {r}
-                    </p>
-                    <dl className="mt-3 divide-y divide-page/15">
-                      {(["apply", "assess", "result"] as const).map((k) => (
-                        <div key={k} className="flex items-baseline justify-between gap-4 py-3">
-                          <dt className="text-ink-2">{t.pages.assessment.types[k]}</dt>
-                          <dd className="text-right text-lg tabular-nums">{range(cal.events.find((e) => e.round === r && e.type === k))}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            )}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

@@ -46,8 +46,8 @@ export function ApplyCountdown({ lang }: { lang: Lang }) {
   }
 
   return (
-    <div suppressHydrationWarning className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-ink/10 bg-tint px-5 py-4 text-sm text-ink-2">
-      <span className="font-mono text-[11px] tracking-[0.05em] text-accent-ink">{t.cdLabel}</span>
+    <div suppressHydrationWarning className="mt-6 flex flex-wrap items-center gap-3 rounded-lg border border-ink/10 bg-tint px-5 py-4 text-sm text-ink-2">
+      <span className="font-mono text-sm tracking-[0.05em] text-accent-ink">{t.cdLabel}</span>
       <span>{body}</span>
     </div>
   );
