@@ -77,7 +77,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-4 pt-3 md:px-8">
         <header className={`rounded-[30px] border border-ink/10 bg-page/95 px-4 shadow-[0_10px_30px_-12px_rgba(29,22,48,0.35)] backdrop-blur-md transition-transform duration-300 md:px-6 ${hidden ? "max-md:-translate-y-[150%]" : ""}`}>
           <div className="flex h-14 items-center gap-2 pl-2 pr-2 sm:gap-3 sm:pl-5 sm:pr-3 lg:gap-4 xl:gap-5">
-            <Link href={base} className="flex min-w-0 shrink items-center gap-3">
+            <Link href={base} className="flex min-h-11 min-w-0 shrink items-center gap-3">
               <img src="/brand/logo-up-mark.png" alt={t.siteOrg} width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
               <span className="min-w-0 leading-tight">
                 <span className="hidden whitespace-nowrap text-sm font-medium text-ink sm:block">{t.siteName}</span>

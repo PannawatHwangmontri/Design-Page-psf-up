@@ -5,10 +5,9 @@ import { useSite } from "@/lib/site";
 import { fmtDate } from "@/lib/lang";
 import { roundStatus } from "@/lib/rounds";
 import { Hero } from "@/components/Hero";
-import { RoundsPanel } from "@/components/RoundsPanel";
 import { Placeholder } from "./Placeholder";
 
-// Home order and background rhythm: hero (forest, photo) → rounds (tint) → quick links (page) → news + announcements (page)
+// Home order and background rhythm: hero (forest, photo) → rounds (tint) → news + announcements (page)
 // → PSF levels (card) → steps (forest) → passers (page) → eligibility + FAQ (card) → closing (forest, photo).
 // Every section uses SECTION spacing and a WRAP container. Section heads share one pattern: tag, accent bar, h2, link.
 const PAGE = 5; // announcements on the home page; the rest are on /announcement
@@ -17,26 +16,7 @@ const SECTION = "py-16 md:py-24";
 const H2 = "text-3xl font-bold leading-[1.2] tracking-tight md:text-4xl";
 const LINK = "inline-flex min-h-11 items-center text-base font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 const LINK_DARK = "inline-flex min-h-11 items-center text-base font-medium text-page underline decoration-page/40 underline-offset-4 hover:decoration-page";
-const QUICK_ORDER = [0, 1, 5, 3]; // apply, calendar, eligibility, manuals
 const LEVEL_TONE = ["var(--color-level-1)", "var(--color-level-2)", "var(--color-level-3)"];
-
-// line icons, 24px, stroke 1.5, one set for the quick links
-const ICON_PATHS: Record<string, string[]> = {
-  "/documents/forms": ["M7 3h7l5 5v13H7z", "M14 3v5h5", "M10 13h6M10 17h4"],
-  "/calendar": ["M3 5h18v16H3z", "M3 10h18M8 3v4M16 3v4"],
-  "/eligibility": ["M9 6h11M9 12h11M9 18h11", "M3 6l1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"],
-  "/documents/manuals": ["M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z", "M4 16a4 4 0 0 1 4-4h12"],
-};
-
-function Icon({ href }: { href: string }) {
-  return (
-    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-      {(ICON_PATHS[href] ?? []).map((d) => (
-        <path key={d} d={d} />
-      ))}
-    </svg>
-  );
-}
 
 function SectionHead({ tag, title, href, linkLabel, dark = false }: { tag: string; title: string; href?: string; linkLabel?: string; dark?: boolean }) {
   return (
@@ -84,44 +64,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </a>
 
       <Hero lang={lang} />
-
-      {/* rounds: the table on the tint, the open round in a page-coloured column */}
-      <section id="calendar" className={`scroll-mt-16 bg-tint ${SECTION}`}>
-        <div className={WRAP}>
-          <SectionHead tag={t.home.tagRounds} title={t.home.calendarTitle} href={`/${lang}/calendar`} linkLabel={t.home.allCalendar} />
-          <div className="mt-10">
-            <RoundsPanel lang={lang} />
-          </div>
-        </div>
-      </section>
-
-      {/* quick links: four rows with line icons, hairline columns on desktop */}
-      <section className={`bg-page ${SECTION}`}>
-        <div className={WRAP}>
-          <SectionHead tag={t.home.tagStart} title={t.home.quickTitle} />
-          <ul className="mt-10 grid md:grid-cols-2 lg:grid-cols-4">
-            {QUICK_ORDER.map((i, n) => {
-              const q = t.home.quick[i];
-              return (
-                <li key={q.href} className={`border-t border-ink/10 lg:border-t-0 ${n ? "lg:border-l lg:pl-8" : ""}`}>
-                  <a href={`/${lang}${q.href}`} className="group flex min-h-14 items-start gap-4 px-4 py-5 transition-colors hover:bg-card lg:flex-col lg:gap-5 lg:py-6">
-                    <span className="text-ink-2 transition-colors group-hover:text-accent-ink">
-                      <Icon href={q.href} />
-                    </span>
-                    <span className="flex-1">
-                      <span className="block text-lg font-bold">{q.title}</span>
-                      <span className="mt-1 block text-base leading-7 text-ink-2">{q.desc}</span>
-                    </span>
-                    <span aria-hidden="true" className="shrink-0 text-xl text-accent-ink lg:hidden">
-                      →
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
 
       {/* news and announcements: news left, a hairline, announcements right with type badges */}
       <section id="news" className={`bg-page ${SECTION}`}>
@@ -337,7 +279,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             ↑ {t.home.backTop}
           </a>
         </div>
-        <p className="absolute bottom-3 right-4 text-[13px] text-page/80">{t.home.closeCredit}</p>
+        <p className="absolute bottom-3 right-3 rounded bg-forest/70 px-2 py-1 text-xs text-page md:right-4">{t.home.closeCredit}</p>
       </section>
     </main>
   );

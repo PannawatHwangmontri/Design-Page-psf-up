@@ -45,7 +45,7 @@ label {
   font-family: var(--font-ui);
 }
 
-/* Headings: light serif (Noto Serif Thai). Unlayered on purpose, so it wins over Tailwind's font-medium on headings. */
+/* Headings: IBM Plex Sans Thai 700 (rev3). Unlayered so it wins over Tailwind font-medium on headings. */
 h1,
 h2 {
   font-family: var(--font-ui);

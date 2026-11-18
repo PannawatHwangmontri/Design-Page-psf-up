@@ -86,7 +86,7 @@ export function Hero({ lang }: { lang: Lang }) {
           </div>
         </div>
       </div>
-      <p className="absolute bottom-3 right-4 z-0 text-[13px] text-page/80">{t.home.heroCredit}</p>
+      <p className="absolute bottom-3 right-3 z-0 rounded bg-forest/70 px-2 py-1 text-xs text-page md:right-4">{t.home.heroCredit}</p>
     </section>
   );
 }
