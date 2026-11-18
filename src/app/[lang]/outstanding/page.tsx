@@ -23,13 +23,13 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-team.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{o.title}</h1>
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-page/80">{o.intro}</p>
-                <span className="mt-6 inline-block rounded-full border border-page/30 px-3 py-1 text-xs text-page/80">{t.pages.faq.sample}</span>
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-on-dark/80">{o.intro}</p>
+                <span className="mt-6 inline-block rounded-full border border-on-dark/30 px-3 py-1 text-xs text-on-dark/80">{t.pages.faq.sample}</span>
               </div>
             </section>
 
@@ -44,12 +44,12 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
 
               <div className="mt-12 space-y-12">
               <section id="project" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingProject}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingProject}</h2>
                 <p className="mt-4 max-w-3xl leading-8 text-ink-2 md:mt-0">{o.projectBody}</p>
               </section>
 
               <section id="compare" className={sec}>
-                <h2 className={h2}>{o.compare.title}</h2>
+                <h2 data-reveal className={h2}>{o.compare.title}</h2>
                 <div className="mt-4 overflow-x-auto md:mt-0">
                   <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
                     <thead>
@@ -77,7 +77,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="announcement" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingAnnouncement}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingAnnouncement}</h2>
                 <div className="mt-4 md:mt-0">
                   <p className="text-ink-2">{o.announcementBody}</p>
                   <ul className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
@@ -97,7 +97,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="process" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingProcess}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingProcess}</h2>
                 <ol className="mt-4 space-y-4 md:mt-0">
                   {o.steps.map((s, i) => (
                     <li key={s} className="flex gap-4 leading-7 text-ink-2">
@@ -109,7 +109,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </section>
 
               <section id="apply" className={sec}>
-                <h2 className={h2}>{t.nav.outstandingApply}</h2>
+                <h2 data-reveal className={h2}>{t.nav.outstandingApply}</h2>
                 <div className="mt-4 md:mt-0">
                   <p className="text-ink-2">{o.applyBody}</p>
                   {/* TODO: ไฟล์ใบสมัครจริง (ตอนนี้ลิงก์ชั่วคราว) */}

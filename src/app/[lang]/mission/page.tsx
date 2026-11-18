@@ -17,20 +17,20 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-signing.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/70">
+                <p className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                   {t.nav.about} / {t.nav.mission}
                 </p>
                 <h1 className="mt-5 max-w-4xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{t.nav.mission}</h1>
-                <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{a.intro}</p>
+                <p className="mt-6 max-w-3xl text-lg leading-8 text-on-dark/80">{a.intro}</p>
               </div>
             </section>
 
             <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-              <h2 className="text-3xl md:text-5xl">{a.missionTitle}</h2>
+              <h2 data-reveal className="text-3xl md:text-5xl">{a.missionTitle}</h2>
               <ol className="mt-10 grid gap-4 md:grid-cols-3">
                 {a.mission.map((m, i) => (
                   <li key={m} className="lift flex flex-col rounded-xl border border-ink/10 bg-card p-6 md:p-8">
@@ -43,17 +43,17 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
               </ol>
             </section>
 
-            <section className="bg-forest text-page">
+            <section className="bg-block-dark text-on-dark">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/60">{a.visionTitle}</p>
+                <p className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.visionTitle}</p>
                 <blockquote className="mt-6 max-w-4xl font-ui font-semibold text-3xl font-light leading-[1.4] md:text-5xl md:leading-[1.35]">“{a.vision}”</blockquote>
-                <dl className="mt-12 grid gap-8 border-t border-page/20 pt-8 md:grid-cols-2">
+                <dl className="mt-12 grid gap-8 border-t border-on-dark/20 pt-8 md:grid-cols-2">
                   <div>
-                    <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.philosophyLabel}</dt>
+                    <dt className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.philosophyLabel}</dt>
                     <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.philosophy}</dd>
                   </div>
                   <div>
-                    <dt className="font-mono text-xs tracking-[0.05em] text-page/60">{a.pledgeLabel}</dt>
+                    <dt className="font-mono text-xs tracking-[0.05em] text-on-dark/60">{a.pledgeLabel}</dt>
                     <dd className="mt-3 font-ui font-semibold text-2xl font-light leading-snug">{a.pledge}</dd>
                   </div>
                 </dl>
@@ -61,8 +61,8 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             </section>
 
             <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-              <h2 className="text-3xl md:text-5xl">{a.valuesTitle}</h2>
-              <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <h2 data-reveal className="text-3xl md:text-5xl">{a.valuesTitle}</h2>
+              <ul data-stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {a.values.map((v, i) => (
                   <li key={v.title} className="lift rounded-xl border border-ink/10 bg-card p-6">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ display: "inline-block", background: `var(--color-level-${(i % 3) + 1})` }} />

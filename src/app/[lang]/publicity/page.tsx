@@ -28,18 +28,18 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         ];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-award.jpg" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/65" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <h1 className="max-w-3xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{c.nav.publicity}</h1>
-                <p className="mt-6 max-w-xl text-lg text-page/80">{t.hubIntro}</p>
-                <ul className="mt-10 grid divide-y divide-page/25 border-t border-page/25 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <p className="mt-6 max-w-xl text-lg text-on-dark/80">{t.hubIntro}</p>
+                <ul data-stagger className="mt-10 grid divide-y divide-on-dark/25 border-t border-on-dark/25 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                   {jump.map((j) => (
                     <li key={j.id}>
                       <a href={`#${j.id}`} className="group block px-0 py-5 sm:px-6 sm:first:pl-0">
                         <span className="font-ui font-semibold text-4xl font-light tabular-nums md:text-5xl">{j.n}</span>
-                        <span className="mt-1 block text-sm text-page/80 group-hover:underline">{j.label} ↓</span>
+                        <span className="mt-1 block text-sm text-on-dark/80 group-hover:underline">{j.label} ↓</span>
                       </a>
                     </li>
                   ))}
@@ -50,14 +50,14 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section id="news" className="scroll-mt-28">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-20">
                 <div className="flex items-end justify-between gap-4 border-b border-ink/10 pb-6">
-                  <h2 className="text-3xl md:text-5xl">{c.news.title}</h2>
+                  <h2 data-reveal className="text-3xl md:text-5xl">{c.news.title}</h2>
                   <p className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">{newsAll.length}</p>
                 </div>
-                <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <ul data-stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {newsAll.map((n, i) => (
                     <li key={n.id} className={i === 0 ? "sm:col-span-2 lg:col-span-2" : undefined}>
                       <a href={`/${lang}/news/${n.id}`} className="lift group flex h-full flex-col overflow-hidden rounded-xl border border-ink/10 bg-card">
-                        {n.image ? <img src={n.image} alt={c.news.imageAlt} className="aspect-[16/10] w-full object-cover" /> : <Placeholder label={c.news.imageAlt} className="aspect-[16/10]" />}
+                        {n.image ? <img src={n.image} alt={c.news.imageAlt} className="photo-dim aspect-[16/10] w-full object-cover" /> : <Placeholder label={c.news.imageAlt} className="aspect-[16/10]" />}
                         <div className="flex flex-1 flex-col p-6">
                           <time dateTime={n.date} className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">
                             {fullDate(n.date)}
@@ -75,7 +75,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
             <section id="announcements" className="scroll-mt-28 border-t border-ink/10 bg-card">
               <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-12 md:gap-12 md:px-8 md:py-20">
                 <div className="md:col-span-4">
-                  <h2 className="text-3xl md:text-5xl">{t.announcementsTitle}</h2>
+                  <h2 data-reveal className="text-3xl md:text-5xl">{t.announcementsTitle}</h2>
                   <p className="mt-3 font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">{annAll.length}</p>
                 </div>
                 <ul className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-8">
@@ -103,7 +103,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
 
             <section id="passers" className="scroll-mt-28 border-t border-ink/10">
               <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-20">
-                <h2 className="text-3xl md:text-5xl">{t.title}</h2>
+                <h2 data-reveal className="text-3xl md:text-5xl">{t.title}</h2>
                 <p className="mt-4 max-w-2xl text-lg text-ink-2">{t.intro}</p>
                 <div className="mt-12">
                   <YearTabs lang={lang} data={publicity} />

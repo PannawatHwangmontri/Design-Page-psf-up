@@ -17,7 +17,7 @@ export default function Page() {
         const hasFile = !!n.file && n.file !== "#";
         return (
           <DetailPage backHref={`/${lang}/news`} backLabel={p.back} meta={fmtDate(n.date, lang)} title={n.title[lang]} body={[n.excerpt[lang]]}>
-            {n.image && <img src={n.image} alt="" className="mt-8 w-full rounded-xl object-cover" />}
+            {n.image && <img src={n.image} alt="" className="photo-dim mt-8 w-full rounded-xl object-cover" />}
             {hasFile && (
               <a href={n.file} download className={downloadBtn}>
                 {p.file}

@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Sarabun, IBM_Plex_Mono, IBM_Plex_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Intro } from "@/components/Intro";
 import { Motion } from "@/components/Motion";
-
-const sarabun = Sarabun({
-  variable: "--font-sarabun",
-  subsets: ["thai", "latin"],
-  weight: ["400", "500", "600"],
-});
 
 // หัวข้อ: เซอริฟบางน้ำหนัก 300 ตามสไตล์ editorial (มีทั้งไทยและละติน)
 const serifTh = Noto_Serif_Thai({
@@ -39,9 +33,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" className={`${sarabun.variable} ${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
+    <html lang="th" suppressHydrationWarning className={`${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
+      <head>
+        {/* sets the saved light/dark choice before first paint (see ThemeToggle.tsx) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var m=localStorage.getItem("psf-theme");if(m==="light"||m==="dark")document.documentElement.dataset.theme=m}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
-        <Intro />
+        <Suspense fallback={null}>
+          <Intro />
+        </Suspense>
         <Suspense fallback={null}>
           <Motion />
         </Suspense>

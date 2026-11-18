@@ -52,37 +52,37 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
 
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-forest text-page">
+      <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
         <img src="/img/does/activity-up-backdrop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
         <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
           <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{t.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{t.intro}</p>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-on-dark/80">{t.intro}</p>
           {today && (
-            <section aria-labelledby="now" className="mt-12 max-w-3xl rounded-xl border border-page/20 bg-page/10 p-6 md:p-8">
-              <h2 id="now" className="font-mono text-xs tracking-[0.05em] text-page/70">
+            <section aria-labelledby="now" className="mt-12 max-w-3xl rounded-xl border border-on-dark/20 bg-on-dark/10 p-6 md:p-8">
+              <h2 data-reveal id="now" className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                 {t.nowTitle}
               </h2>
               {current ? (
                 <>
                   <p className="mt-3 font-ui font-semibold text-3xl font-light leading-[1.3] md:text-4xl">
                     {current.type === "apply" ? t.applyOpen : t.types[current.type]}{" "}
-                    <span className="text-lg text-page/70">
+                    <span className="text-lg text-on-dark/70">
                       ({t.round} {current.round})
                     </span>
                   </p>
-                  <p className="mt-2 tabular-nums text-page/80">{range(current)}</p>
+                  <p className="mt-2 tabular-nums text-on-dark/80">{range(current)}</p>
                   <p className="mt-4 inline-block rounded-full bg-accent px-4 py-1 text-sm font-medium text-white">{status(current)}</p>
                 </>
               ) : upcoming ? (
                 <>
-                  <p className="mt-3 text-lg text-page/80">{t.noOpen}</p>
+                  <p className="mt-3 text-lg text-on-dark/80">{t.noOpen}</p>
                   <p className="mt-3 font-medium">
                     {t.nextUp}: {t.types[upcoming.type]} ({t.round} {upcoming.round}) · <span className="tabular-nums">{range(upcoming)}</span> · {status(upcoming)}
                   </p>
                 </>
               ) : (
-                <p className="mt-3 text-lg text-page/80">{t.noOpen}</p>
+                <p className="mt-3 text-lg text-on-dark/80">{t.noOpen}</p>
               )}
             </section>
           )}
@@ -102,7 +102,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
 
         <div className="md:col-span-9">
           <section aria-labelledby="timeline">
-            <h2 id="timeline" className="sr-only">
+            <h2 data-reveal id="timeline" className="sr-only">
               {t.timelineTitle} {year}
             </h2>
             <ol className="border-t border-ink/10">
@@ -128,7 +128,7 @@ function Assessment({ lang, site }: { lang: Lang; site: SiteData }) {
           </section>
 
           <section aria-labelledby="form" className="mt-16 rounded-xl border border-ink/10 bg-card p-6 md:p-8">
-            <h2 id="form" className="text-2xl">
+            <h2 data-reveal id="form" className="text-2xl">
               {t.formTitle}
             </h2>
             <p className="mt-2 max-w-2xl text-ink-2">{t.formDesc}</p>

@@ -127,3 +127,6 @@ export const manuals: Manual[] = [
   { id: 8, year: 2566, file: "/docs/psf-faculty-result-2566.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง ผลการพิจารณาส่วนงานที่ส่งเสริมการขอรับการรับรองระดับอาจารย์มืออาชีพ ประจำปีงบประมาณ พ.ศ. 2566", en: "Announcement: results for units that promote Professional Lecturer recognition, fiscal year B.E. 2566" } },
   { id: 9, year: 2566, file: "/docs/psf-equivalence-2566.pdf", title: { th: "ประกาศมหาวิทยาลัยพะเยา เรื่อง หลักเกณฑ์และวิธีการเทียบระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา พ.ศ. 2566", en: "Announcement: criteria and methods for equating professional lecturer levels, B.E. 2566" } },
 ];
+
+// โปสเตอร์ปฏิทินที่แสดงบนหน้าแรก (ไฟล์ปี 2568; ยังไม่มีไฟล์ปี 2569 ใน public/img/does)
+export const calendarPoster = { year: 2568, src: "/img/does/calendar-poster-2568.webp" };

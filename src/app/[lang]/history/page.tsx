@@ -34,12 +34,12 @@ function History({ lang }: { lang: Lang }) {
 
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-forest text-page">
+      <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
         <img src="/img/does/activity-up-backdrop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
         <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
           <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{h.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-page/80">{h.intro}</p>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-on-dark/80">{h.intro}</p>
         </div>
       </section>
 
@@ -78,7 +78,7 @@ function History({ lang }: { lang: Lang }) {
           {h.sections.map((sec) => (
             <section key={sec.no} id={`sec-${sec.no}`} data-spy className="scroll-mt-28 border-t border-ink/10 pt-12 first:border-t-0 first:pt-0 [&:not(:first-child)]:mt-16">
               <p className="font-mono text-xs tabular-nums tracking-[0.05em] text-ink-3">{sec.no}</p>
-              <h2 className="mt-2 text-3xl leading-[1.3] md:text-4xl">{sec.heading}</h2>
+              <h2 data-reveal className="mt-2 text-3xl leading-[1.3] md:text-4xl">{sec.heading}</h2>
 
               {"paragraphs" in sec ? (
                 <div className="mt-8 max-w-3xl space-y-5 text-lg leading-8 text-ink-2">

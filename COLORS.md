@@ -15,7 +15,7 @@
 | `ink-2` | `#5A4B3A` | ตัวอักษร | ข้อความรอง คำอธิบาย เมนูหลัก |
 | `ink-3` | `#75685A` | ตัวอักษร | ข้อความจาง (meta): วันที่ ปี เลขหน้า |
 | `tint` | `#EFE6F6` | ม่วงอ่อน | พื้นม่วงอ่อนสำหรับป้ายหรือส่วนเน้นเล็ก ๆ |
-| `forest` | `#040C06` | พื้นมืด | พื้นแถบรูปมืดและ Footer |
+| `block-dark` | `#1C1535` | พื้นบล็อกมืด (ม่วงเข้ม) | พื้นแถบรูปมืด ขั้นตอน PSF และ Footer |
 | `accent` | `#8D38C9` | ม่วงหลัก | พื้นปุ่มหลัก (ตัวอักษรขาว) focus ring |
 | `accent-hover` | `#7A2FB0` | ม่วงเข้ม | พื้นปุ่มหลักตอน hover |
 | `accent-ink` | `#7A2FB0` | ม่วงเข้ม | ม่วงเมื่อใช้เป็น **ตัวอักษร** บนพื้นสว่าง: ลิงก์ เมนูหน้าปัจจุบัน เลขขั้นตอน |
@@ -52,7 +52,7 @@
 | ผู้ยื่นผ่านเกณฑ์ (`PasserCard`) | การ์ด `card` ขอบ `ink/10` รูป placeholder `raised` จุดระดับ `level-1/2/3` (signature ใช้ที่ `PasserCard` และตัวกรองระดับเท่านั้น) |
 | แท็บปี (`YearTabs`) | ที่เลือกพื้น `accent` ตัวขาว ที่ไม่เลือกพื้น `card` ขอบ `ink/10` ตัวอักษร `ink-2` hover `raised` |
 | แถบรูปคั่น (ตัวเลขผู้ผ่านเกณฑ์) | รูปจริงใต้แผ่นดำ 60% ตัวเลขและป้ายสี `page` |
-| Footer | พื้น `forest` ตัวอักษร `page` โลโก้เต็มบนแผ่น `card` |
+| Footer | พื้น `block-dark` ตัวอักษร `on-dark` โลโก้เต็มบนแผ่น `card` |
 | Placeholder รูป/โลโก้ | พื้น `raised` ตัวอักษร `ink-3` |
 | Focus ring (ทุกปุ่ม/ลิงก์) | เส้นขอบ 2px สี `accent` |
 
@@ -74,7 +74,7 @@
 | `ink` บน `tint` | 14.50 | ผ่าน |
 | `white` บน `accent` | 5.93 | ผ่าน |
 | `white` บน `accent-hover` | 7.34 | ผ่าน |
-| `page` บน `forest` | 19.64 | ผ่าน |
+| `on-dark` บน `block-dark` | 19.64 | ผ่าน |
 
 ตัวอักษรบนแผ่นดำทับรูปยังไม่ได้วัด เพราะขึ้นกับรูป ควรตรวจด้วยสายตาเมื่อเปลี่ยนรูป
 
@@ -93,3 +93,37 @@
 1. แก้ค่า hex ที่ `src/app/globals.css` ในบล็อก `@theme`
 2. ตรวจ contrast ใหม่ตามตารางข้อ 4
 3. อัปเดต `DESIGN.md` และไฟล์นี้ให้ตรงกัน
+
+## โหมดมืด (dark mode)
+
+ค่าเหล่านี้อยู่ใน `src/app/globals.css` ทั้งสองส่วน (`:root[data-theme="dark"]` และ `prefers-color-scheme: dark`) ให้ตรงกันเสมอ
+
+| token | โหมดสว่าง | โหมดมืด |
+|---|---|---|
+| page | #fffefb | #17131f |
+| card | #f3f2ee | #1f1a2a |
+| raised | #e7e5df | #2a2437 |
+| ink | #271503 | #f5f3fa |
+| ink-2 | #5a4b3a | #cfc9db |
+| ink-3 | #6b5f51 | #a59fb3 |
+| tint | #e9dcf4 | #2d2342 |
+| accent | #8d38c9 | #9c4fdc |
+| accent-hover | #7a2fb0 | #ab64e6 |
+| accent-ink | #7a2fb0 | #c9a0f0 |
+| block-dark | #1c1535 | #2a1f4d |
+| level-1 | #8d38c9 | #9c4fdc |
+| level-2 | #2f7d6d | #4fb39d |
+| level-3 | #b7791f | #e0a84a |
+| level-2-ink (ตัวอักษรระดับ 2 บน tint) | #1a5e4f | #4fb39d |
+| level-3-ink (ตัวอักษรระดับ 3 บน tint) | #8a5710 | #e0a84a |
+| accent-on-dark (ม่วงบนบล็อกมืด ทุกธีม) | #c79bef | #c79bef |
+| scrim (overlay รูป 70%) | rgb(0 0 0 / 0.7) | rgb(0 0 0 / 0.7) |
+| scrim-soft (overlay รูป 30%) | rgb(0 0 0 / 0.3) | rgb(0 0 0 / 0.3) |
+| on-dark (ทั้งสองธีม) | #fffefb | #fffefb |
+
+หมายเหตุ dark mode รอบนี้:
+- `text-on-dark`, `border-on-dark`, `bg-on-dark/xx` ใช้แทน `text-page` ฯลฯ บนบล็อก `bg-forest` (ค่าเท่ากับ page ในโหมดสว่าง จึงไม่เปลี่ยนหน้าตา light)
+- `.photo-dim` ลดความสว่างรูปข่าวและผู้ผ่านเกณฑ์ 10% ใน dark เท่านั้น
+- `.num-faint` ตัวเลขตกแต่ง 1–3 ใน section PSF ใช้สีทึบ 50% ใน dark เท่านั้น (light ยังเป็น `text-ink/20` เดิม)
+- `.credit-chip` ให้พื้นดำโปร่งและตัวอักษร 12px ใน dark เท่านั้น (เครดิตภาพในแถบปิดท้าย)
+

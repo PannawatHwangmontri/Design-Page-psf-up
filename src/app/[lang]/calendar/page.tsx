@@ -15,19 +15,19 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const yr = (y: number) => (lang === "th" ? y : y - 543);
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-meeting.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/65" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
-                <p className="font-mono text-xs tracking-[0.05em] text-page/70">
+                <p className="font-mono text-xs tracking-[0.05em] text-on-dark/70">
                   {t.nav.publicity} / {t.nav.calendar}
                 </p>
                 <h1 className="mt-5 max-w-3xl text-5xl leading-[1.2] md:text-7xl md:leading-[1.15]">{t.nav.calendar}</h1>
-                <p className="mt-6 max-w-xl text-lg text-page/80">{p.intro}</p>
-                <ul className="mt-10 flex flex-wrap gap-2 border-t border-page/25 pt-6">
+                <p className="mt-6 max-w-xl text-lg text-on-dark/80">{p.intro}</p>
+                <ul className="mt-10 flex flex-wrap gap-2 border-t border-on-dark/25 pt-6">
                   {docs.map((d) => (
                     <li key={d.id}>
-                      <a href={`#y${d.year}`} className="inline-flex rounded-full border border-page/40 px-4 py-1.5 text-sm tabular-nums hover:bg-page/10">
+                      <a href={`#y${d.year}`} className="inline-flex rounded-full border border-on-dark/40 px-4 py-1.5 text-sm tabular-nums hover:bg-on-dark/10">
                         {t.home.yearLabel} {yr(d.year)}
                       </a>
                     </li>

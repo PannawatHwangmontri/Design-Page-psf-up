@@ -12,9 +12,9 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
         const t = content[lang];
         return (
           <main>
-            <section className="relative isolate overflow-hidden bg-forest text-page">
+            <section className="relative isolate overflow-hidden bg-block-dark text-on-dark">
               <img src="/img/does/activity-up-backdrop.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/70" />
+              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim" />
               <div className="mx-auto max-w-6xl px-4 pb-14 pt-44 md:px-8 md:pb-20">
                 <h1 className="max-w-4xl text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]">{t.process.title}</h1>
               </div>
@@ -42,7 +42,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div className="lift rounded-xl border border-ink/10 bg-card p-6 md:p-8">
-                      <h2 className="text-2xl md:text-3xl">{s.title}</h2>
+                      <h2 data-reveal className="text-2xl md:text-3xl">{s.title}</h2>
                       <p className="mt-3 text-lg leading-8 text-ink-2">{s.desc}</p>
                       <Link href={`/${lang}${s.href}`} className="mt-5 inline-block text-sm font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink">
                         {s.link} →

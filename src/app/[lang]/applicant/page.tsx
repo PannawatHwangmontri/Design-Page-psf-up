@@ -115,11 +115,11 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
 
   return (
     <main className="font-ui">
-      <section className="bg-forest text-page">
+      <section className="bg-block-dark text-on-dark">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 pb-14 pt-40 md:flex-row md:items-end md:justify-between md:px-8 md:pb-16">
           <div>
             <h1 className="text-5xl leading-[1.2] md:text-6xl">{t.title}</h1>
-            <p className="mt-5 max-w-xl text-lg text-page/80">{t.intro}</p>
+            <p className="mt-5 max-w-xl text-lg text-on-dark/80">{t.intro}</p>
           </div>
           <button
             type="button"
@@ -127,7 +127,7 @@ function Portal({ lang, t, site }: { lang: Lang; t: Texts; site: SiteData }) {
               logout();
               router.push(`/${lang}/login`);
             }}
-            className="inline-flex h-11 shrink-0 items-center rounded-full border border-page/30 px-6 text-sm font-medium text-page hover:bg-page/10"
+            className="inline-flex h-11 shrink-0 items-center rounded-full border border-on-dark/30 px-6 text-sm font-medium text-on-dark hover:bg-on-dark/10"
           >
             {t.logout}
           </button>
