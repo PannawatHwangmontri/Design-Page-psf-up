@@ -29,7 +29,11 @@ export default function PsfSite({ lang }: { lang: Lang }) {
   const day = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "short" });
   const fullDate = (d: string) => new Date(d).toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
   const range = (e?: { start: string; end?: string }) => (!e ? "–" : e.end ? `${day(e.start)} – ${day(e.end)}` : day(e.start));
-  const [lead, ...rest] = [...news].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
+  const [top, setTop] = useState(0); // index in sorted of the lead story; side items are picked to change it
+  const cur = sorted.length ? top % sorted.length : 0;
+  const lead = sorted[cur];
+  const rest = [...sorted.slice(cur + 1), ...sorted.slice(0, cur)];
   const pic = (src: string | undefined, alt: string, cls: string) =>
     src ? <img src={src} alt={alt} className={`${cls} object-cover`} /> : <Placeholder label={alt} className={cls} />;
 
@@ -136,7 +140,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           {lead && (
             <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-12">
               <article data-reveal className="md:col-span-7">
-                <a href={`/${lang}/news/${lead.id}`} className="group block">
+                <a key={lead.id} href={`/${lang}/news/${lead.id}`} className="news-swap group block">
                   {pic(lead.image, t.news.imageAlt, "aspect-[16/10] w-full rounded-xl")}
                   <time dateTime={lead.date} className="mt-4 block text-sm tabular-nums text-ink-3">
                     {fullDate(lead.date)}
@@ -148,7 +152,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               <ul data-stagger className="divide-y divide-ink/10 border-y border-ink/10 md:col-span-5 md:self-start">
                 {rest.slice(0, 3).map((n, i) => (
                   <li key={n.id} style={idx(i)}>
-                    <a href={`/${lang}/news/${n.id}`} className="group flex gap-4 py-5">
+                    <button type="button" onClick={() => setTop((cur + 1 + i) % sorted.length)} className="group flex w-full gap-4 py-5 text-left">
                       {pic(n.image, t.news.imageAlt, "h-20 w-28 shrink-0 rounded-lg")}
                       <div className="min-w-0">
                         <time dateTime={n.date} className="text-sm tabular-nums text-ink-3">
@@ -156,7 +160,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                         </time>
                         <h3 className="mt-1 line-clamp-2 font-medium group-hover:text-accent-ink">{n.title[lang]}</h3>
                       </div>
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>

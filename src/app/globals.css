@@ -348,6 +348,26 @@ button {
   }
 }
 
+/* Home news: the lead story slides in from the left when a side item is picked (PsfSite.tsx) */
+@keyframes news-swap {
+  from {
+    opacity: 0;
+    transform: translateX(-8%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.news-swap {
+  animation: news-swap 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .news-swap {
+    animation: none;
+  }
+}
+
 /* Experimental: cards, tiles, panels and images use one radius (15px 30px 15px 31px). Pills (rounded-full), tags (rounded-lg) and inputs keep their own. */
 .rounded-xl,
 .rounded-2xl,
