@@ -104,8 +104,8 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-plex-sans-th), sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 html {
@@ -725,4 +725,44 @@ body {
   :root:not([data-theme="light"]) .num-faint {
     color: rgb(245 243 250 / 0.5);
   }
+}
+
+/* Search field: opens from the icon and closes back into it. clip-path reveals it from the right edge (the icon's side),
+   so the content keeps its size; the 4px margin keeps the focus ring inside the clip (SiteSearch.tsx). */
+@keyframes search-expand {
+  from {
+    clip-path: inset(-4px -4px -4px calc(100% - 44px) round 9999px);
+  }
+  to {
+    clip-path: inset(-4px -4px -4px -4px round 9999px);
+  }
+}
+@keyframes search-collapse {
+  from {
+    clip-path: inset(-4px -4px -4px -4px round 9999px);
+  }
+  to {
+    clip-path: inset(-4px -4px -4px calc(100% - 44px) round 9999px);
+  }
+}
+.search-expand {
+  animation: search-expand 280ms var(--ease-ui) backwards;
+}
+.search-collapse {
+  animation: search-collapse 280ms var(--ease-ui) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-expand,
+  .search-collapse {
+    animation: none;
+  }
+}
+/* The global :focus-visible rule is unlayered, so Tailwind's outline-none loses to it and a square ring showed inside the round pill.
+   Drop the ring on the input and draw it on the pill instead. */
+.search-expand input:focus-visible {
+  outline: none;
+}
+.search-expand:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 0;
 }

@@ -1,2 +1,4 @@
 Images saved from https://does.up.ac.th/ (Division of Educational Services, University of Phayao) on 2026-11-13, at the project owner's request, as demo content.
 Photos show real people: confirm permission with the owner before any public release.
+
+hero slideshow (src/components/PsfSite.tsx HERO_SLIDES): public/img/does/hero/ คัดลอกจากหน้า https://does.up.ac.th/ (แบนเนอร์ /uploads/banner/) และ https://does.up.ac.th/uploads/news/newspicture/_thumbnail/698x449/ (รูปข่าว) ที่ดึงมาเมื่อ 2026-11-19 ตามคำสั่งเจ้าของโปรเจกต์ รูปส่วนใหญ่มีคนจริง ต้องขออนุญาตเจ้าของภาพก่อนเผยแพร่จริง

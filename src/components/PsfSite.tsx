@@ -18,7 +18,7 @@ const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 const hairline = "border border-ink/10";
 // level shape next to the level name: circle, diamond, triangle (readable without colour)
 const LEVEL_SHAPE: Record<number, string> = { 1: "rounded-full", 2: "rotate-45 rounded-[2px]", 3: "[clip-path:polygon(50%_0%,100%_100%,0%_100%)]", 4: "rounded-none" };
-const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
+const linkCls = "inline-flex min-h-11 items-center font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 
 // vertical section marker on the left page edge (wide screens only, see .side-label)
 
@@ -71,6 +71,20 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       </section>
 
 
+      {/* quick links to the sections below, right under the hero */}
+      <nav aria-label={t.news.title} className="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pt-8 md:px-8">
+        {[
+          { href: "#news", label: t.news.title },
+          { href: "#announcements", label: t.news.announcements },
+          { href: "#calendar", label: t.home.calendarTitle },
+          { href: "#passers", label: t.passers.title },
+        ].map((c) => (
+          <a key={c.href} href={c.href} className="inline-flex min-h-11 items-center rounded-full border border-ink/10 bg-page px-4 text-sm font-medium text-ink hover:bg-raised">
+            {c.label}
+          </a>
+        ))}
+      </nav>
+
       {/* announcements (left) and assessment calendar (right) in one section; the calendar comes first in the DOM so mobile reads it first */}
       <section id="announcements" className="relative scroll-mt-16 bg-page text-ink">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[minmax(0,1.15fr)_1px_minmax(0,1fr)] md:gap-x-12 md:px-8 md:py-24">
@@ -103,7 +117,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 </div>
               </dialog>
             </figure>
-            <a data-reveal href={`/${lang}/calendar`} className={`${linkCls} mt-6 inline-block text-base`}>
+            <a data-reveal href={`/${lang}/calendar`} className={`${linkCls} mt-6 text-base`}>
               {t.home.calendarAll} →
             </a>
           </div>
@@ -112,7 +126,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
 
           <div className="border-t border-ink/20 pt-12 md:order-first md:border-0 md:pt-0">
             <h2 data-reveal className="!font-bold text-4xl leading-tight tracking-tight md:text-5xl">{t.news.announcements}</h2>
-            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 inline-block text-base`}>
+            <a href={`/${lang}/announcement`} className={`${linkCls} mt-4 text-base`}>
               {t.news.viewAll} →
             </a>
             <ul data-lines className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
@@ -133,12 +147,12 @@ export default function PsfSite({ lang }: { lang: Lang }) {
             {annPages > 1 && (
               <div className="mt-6 flex gap-3">
                 {annP > 0 && (
-                  <button type="button" aria-label={t.news.back} onClick={() => setAnnPage(annP - 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                  <button type="button" onClick={() => setAnnPage(annP - 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
                     ← {t.news.back}
                   </button>
                 )}
                 {annP < annPages - 1 && (
-                  <button type="button" aria-label={t.news.more} onClick={() => setAnnPage(annP + 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
+                  <button type="button" onClick={() => setAnnPage(annP + 1)} className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised">
                     {t.news.more} →
                   </button>
                 )}
@@ -153,22 +167,10 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <Wave fill="text-card" />
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-            <h2 data-reveal suppressHydrationWarning className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
+            <h2 data-reveal className="text-4xl leading-tight tracking-tight text-ink md:text-5xl">{t.news.title}</h2>
             <a href={`/${lang}/news`} className={`${linkCls} shrink-0 text-sm`}>
               {t.news.viewAll} →
             </a>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {[
-              { href: "#news", label: t.news.title },
-              { href: "#announcements", label: t.news.announcements },
-              { href: "#calendar", label: t.home.calendarTitle },
-              { href: "#passers", label: t.passers.title },
-            ].map((c) => (
-              <a key={c.href} href={c.href} className="rounded-full border border-ink/10 bg-page px-4 py-1.5 text-sm font-medium text-ink hover:bg-raised">
-                {c.label}
-              </a>
-            ))}
           </div>
           {lead && (
             <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-12">
@@ -210,7 +212,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   {p > 0 && (
                     <button
                       type="button"
-                      aria-label={t.news.back}
                       onClick={() => setPage(p - 1)}
                       className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised"
                     >
@@ -220,7 +221,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                   {p < pages - 1 && (
                     <button
                       type="button"
-                      aria-label={t.news.more}
                       onClick={() => setPage(p + 1)}
                       className="inline-flex h-11 items-center rounded-full border border-ink/10 bg-page px-5 text-sm font-medium text-ink hover:bg-raised"
                     >
@@ -262,19 +262,13 @@ export default function PsfSite({ lang }: { lang: Lang }) {
       {/* process: four steps in columns, each with a top rule, number and title */}
       <section id="process" className="relative overflow-x-clip scroll-mt-16 bg-block-dark text-on-dark">
         <Wave fill="text-block-dark" />
-        {/* decorative motion: pulse rings and a tilted floating card (no text, so nothing to translate) */}
+        {/* decorative motion: pulse rings only (no text, off with reduced motion) */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden overflow-clip md:block">
           <div className="absolute -right-40 top-10 size-[34rem]">
             <span className="pulse-ring inset-0" style={{ animationDelay: "0s" }} />
             <span className="pulse-ring inset-0" style={{ animationDelay: "1.2s" }} />
             <span className="pulse-ring inset-0" style={{ animationDelay: "2.4s" }} />
           </div>
-        </div>
-        <div aria-hidden="true" className="tilt-float pointer-events-none absolute right-10 top-28 hidden w-48 rounded-[22px] bg-on-dark p-5 md:block">
-          <span className="block h-2 w-16 rounded-full bg-accent" />
-          <span className="mt-4 block h-2 w-28 rounded-full bg-raised" />
-          <span className="mt-2 block h-2 w-20 rounded-full bg-raised" />
-          <span className="mt-5 block h-8 rounded-full bg-accent/15" />
         </div>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
           <TextEffect as="h2" text={t.process.title} className="text-4xl leading-tight tracking-tight text-on-dark md:text-5xl" />
@@ -321,13 +315,12 @@ export default function PsfSite({ lang }: { lang: Lang }) {
           </dl>
 
           {/* level filter: underline tabs, each with its count taken from the data */}
-          <div role="tablist" aria-label={t.passers.title} className="no-scrollbar -mx-4 mt-8 flex gap-6 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
+          <div aria-label={t.passers.title} role="group" className="no-scrollbar -mx-4 mt-8 flex gap-6 overflow-x-auto border-b border-ink/10 px-4 md:mx-0 md:px-0">
             {[0, 1, 2, 3].map((n) => (
               <button
                 key={n}
                 type="button"
-                role="tab"
-                aria-selected={lvl === n}
+                aria-pressed={lvl === n}
                 onClick={() => setLvl(n)}
                 className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors ${
                   lvl === n ? "border-accent font-medium text-accent-ink" : "border-transparent text-ink-2 hover:text-ink"
@@ -368,7 +361,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
                 </details>
               ))}
             </div>
-            <a href={`/${lang}/faq`} className={`${linkCls} mt-5 inline-block text-sm`}>
+            <a href={`/${lang}/faq`} className={`${linkCls} mt-5 text-sm`}>
               {t.news.viewAll} →
             </a>
           </div>
@@ -383,7 +376,7 @@ export default function PsfSite({ lang }: { lang: Lang }) {
               ))}
             </ul>
             <p className="mt-4 text-sm text-ink-2">{t.pages.eligibility.who.note}</p>
-            <a href={`/${lang}/eligibility`} className={`${linkCls} mt-5 inline-block text-sm`}>
+            <a href={`/${lang}/eligibility`} className={`${linkCls} mt-5 text-sm`}>
               {t.pages.eligibility.title} →
             </a>
           </aside>

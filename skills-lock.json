@@ -1,6 +1,13 @@
 {
   "version": 2,
   "skills": {
+    "UI/UX Design Review": {
+      "source": "rknall/claude-skills",
+      "commit": "ca7fbd0e07f824b119030f323da3409bc779f9bc",
+      "sourceType": "github",
+      "skillPath": "ui-design-review/SKILL.md",
+      "computedHash": "fa08721046bad69565e62a15f56cf398a1593c498e732123218adf0a1df8158d"
+    },
     "ui-ux-pro-max": {
       "source": "nextlevelbuilder/ui-ux-pro-max-skill",
       "sourceType": "github",
