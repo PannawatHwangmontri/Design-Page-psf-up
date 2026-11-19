@@ -17,7 +17,7 @@ const idx = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 const hairline = "border border-ink/10";
 // level shape next to the level name: circle, diamond, triangle (readable without colour)
-const LEVEL_SHAPE: Record<number, string> = { 1: "rounded-full", 2: "rotate-45 rounded-[2px]", 3: "[clip-path:polygon(50%_0%,100%_100%,0%_100%)]" };
+const LEVEL_SHAPE: Record<number, string> = { 1: "rounded-full", 2: "rotate-45 rounded-[2px]", 3: "[clip-path:polygon(50%_0%,100%_100%,0%_100%)]", 4: "rounded-none" };
 const linkCls = "font-medium text-accent-ink underline decoration-accent-ink/30 underline-offset-4 hover:decoration-accent-ink";
 
 // vertical section marker on the left page edge (wide screens only, see .side-label)
@@ -56,8 +56,6 @@ export default function PsfSite({ lang }: { lang: Lang }) {
         <img src="/img/does/campus-statue.webp" alt={t.hero.photoAlt} className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-scrim-soft" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-block-dark/80 via-block-dark/30 to-transparent" />
-        {/* hero extras: a purple light that follows the pointer (Motion.tsx sets --mx/--my) and pulse rings behind the title */}
-        <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0 -z-10" />
         <div className="mx-auto max-w-4xl px-4 pb-32 pt-36 text-center md:px-8">
           <TextEffect as="h1" text={t.hero.title} delay={200} step={40} className="mt-6 block text-4xl leading-[1.25] md:text-6xl md:leading-[1.2]" />
           <TextEffect as="p" text={t.hero.desc} delay={200 + [...t.hero.title].length * 40 + 200} step={12} className="mx-auto mt-8 block max-w-xl text-lg font-medium leading-8 text-on-dark" />

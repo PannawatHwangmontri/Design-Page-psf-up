@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Intro } from "@/components/Intro";
 import { Motion } from "@/components/Motion";
 
 // หัวข้อ: เซอริฟบางน้ำหนัก 300 ตามสไตล์ editorial (มีทั้งไทยและละติน)
-const serifTh = Noto_Serif_Thai({
-  variable: "--font-serif-th",
-  subsets: ["thai", "latin"],
-  weight: ["300", "400"],
-});
-
 // ตัวควบคุม (ปุ่ม ช่องกรอก) และแถบหัว รวมถึงส่วนสถานะของระบบอาจารย์
 const plexSansTh = IBM_Plex_Sans_Thai({
   variable: "--font-plex-sans-th",
@@ -33,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" suppressHydrationWarning className={`${plexSansTh.variable} ${plexMono.variable} ${serifTh.variable} h-full antialiased`}>
+    <html lang="th" suppressHydrationWarning className={`${plexSansTh.variable} ${plexMono.variable} h-full antialiased`}>
       <head>
         {/* sets the saved light/dark choice before first paint (see ThemeToggle.tsx) */}
         <script

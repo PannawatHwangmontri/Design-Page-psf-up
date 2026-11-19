@@ -51,7 +51,7 @@ export const announcements: Announcement[] = [
 export type Passer = (typeof passers)[number] & { photo?: string }; // photo: data URL uploaded in /admin
 export const publicity = [2569, 2568, 2567, 2566].map((year, yi) => ({
   year, // พ.ศ.
-  people: Array.from({ length: 6 }, (_, i): Passer => person(yi * 6 + i + 1, (i % 3) + 1, { th: String(year), en: String(year - 543) })),
+  people: Array.from({ length: 6 }, (_, i): Passer => person(yi * 6 + i + 1, (i % 4) + 1, { th: String(year), en: String(year - 543) })),
 }));
 
 // ปฏิทินการประเมินรายปี (พ.ศ.) หน้าเว็บแสดงปีล่าสุด 2 รอบ/ปี: รับสมัคร -> ประเมิน -> ประกาศผล

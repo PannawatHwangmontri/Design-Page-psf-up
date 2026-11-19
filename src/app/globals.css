@@ -28,10 +28,11 @@
   --color-level-3: #b7791f;
   /* level-3 as text on its 15% tint: darker than the dot colour so the avatar letter reaches 3:1 */
   --color-level-3-ink: #8a5710;
+  /* level 4 (mock data): uses the ink-3 token, so it follows the theme */
+  --color-level-4: var(--color-ink-3);
   --font-sans: var(--font-plex-sans-th), sans-serif;
   --font-ui: var(--font-plex-sans-th), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
-  --font-serif: var(--font-serif-th), Georgia, serif;
   --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -120,7 +121,7 @@ label {
   font-family: var(--font-ui);
 }
 
-/* Headings: light serif (Noto Serif Thai). Unlayered on purpose, so it wins over Tailwind's font-medium on headings. */
+/* Headings: Plex Sans Thai at weight 500. Unlayered on purpose, so it wins over Tailwind's font-medium on headings. */
 h1,
 h2 {
   font-family: var(--font-ui);
@@ -540,17 +541,6 @@ button {
 @media (prefers-reduced-motion: reduce) {
   #home img.hero-zoom {
     translate: none;
-  }
-}
-
-/* Hero glow: a soft purple light that follows the pointer (Motion.tsx sets --mx / --my on <html>). */
-.hero-glow {
-  background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 40%), rgba(141, 56, 201, 0.38), transparent 62%);
-  mix-blend-mode: screen;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-glow {
-    background: none;
   }
 }
 

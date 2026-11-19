@@ -49,7 +49,7 @@ export const content = {
       title: "มาตรฐานอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
       desc: "กรอบประเมินสมรรถนะของอาจารย์ มหาวิทยาลัยพะเยา พร้อมประกาศผลรายชื่อผู้ที่ผ่านเกณฑ์การประเมิน",
       cta: "ยื่นขอรับการประเมิน",
-      cta2: "ประกาศ",
+      cta2: "ดูประกาศล่าสุด",
       imageAlt: "มาตรฐานระดับอาจารย์มืออาชีพ มหาวิทยาลัยพะเยา",
       photoAlt: "กิจกรรมของมหาวิทยาลัยพะเยา ณ ลานอนุสาวรีย์",
       photoCaption: "ภาพกิจกรรม มหาวิทยาลัยพะเยา",
@@ -94,11 +94,12 @@ export const content = {
     // TODO: ข้อความระดับเป็นข้อความสมมติ รอเนื้อหาจริงจากหน่วยงาน
     levels: {
       title: "PSF คืออะไร",
-      desc: "กรอบประเมินสมรรถนะของอาจารย์ แบ่งเป็น 3 ระดับ ตามประสบการณ์และบทบาทด้านการเรียนการสอน",
+      desc: "กรอบประเมินสมรรถนะของอาจารย์ แบ่งเป็น 4 ระดับ ตามประสบการณ์และบทบาทด้านการเรียนการสอน",
       items: [
         { name: "ระดับ 1", desc: "แสดงความสามารถในการจัดการเรียนการสอนและประเมินผลผู้เรียนอย่างเป็นระบบ" },
         { name: "ระดับ 2", desc: "ออกแบบและพัฒนาการเรียนรู้อย่างต่อเนื่อง พร้อมแนะนำและสนับสนุนเพื่อนร่วมงาน" },
         { name: "ระดับ 3", desc: "เป็นผู้นำด้านการเรียนการสอน สร้างนวัตกรรมและขยายผลสู่หน่วยงานและสถาบัน" },
+        { name: "ระดับ 4", desc: "เป็นผู้นำที่ได้รับการยอมรับในศาสตร์ของตน ผลักดันนโยบายและกลยุทธ์พัฒนาวิชาชีพอาจารย์ระดับประเทศ" },
       ],
     },
     // ข้อความขั้นตอนเป็นข้อความสมมติ ลิงก์ชี้ไปหน้าที่มีอยู่ (TODO หน้ารายละเอียดจริงของแต่ละขั้น)
@@ -246,7 +247,7 @@ export const content = {
       },
       publicity: {
         title: "ผู้ผ่านเกณฑ์ PSF",
-        hubIntro: "ข่าว กิจกรรม ประกาศ และรายชื่อผู้ผ่านเกณฑ์ของมาตรฐานอาจารย์มืออาชีพ รวมไว้ในหน้าเดียว",
+        hubIntro: "เลือกแท็บเพื่อดูข่าวและกิจกรรม ประกาศ หรือรายชื่อผู้ผ่านเกณฑ์ PSF ตามปี",
         announcementsTitle: "ประกาศ",
         intro: "ประกาศผลรายชื่อผู้ที่ผ่านเกณฑ์การประเมิน แยกตามปี (ข้อมูลตัวอย่าง)",
         yearTab: "ปี",
@@ -255,6 +256,18 @@ export const content = {
         levelAll: "ทุกระดับ",
         level: "ระดับ",
         empty: "ไม่มีรายชื่อในระดับนี้",
+        typeAll: "ทั้งหมด",
+        typeCriteria: "หลักเกณฑ์",
+        typeResult: "ผลประกาศ",
+        typeOther: "ประกาศ",
+        annNone: "ไม่พบประกาศในหมวดนี้",
+        searchLabel: "ค้นหาชื่อหรือคณะ",
+        searchNone: "ไม่พบรายชื่อที่ค้นหา",
+        clearFilter: "ล้างตัวกรอง",
+        olderNews: "ข่าวที่เก่ากว่า",
+        newerNews: "ข่าวที่ใหม่กว่า",
+        olderAnn: "ประกาศที่เก่ากว่า",
+        newerAnn: "ประกาศที่ใหม่กว่า",
       },
       eligibility: {
         title: "คุณสมบัติและเกณฑ์",
@@ -678,7 +691,7 @@ export const content = {
       title: "Professional Lecturer Standards, University of Phayao",
       desc: "A framework for assessing lecturer competence at the University of Phayao, with the results announced publicly",
       cta: "Apply for assessment",
-      cta2: "Announcements",
+      cta2: "Latest announcements",
       imageAlt: "Professional Lecturer Standards, University of Phayao",
       photoAlt: "University of Phayao event at the memorial plaza",
       photoCaption: "University of Phayao activity",
@@ -723,11 +736,12 @@ export const content = {
     // TODO: level text is sample text, waiting for real content from the unit
     levels: {
       title: "What is PSF",
-      desc: "A competence framework for lecturers, in 3 levels based on experience and teaching role.",
+      desc: "A competence framework for lecturers, in 4 levels based on experience and teaching role.",
       items: [
         { name: "Level 1", desc: "Shows the ability to organise teaching and assess learners systematically" },
         { name: "Level 2", desc: "Designs and improves learning continuously and mentors colleagues" },
         { name: "Level 3", desc: "Leads teaching practice, creates innovation and extends impact across the institution" },
+        { name: "Level 4", desc: "A recognised leader in their field who shapes national policy for lecturer development" },
       ],
     },
     process: {
@@ -872,7 +886,7 @@ export const content = {
       },
       publicity: {
         title: "PSF Passers",
-        hubIntro: "News, events, announcements and the list of those who passed the criteria, all in one page.",
+        hubIntro: "Pick a tab to see news and events, announcements, or the list of people who passed the criteria, by year.",
         announcementsTitle: "Announcements",
         intro: "Announced results of those who met the assessment criteria, by year (sample data).",
         yearTab: "Year",
@@ -881,6 +895,18 @@ export const content = {
         levelAll: "All levels",
         level: "Level",
         empty: "No names at this level.",
+        typeAll: "All",
+        typeCriteria: "Criteria",
+        typeResult: "Results",
+        typeOther: "Announcement",
+        annNone: "No announcements in this category",
+        searchLabel: "Search by name or faculty",
+        searchNone: "No matching names",
+        clearFilter: "Clear filter",
+        olderNews: "Older news",
+        newerNews: "Newer news",
+        olderAnn: "Older announcements",
+        newerAnn: "Newer announcements",
       },
       eligibility: {
         title: "Eligibility and criteria",

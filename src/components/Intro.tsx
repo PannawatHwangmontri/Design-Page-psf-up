@@ -15,8 +15,8 @@ export function Intro() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const leave = window.setTimeout(() => setPhase("out"), reduce ? 0 : 900);
-    const done = window.setTimeout(() => setPhase("done"), reduce ? 0 : 1650);
+    const leave = window.setTimeout(() => setPhase("out"), reduce ? 0 : 600);
+    const done = window.setTimeout(() => setPhase("done"), reduce ? 0 : 1200);
     return () => {
       window.clearTimeout(leave);
       window.clearTimeout(done);

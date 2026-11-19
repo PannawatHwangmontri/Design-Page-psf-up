@@ -15,10 +15,21 @@ export function Motion() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let io: IntersectionObserver | undefined;
+    // React attaches a __reactFiber$ key to every DOM node it has hydrated. Writing data-in to a node before that
+    // is exactly what causes the hydration mismatch, so wait (frame by frame, capped) until every target is hydrated.
+    const hydrated = (el: HTMLElement) => Object.keys(el).some((k) => k.startsWith("__reactFiber$"));
+    let tries = 0;
+    let retry = 0;
     const start = () => {
-      const els = document.querySelectorAll<HTMLElement>("[data-stagger],[data-lines],[data-reveal]");
+      const all = Array.from(document.querySelectorAll<HTMLElement>("[data-stagger],[data-lines],[data-reveal]"));
+      const ready = all.filter(hydrated);
+      if (ready.length < all.length && tries < 180) {
+        tries++;
+        retry = requestAnimationFrame(start);
+        return;
+      }
       if (reduced) {
-        els.forEach((el) => (el.dataset.in = ""));
+        ready.forEach((el) => (el.dataset.in = ""));
         return;
       }
       io = new IntersectionObserver(
@@ -30,27 +41,26 @@ export function Motion() {
           }),
         { threshold: 0.1 },
       );
-      els.forEach((el) => {
+      ready.forEach((el) => {
         if (!el.dataset.in) io?.observe(el);
       });
     };
-    // Streamed (Suspense) parts of the page can still be hydrating after the load event,
-    // so wait for an idle moment before writing [data-in]; otherwise React sees an attribute it did not render.
-    let idle: number | undefined;
-    let timer: number | undefined;
-    const later = () => {
-      timer = window.setTimeout(start, 200);
-    };
+    // Streamed (Suspense) parts of the page can still be hydrating after the load event. Two animation frames
+    // after load give React a chance to finish, so [data-in] is written only once the page is hydrated.
+    let raf1 = 0;
+    let raf2 = 0;
     const onLoad = () => {
-      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(later, { timeout: 2000 });
-      else timer = window.setTimeout(later, 500);
+      raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(start);
+      });
     };
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
     return () => {
       window.removeEventListener("load", onLoad);
-      if (idle !== undefined) window.cancelIdleCallback(idle);
-      window.clearTimeout(timer);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      cancelAnimationFrame(retry);
       io?.disconnect();
     };
   }, [path]);
@@ -71,13 +81,6 @@ export function Motion() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-
-    // pointer position on <html> for the hero glow (CSS variables, React markup untouched)
-    const onMove = (e: MouseEvent) => {
-      document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
-      document.documentElement.style.setProperty("--my", `${e.clientY}px`);
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
 
     const cleanups: (() => void)[] = [];
     document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
@@ -101,7 +104,6 @@ export function Motion() {
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(frame);
       cleanups.forEach((f) => f());
     };

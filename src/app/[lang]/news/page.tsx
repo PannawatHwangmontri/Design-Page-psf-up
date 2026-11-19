@@ -52,7 +52,7 @@ function NewsList({ lang, site }: { lang: Lang; site: SiteData }) {
       </ul>
 
       {pages > 1 && (
-        <nav className="mt-12 flex items-center justify-between gap-4 border-t border-ink/10 pt-6">
+        <nav aria-label={t.news.title} className="mt-12 flex items-center justify-between gap-4 border-t border-ink/10 pt-6">
           <button type="button" disabled={page === 0} onClick={() => go(page - 1)} className={btn}>
             ← {t.passers.prev}
           </button>
